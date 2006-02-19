@@ -2,7 +2,6 @@ BINS=isutf8
 PERLSCRIPTS=sponge vidir vipe ts
 MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1
 CFLAGS=-O2 -g -Wall
-CXXFLAGS=-O2 -g -Wall
 
 all: $(BINS) $(MANS)
 

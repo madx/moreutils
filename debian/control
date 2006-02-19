@@ -9,8 +9,12 @@ Package: moreutils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}
 Description: additional unix utilities
- This is a collection of the unix tools that nobody thought to write
- thirty years ago.
+ This is a growing collection of the unix tools that nobody thought
+ to write thirty years ago.
  .
- Includes the following utilities:
- isutf8 sponge ts vidir vipe
+ So far, it includes the following utilities:
+  - isutf8: check if a file or standard input is utf-8
+  - sponge: soak up standard input and write to a file
+  - ts: timestamp standard input
+  - vidir: edit a directory in your text editor
+  - vipe: edit a pipe using your text editor

@@ -34,16 +34,5 @@ binary-arch: build
 	dh_md5sums
 	dh_builddeb
 
-VERSION=$(shell expr "`dpkg-parsechangelog 2>/dev/null |grep Version:`" : '.*Version: \(.*\)')
-
-# Update the web page. Not intended for use by anyone except the
-# author.
-DIR=/home/web/kitenet.net/programs/moreutils
-installhook:
-	cp debian/changelog $(DIR)/CHANGES
-	echo -n $(VERSION) > $(DIR)/LATEST-VERSION-IS
-	rm -f $(DIR)/*.tar.gz
-	ln -s /home/joey/lib/debian/unstable/moreutils_$(VERSION).tar.gz $(DIR)/moreutils-$(VERSION).tar.gz
-
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary

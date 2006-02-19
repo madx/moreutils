@@ -1,7 +1,7 @@
 This package was put together and debianized by Joey Hess
 <joeyh@debian.org>, using sources from all over.
 
-isutf8 and mime are Copyright (C) 2005  Lars Wirzenius, under terms of
+isutf8 is Copyright (C) 2005 by Lars Wirzenius, under the terms of
 the GPL.
 
 sponge:
@@ -27,6 +27,6 @@ sponge:
 # CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Everything else is copyright 1999-2005 by Joey Hess, under the terms of GPL.
+Everything else is copyright 2006 by Joey Hess, under the terms of GPL.
 The full text of the GNU GPL can be found in /usr/share/common-licenses/GPL
 on Debian systems.

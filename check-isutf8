@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Run checks for ./isutf8.
+#
+# Lars Wirzenius <liw@iki.fi>
+
+check() {
+    printf "$2" | ./isutf8 -q
+    ret=$?
+    if [ $ret != $1 ]
+    then
+        echo "Failure:"
+        echo "  input: $2"
+        echo "  expected: $1"
+        echo "  got: $ret"
+    fi
+}
+
+check 0 ''
+check 0 'a'
+check 0 'ab'
+check 0 '\xc2\xa9'
+
+check 1 '\xc2'
+check 1 '\xc2\x20'
+check 1 '\x20\xc2'

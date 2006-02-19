@@ -1,0 +1,54 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+sponge - soak up standard input and write to a file
+
+=head1 SYNOPSIS
+
+sed '...' file | grep '...' | sponge file
+
+=head1 DESCRIPTION
+
+sponge reads standard input and writes it out to the specified file.
+Unlike a shell redirect, sponge soaks up all its input before opening the
+output file. This allows for constructing pipelines that read from and write
+to the same file.
+
+=head1 AUTHOR
+
+Colin Watson <cjwatson@debian.org>
+
+=cut
+
+use warnings;
+use strict;
+
+# Copyright (C) 2003 Colin Watson <cjwatson@debian.org>.
+#
+# Permission is hereby granted, free of charge, to any person
+# obtaining a copy of this software and associated documentation files
+# (the "Software"), to deal in the Software without restriction,
+# including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+my $file=shift || die "usage: sponge file\n";
+binmode STDIN;
+undef $/;
+my $input = <STDIN>;
+open OUT, ">$file" or die "couldn't open $file: $!";
+print OUT $input or die "couldn't write to $file: $!";
+close OUT or die "couldn't close $file: $!";

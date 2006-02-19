@@ -1,0 +1,18 @@
+This is a collection of the unix tools that nobody thought to write
+thirty years ago. If you have written a general purpose unix tool, feel
+free to contribute it for inclusion in this package.
+
+isutf8
+	check if a file or standard input is utf-8
+mime
+	determine MIME type of a file
+sponge
+	soak up standard input and write to a file
+ts
+	timestamp standard input
+vidir
+	edit a directory in your text editor
+vipe
+	edit a pipe using your text editor
+
+-- Joey Hess <joey@kitenet.net>

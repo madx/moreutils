@@ -1,0 +1,176 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+vidir - edit directory
+
+=head1 SYNOPSIS
+
+B<vidir> [--verbose] [directory|file|-] ...
+
+=head1 DESCRIPTION
+
+vidir allows editing of the contents of a directory in a text editor. If no
+directory is specified, the current directory is edited. Each item in the
+directory is listed. Delete items to remove them from the directory, or
+edit their names to rename them.
+
+Note that if "-" is specified as the directory to edit, it reads a list of
+filenames from stdin and displays those for editing. Alternatively, a list
+of files can be specified on the command line.
+
+=head1 OPTIONS
+
+=over 4
+
+=item -v, --verbose
+
+Verbosely display the actions taken by the program.
+
+=back
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 4
+
+=item EDITOR
+
+Editor to use. Defaults to vi if not set.
+
+=item VISUAL
+
+Also supported to determine what editor to use.
+
+=back
+
+=head1 BUGS
+
+Does not support deletion of directories. Does not support recursive
+editing of contents of a directory.
+
+=head1 AUTHOR
+
+Copyright 2006 by Joey Hess <joey@kitenet.net>
+
+Licensed under the GNU GPL.
+
+=cut
+
+use File::Temp;
+use Getopt::Long;
+
+my $error=0;
+
+my $verbose=0;
+if (! GetOptions("verbose|v" => \$verbose)) {
+	die "Usage: $0 [--verbose] [directory|file|-]\n";
+}
+
+my @dir;
+if (! @ARGV) {
+	push @ARGV, "."
+}
+foreach my $item (@ARGV) {
+	if ($item eq "-") {
+		push @dir, map { chomp; $_ } <STDIN>;
+		close STDIN;
+		open(STDIN, "/dev/tty") || die "reopen: $!\n";
+	}
+	elsif (-d $item) {
+		opendir(DIR, $item) || die "$0: cannot read $item: $!\n";
+		push @dir, sort readdir(DIR);
+		closedir DIR;
+	}
+	else {
+		push @dir, $item;
+	}
+}
+	
+my $tmp=File::Temp->new(template => "dirXXXXX");
+open (OUT, ">".$tmp->filename) || die "$0: cannot write ".$tmp->filename.": $!\n";
+
+my %item;
+my $c=0;
+foreach (@dir) {
+	next if $_ eq '.' || $_ eq '..';
+	$item{++$c}=$_;
+	print OUT "$c.\t$_\n";
+}
+@dir=();
+close OUT;
+
+my $editor="vi";
+if (exists $ENV{EDITOR}) {
+	$editor=$ENV{EDITOR};
+}
+if (exists $ENV{VISUAL}) {
+	$editor=$ENV{VISUAL};
+}
+$ret=system($editor, $tmp);
+if ($ret != 0) {
+	die "$editor exited nonzero, aborting\n";
+}
+
+open (IN, $tmp->filename) || die "$0: cannot read ".$tmp->filename.": $!\n";
+while (<IN>) {
+	chomp;
+	if (/^(\d+)\.\t(.*)/) {
+		my $num=$1;
+		my $name=$2;
+		if (! exists $item{$num}) {
+			print STDERR "$0: unknown item number $num\n";
+			$error=1;
+		}
+		elsif ($name ne $item{$num}) {
+			my $src=$item{$num};
+			
+			# deal with swaps
+			if (-e $name || -l $name) {
+				my $tmp=$name."~";
+				my $c=0;
+				while (-e $tmp || -l $tmp) {
+					$c++;
+					$tmp=$name."~$c";
+				}
+				if (! rename($name, $tmp)) {
+					print STDERR "$0: failed to rename $name to $tmp: $!\n";
+					$error=1;
+				}
+				elsif ($verbose) {
+					print "'$name' -> '$tmp'\n";
+				}
+				foreach my $item (keys %item) {
+					if ($item{$item} eq $name) {
+						$item{$item}=$tmp;
+					}
+				}
+			}
+
+			if (! rename($src, $name)) {
+				print STDERR "$0: failed to rename $src to $name: $!\n";
+				$error=1;
+			}
+			elsif ($verbose) {
+				print "'$src' -> '$name'\n";
+			}
+		}
+		delete $item{$num};
+	}
+	else {
+		die "$0: unable to parse line \"$_\", aborting\n";
+	}
+}
+close IN;
+unlink($tmp.'~') if -e $tmp.'~';
+
+foreach my $item (sort values %item) {
+	if (! unlink($item)) {
+		print STDERR "$0: failed to remove $item: $!\n";
+		$error=1;
+	}
+	if ($verbose) {
+		print "removed '$item'\n";
+	}
+}
+
+exit $error;

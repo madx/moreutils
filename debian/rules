@@ -1,0 +1,49 @@
+#!/usr/bin/make -f
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE)
+	$(MAKE) check
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	-$(MAKE) -i clean
+	dh_clean
+
+binary-indep: build
+
+binary-arch: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) PREFIX=debian/moreutils install
+	dh_installdocs README
+	dh_installchangelogs
+	dh_perl
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+VERSION=$(shell expr "`dpkg-parsechangelog 2>/dev/null |grep Version:`" : '.*Version: \(.*\)')
+
+# Update the web page. Not intended for use by anyone except the
+# author.
+DIR=/home/web/kitenet.net/programs/moreutils
+installhook:
+	cp debian/changelog $(DIR)/CHANGES
+	echo -n $(VERSION) > $(DIR)/LATEST-VERSION-IS
+	rm -f $(DIR)/*.tar.gz
+	ln -s /home/joey/lib/debian/unstable/moreutils_$(VERSION).tar.gz $(DIR)/moreutils-$(VERSION).tar.gz
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

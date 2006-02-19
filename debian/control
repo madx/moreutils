@@ -1,0 +1,16 @@
+Source: moreutils
+Section: utils
+Priority: optional
+Build-Depends: debhelper (>= 4), dpkg-dev (>= 1.9.0), docbook2x
+Maintainer: Joey Hess <joeyh@debian.org>
+Standards-Version: 3.6.2
+
+Package: moreutils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}
+Description: additional unix utilities
+ This is a collection of the unix tools that nobody thought to write
+ thirty years ago.
+ .
+ Includes the following utilities:
+ isutf8 sponge ts vidir vipe

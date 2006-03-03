@@ -1,6 +1,6 @@
-BINS=isutf8
-PERLSCRIPTS=sponge vidir vipe ts
-MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1
+BINS=isutf8 sponge
+PERLSCRIPTS=vidir vipe ts
+MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 sponge.1
 CFLAGS=-O2 -g -Wall
 
 all: $(BINS) $(MANS)
@@ -21,6 +21,9 @@ check: isutf8
 
 isutf8.1: isutf8.docbook
 	docbook2x-man isutf8.docbook
+
+sponge.1: sponge.docbook
+	docbook2x-man sponge.docbook
 
 %.1: %
 	pod2man --center=" " --release="moreutils" $< > $@;

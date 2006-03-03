@@ -1,8 +1,10 @@
-moreutils (0.3) UNRELEASED; urgency=low
+moreutils (0.3) unstable; urgency=low
 
   * Switch sponge to a C implementation by mithandir.
+  * Added a list of prospective tools that I am considering adding to the
+    README file.
 
- -- Joey Hess <joeyh@debian.org>  Fri,  3 Mar 2006 17:10:43 -0500
+ -- Joey Hess <joeyh@debian.org>  Fri,  3 Mar 2006 18:09:46 -0500
 
 moreutils (0.2) unstable; urgency=low
 

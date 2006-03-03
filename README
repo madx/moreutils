@@ -1,6 +1,5 @@
 This is a collection of the unix tools that nobody thought to write
-thirty years ago. If you have written a general purpose unix tool, feel
-free to contribute it for inclusion in this package.
+thirty years ago. Currently it consists of these tools:
 
 isutf8
 	check if a file or standard input is utf-8
@@ -12,5 +11,49 @@ vidir
 	edit a directory in your text editor
 vipe
 	edit a pipe using your text editor
+
+Your suggestions of additional tools to add to this collection are
+apprecitated. Here are some that are under consideration but have not yet
+been included, I also welcome feedback on which of these to include.
+
+mime
+	determines the mime type of a file using the gnome mine database
+
+	(More useful than file(1) in many cases but would add a lot of
+	gnome libraries to the package's dependency chain.)
+
+ifcfg
+	find ip address etc easily without complex grepping in ifconfig
+	http://edgard.dyn.fdn.fr/developpements/ifcfg.shtml
+	(Tarball link 404 when last checked.)
+
+and
+	filter a stream for the entries that exist in another file
+	http://arstechnica.com/articles/columns/linux/linux-20050822.ars
+
+	(Isn't there a way to do this with standard unix tools?)
+
+not
+	filter a stream for the entries that do not exist in another file
+	http://arstechnica.com/articles/columns/linux/linux-20050822.ars
+	
+	(Isn't there a way to do this with standard unix tools?)
+
+z
+	makes another program understand compressed files
+	ex: z zxgv file.bmp.gz
+
+	(Waiting for copyright from Chung-chieh Shan)
+	(Dare I take the "z" name?)
+
+tmp
+	puts stdin into a temp file and passes it to the specified program
+	ex: zcat file.bmp.gz | tmp zxgv
+
+	(Waiting for copyright from Chung-chieh Shan)
+add
+	adds up numbers from stdin
+
+	(Waiting for copyright from Chung-chieh Shan)
 
 -- Joey Hess <joey@kitenet.net>

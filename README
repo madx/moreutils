@@ -11,6 +11,11 @@ vidir
 	edit a directory in your text editor
 vipe
 	edit a pipe using your text editor
+and
+	print lines that are present in one file and another
+not
+	print lines that are present in one file but not another
+
 
 Your suggestions of additional tools to add to this collection are
 apprecitated. Here are some that are under consideration but have not yet
@@ -26,18 +31,6 @@ ifcfg
 	find ip address etc easily without complex grepping in ifconfig
 	http://edgard.dyn.fdn.fr/developpements/ifcfg.shtml
 	(Tarball link 404 when last checked.)
-
-and
-	filter a stream for the entries that exist in another file
-	http://arstechnica.com/articles/columns/linux/linux-20050822.ars
-
-	(Isn't there a way to do this with standard unix tools?)
-
-not
-	filter a stream for the entries that do not exist in another file
-	http://arstechnica.com/articles/columns/linux/linux-20050822.ars
-	
-	(Isn't there a way to do this with standard unix tools?)
 
 z
 	makes another program understand compressed files

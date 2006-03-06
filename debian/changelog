@@ -1,3 +1,10 @@
+moreutils (0.4) unstable; urgency=low
+
+  * Added versions of and(1) and not(1) that support arbitrary numbers of
+    input files.
+
+ -- Joey Hess <joeyh@debian.org>  Sun,  5 Mar 2006 22:28:13 -0500
+
 moreutils (0.3) unstable; urgency=low
 
   * Switch sponge to a C implementation by mithandir.

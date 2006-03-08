@@ -30,62 +30,62 @@
 #include <string.h>
 
 void usage() {
-  printf("sponge <file>: suck in all input from stdin and write it to <file>");
-  exit(0);
+	printf("sponge <file>: suck in all input from stdin and write it to <file>");
+	exit(0);
 }
 
 int main(int argc, char **argv) {
-  char *buf, *bufstart;
-  size_t bufsize = 8192;
-  size_t bufused = 0;
-  ssize_t i = 0;
-  int outfd;
-  if (argc != 2) {
-    usage();
-  }
+	char *buf, *bufstart;
+	size_t bufsize = 8192;
+	size_t bufused = 0;
+	ssize_t i = 0;
+	int outfd;
+	
+	if (argc != 2) {
+		usage();
+	}
   
-  bufstart = buf = malloc(bufsize);
-  if (!buf) {
-    perror("malloc");
-    exit(1);
-  }
+	bufstart = buf = malloc(bufsize);
+	if (!buf) {
+		perror("malloc");
+		exit(1);
+	}
 
-  while ((i = read(0, buf, bufsize - bufused)) > 0) {
-    bufused = bufused+i;
-    if (bufused == bufsize) {
-      bufsize *= 2;
-      bufstart = realloc(bufstart, bufsize);
-      if (!bufstart) {
-        perror("realloc");
-        exit(1);
-      }
+	while ((i = read(0, buf, bufsize - bufused)) > 0) {
+		bufused = bufused+i;
+		if (bufused == bufsize) {
+			bufsize *= 2;
+			bufstart = realloc(bufstart, bufsize);
+			if (!bufstart) {
+				perror("realloc");
+				exit(1);
+			}
 
-      buf = bufstart + bufused;
-    }
-  }
-  if (i == -1) {
-    perror("read");
-    exit(1);
-  }
+			buf = bufstart + bufused;
+		}
+	}
+	if (i == -1) {
+		perror("read");
+		exit(1);
+	}
   
-  outfd = open(argv[1], O_CREAT | O_TRUNC | O_WRONLY, 
-               0666);
-  if (outfd == -1) {
-    fprintf(stderr, "Can't open %s: %s\n", argv[1], strerror(errno));
-    exit(1);
-  }
+	outfd = open(argv[1], O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	if (outfd == -1) {
+		fprintf(stderr, "Can't open %s: %s\n", argv[1], strerror(errno));
+		exit(1);
+	}
 
-  i = write(outfd, bufstart, bufused);
-  if (i == -1) {
-    perror("write");
-    exit(1);
-  }
+	i = write(outfd, bufstart, bufused);
+	if (i == -1) {
+		perror("write");
+		exit(1);
+	}
 
-  i = close(outfd);
-  if (i == -1) {
-    perror("close");
-    exit(1);
-  }
+	i = close(outfd);
+	if (i == -1) {
+		perror("close");
+		exit(1);
+	}
 
-  return 0;
+	return 0;
 }

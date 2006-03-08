@@ -25,95 +25,93 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 []>
 
 <refentry>
+	<refentryinfo>
+		<address>
+			<email>liw@iki.fi</email>
+		</address>
+		<author>
+			<firstname>Lars</firstname>
+			<surname>Wirzenius</surname>
+		</author>
+		<date>2006-02-19</date>
+	</refentryinfo>
 
-  <refentryinfo>
-    <address>
-      <email>liw@iki.fi</email>
-    </address>
-    <author>
-      <firstname>Lars</firstname>
-      <surname>Wirzenius</surname>
-    </author>
-    <date>2006-02-19</date>
-  </refentryinfo>
+	<refmeta>
+		<refentrytitle>isutf8</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
 
-  <refmeta>
-    <refentrytitle>isutf8</refentrytitle>
-    <manvolnum>1</manvolnum>
-  </refmeta>
+	<refnamediv>
+		<refname>isutf8</refname> 
+		<refpurpose>check whether files are valid UTF-8</refpurpose>
+	</refnamediv>
 
-  <refnamediv>
-    <refname>isutf8</refname> 
-    <refpurpose>check whether files are valid UTF-8</refpurpose>
-  </refnamediv>
-
-  <refsynopsisdiv>
-    <cmdsynopsis>
-      <command>isutf8</command>
-      <arg><option>-hq</option></arg>
-      <arg><option>--help</option></arg>
-      <arg><option>--quiet</option></arg>
-      <group choice="opt">
-          <arg rep="repeat"><replaceable>file</replaceable></arg>
-      </group>
-    </cmdsynopsis>
-  </refsynopsisdiv>
-  
-  <refsect1>
-    <title>DESCRIPTION</title>
-    
-    <para><command>isutf8</command> checks whether files are
-    syntactically valid UTF-8. Input is either files named on the
-    command line, or the standard input. Notices about files with
-    invalid UTF-8 are printed to standard output.</para>
-    
-  </refsect1>
-  
-  <refsect1>
-    <title>OPTIONS</title>
-    
-    <variablelist>
-    
-        <varlistentry>
-            <term><option>-h</option></term>
-            <term><option>--help</option></term>
-            <listitem>
-                <para>Print out a help summary.</para>
-            </listitem>
-        </varlistentry>
-    
-        <varlistentry>
-            <term><option>-q</option></term>
-            <term><option>--quiet</option></term>
-            <listitem>
-                <para>Don't print messages telling which files are
-                invalid UTF-8, merely indicate it with the exit
-                status.</para>
-            </listitem>
-        </varlistentry>
-    
-    </variablelist>
-    
-  </refsect1>
-  
-  <refsect1>
-    <title>EXIT STATUS</title>
-    
-    <para>If the file is valid UTF-8, the exit status is zero. If the
-    file is not valid UTF-8, or there is some error, the exit status is
-    non-zero.</para>
-    
-  </refsect1>
-  
-  <refsect1>
-    <title>SEE ALSO</title>
-    
-    <para>
-        <citerefentry>
-            <refentrytitle>utf8</refentrytitle><manvolnum>7</manvolnum>
-        </citerefentry>
-    </para>
-    
-  </refsect1>
-
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>isutf8</command>
+			<arg><option>-hq</option></arg>
+			<arg><option>--help</option></arg>
+			<arg><option>--quiet</option></arg>
+			<group choice="opt">
+					<arg rep="repeat"><replaceable>file</replaceable></arg>
+			</group>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>DESCRIPTION</title>
+		
+		<para><command>isutf8</command> checks whether files are
+		syntactically valid UTF-8. Input is either files named on the
+		command line, or the standard input. Notices about files with
+		invalid UTF-8 are printed to standard output.</para>
+		
+	</refsect1>
+	
+	<refsect1>
+		<title>OPTIONS</title>
+		
+		<variablelist>
+		
+		<varlistentry>
+			<term><option>-h</option></term>
+			<term><option>--help</option></term>
+			<listitem>
+					<para>Print out a help summary.</para>
+			</listitem>
+		</varlistentry>
+		
+		<varlistentry>
+			<term><option>-q</option></term>
+			<term><option>--quiet</option></term>
+			<listitem>
+				<para>Don't print messages telling which files are
+				invalid UTF-8, merely indicate it with the exit
+				status.</para>
+			</listitem>
+		</varlistentry>
+		
+		</variablelist>
+		
+	</refsect1>
+	
+	<refsect1>
+		<title>EXIT STATUS</title>
+		
+		<para>If the file is valid UTF-8, the exit status is zero.
+			If the file is not valid UTF-8, or there is some
+			error, the exit status is non-zero.</para>
+		
+	</refsect1>
+	
+	<refsect1>
+		<title>SEE ALSO</title>
+		
+		<para>
+			<citerefentry>
+				<refentrytitle>utf8</refentrytitle><manvolnum>7</manvolnum>
+			</citerefentry>
+		</para>
+		
+	</refsect1>
 </refentry>

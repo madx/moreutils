@@ -5,15 +5,14 @@
 # Lars Wirzenius <liw@iki.fi>
 
 check() {
-    printf "$2" | ./isutf8 -q
-    ret=$?
-    if [ $ret != $1 ]
-    then
-        echo "Failure:"
-        echo "  input: $2"
-        echo "  expected: $1"
-        echo "  got: $ret"
-    fi
+	printf "$2" | ./isutf8 -q
+	ret=$?
+	if [ $ret != $1 ]; then
+		echo "Failure:"
+		echo "  input: $2"
+		echo "  expected: $1"
+		echo "  got: $ret"
+	fi
 }
 
 check 0 ''

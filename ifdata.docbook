@@ -26,240 +26,252 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 <refentry>
 
-  <refentryinfo>
-    <author>
-      <firstname>Joey</firstname>
-      <surname>Hess</surname>
-    </author>
-    <date>2006-03-07</date>
-  </refentryinfo>
+	<refentryinfo>
+		<author>
+			<firstname>Joey</firstname>
+			<surname>Hess</surname>
+		</author>
+		<date>2006-03-07</date>
+	</refentryinfo>
 
-  <refmeta>
-    <refentrytitle>ifdata</refentrytitle>
-    <manvolnum>1</manvolnum>
-  </refmeta>
+	<refmeta>
+		<refentrytitle>ifdata</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
 
-  <refnamediv>
-    <refname>ifdata</refname> 
-    <refpurpose>get network interface info without parsing ifconfig output</refpurpose>
-  </refnamediv>
+	<refnamediv>
+		<refname>ifdata</refname> 
+		<refpurpose>get network interface info without
+		parsing ifconfig output</refpurpose>
+	</refnamediv>
 
-  <refsynopsisdiv>
-    <cmdsynopsis>
-      <command>ifdata</command>
-      <arg>options</arg>
-      <arg><replaceable>iface</replaceable></arg>
-    </cmdsynopsis>
-  </refsynopsisdiv>
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>ifdata</command>
+			<arg>options</arg>
+			<arg><replaceable>iface</replaceable></arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
   
-  <refsect1>
-    <title>DESCRIPTION</title>
-    
-    <para><command>ifdata</command> can be used to check for the existence
-    of a network interface, or to get information abut the interface, such
-    as its IP address. Unlike <command>ifconfig</command> or <command>ip</command>,
-    <command>ifdata</command> has simple to parse output that is designed
-    to be easily used by a shell script.</para>
-    
-  </refsect1>
+	<refsect1>
+		<title>DESCRIPTION</title>
+	
+		<para>
+			<command>ifdata</command> can be used to check for
+			the existence of a network interface, or to get
+			information abut the interface, such as its IP
+			address. Unlike <command>ifconfig</command> or
+			<command>ip</command>, <command>ifdata</command>
+			has simple to parse output that is designed to be
+			easily used by a shell script.
+		</para>
+	
+	</refsect1>
   
-  <refsect1>
-    <title>OPTIONS</title>
-    
-    <variablelist>
-    
-        <varlistentry>
-            <term><option>-h</option></term>
-            <listitem>
-                <para>Print out a help summary.</para>
-            </listitem>
-        </varlistentry>
-    
-        <varlistentry>
-            <term><option>-e</option></term>
-            <listitem>
-                <para>Test to see if the interface exists. ifdata will exit
-		nonzero if the interface does not exist.</para>
-            </listitem>
-        </varlistentry>
-        
-	<varlistentry>
-            <term><option>-p</option></term>
-            <listitem>
-                <para>Prints out the whole configuration of the interface.</para>
-            </listitem>
-        </varlistentry>
+	<refsect1>
+		<title>OPTIONS</title>
 	
-	<varlistentry>
-            <term><option>-pe</option></term>
-            <listitem>
-                <para>Prints "yes" or "no" if the interface exists or not.</para>
-            </listitem>
-        </varlistentry>
-    
-	<varlistentry>
-            <term><option>-pa</option></term>
-            <listitem>
-                <para>Prints the IPv4 address of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<variablelist>
 	
-	<varlistentry>
-            <term><option>-pn</option></term>
-            <listitem>
-                <para>Prints the netmask of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-h</option></term>
+			<listitem>
+				<para>Print out a help summary.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-pN</option></term>
-            <listitem>
-                <para>Prints the network address of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-e</option></term>
+			<listitem>
+				<para>Test to see if the interface exists,
+					exit nonzero if it does not.</para>
+			</listitem>
+		</varlistentry>
+		
+		<varlistentry>
+			<term><option>-p</option></term>
+			<listitem>
+				<para>Prints out the whole configuration of
+					the interface.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-pb</option></term>
-            <listitem>
-                <para>Prints the broadcast address of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-pe</option></term>
+			<listitem>
+				<para>Prints "yes" or "no" if the interface
+					exists or not.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-pm</option></term>
-            <listitem>
-                <para>Prints the MTU of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-pa</option></term>
+			<listitem>
+				<para>Prints the IPv4 address of the
+					interface.</para>
+			</listitem>
+		</varlistentry>
+	
+		<varlistentry>
+			<term><option>-pn</option></term>
+			<listitem>
+				<para>Prints the netmask of the
+					interface.</para>
+			</listitem>
+		</varlistentry>
+	
+		<varlistentry>
+			<term><option>-pN</option></term>
+			<listitem>
+				<para>Prints the network address of the
+					interface.</para>
+			</listitem>
+		</varlistentry>
+	
+		<varlistentry>
+			<term><option>-pb</option></term>
+			<listitem>
+				<para>Prints the broadcast address of the
+					interface.</para>
+			</listitem>
+		</varlistentry>
+	
+		<varlistentry>
+			<term><option>-pm</option></term>
+			<listitem>
+				<para>Prints the MTU of the interface.</para>
+			</listitem>
+		</varlistentry>
 
-	<varlistentry>
-            <term><option>-pf</option></term>
-            <listitem>
-                <para>Prints the flags of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-pf</option></term>
+			<listitem>
+				<para>Prints the flags of the 
+					interface.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-si</option></term>
-            <listitem>
-                <para>Prints out all the input statistics of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-si</option></term>
+			<listitem>
+				<para>Prints out all the input statistics
+					of the interface.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sip</option></term>
-            <listitem>
-                <para>Prints the number of input packets.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sip</option></term>
+			<listitem>
+				<para>Prints the number of input packets.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sib</option></term>
-            <listitem>
-                <para>Prints the number of input bytes.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sib</option></term>
+			<listitem>
+				<para>Prints the number of input bytes.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sie</option></term>
-            <listitem>
-                <para>Prints the number of input errors.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sie</option></term>
+			<listitem>
+				<para>Prints the number of input errors.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sid</option></term>
-            <listitem>
-                <para>Prints the number of input drops.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sid</option></term>
+			<listitem>
+				<para>Prints the number of input drops.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sif</option></term>
-            <listitem>
-                <para>Prints the number of input fifo overruns.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sif</option></term>
+			<listitem>
+				<para>Prints the number of input fifo overruns.</para>
+			</listitem>
+		</varlistentry>
 
-	<varlistentry>
-            <term><option>-sic</option></term>
-            <listitem>
-                <para>Print the number of input compress.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sic</option></term>
+			<listitem>
+				<para>Print the number of input compress.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sim</option></term>
-            <listitem>
-                <para>Prints the number of input multicast.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sim</option></term>
+			<listitem>
+				<para>Prints the number of input multicast.</para>
+			</listitem>
+		</varlistentry>
 
-	<varlistentry>
-            <term><option>-so</option></term>
-            <listitem>
-                <para>Prints out all the output statistics of the interface.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-so</option></term>
+			<listitem>
+				<para>Prints out all the output statistics
+					of the interface.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sop</option></term>
-            <listitem>
-                <para>Prints the number of output packets.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sop</option></term>
+			<listitem>
+				<para>Prints the number of output packets.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sob</option></term>
-            <listitem>
-                <para>Prints the number of output bytes.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sob</option></term>
+			<listitem>
+				<para>Prints the number of output bytes.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-soe</option></term>
-            <listitem>
-                <para>Prints the number of output errors.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-soe</option></term>
+			<listitem>
+				<para>Prints the number of output errors.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sod</option></term>
-            <listitem>
-                <para>Prints the number of output drops.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sod</option></term>
+			<listitem>
+				<para>Prints the number of output drops.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-sof</option></term>
-            <listitem>
-                <para>Prints the number of output fifo overruns.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sof</option></term>
+			<listitem>
+				<para>Prints the number of output fifo overruns.</para>
+			</listitem>
+		</varlistentry>
 
-	<varlistentry>
-            <term><option>-sox</option></term>
-            <listitem>
-                <para>Print the number of output collisions.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-sox</option></term>
+			<listitem>
+				<para>Print the number of output collisions.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-soc</option></term>
-            <listitem>
-                <para>Prints the number of output carrier loss.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-soc</option></term>
+			<listitem>
+				<para>Prints the number of output carrier loss.</para>
+			</listitem>
+		</varlistentry>
 	
-	<varlistentry>
-            <term><option>-som</option></term>
-            <listitem>
-                <para>Prints the number of output multicast.</para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term><option>-som</option></term>
+			<listitem>
+				<para>Prints the number of output multicast.</para>
+			</listitem>
+		</varlistentry>
 
-    </variablelist>
-    
-  </refsect1>
-  
+	</variablelist>
+	</refsect1>
 </refentry>

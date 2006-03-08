@@ -2,7 +2,7 @@
 
 <!--
 
-Copyright ©  2006  Joey Hess
+Copyright ©	2006	Joey Hess
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -10,7 +10,7 @@ version 2 as published by the Free Software Foundation.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
 General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -26,39 +26,39 @@ USA
 
 <refentry>
 
-  <refentryinfo>
-    <author>
-      <firstname>Joey</firstname>
-      <surname>Hess</surname>
-    </author>
-    <date>2006-02-19</date>
-  </refentryinfo>
+	<refentryinfo>
+		<author>
+			<firstname>Joey</firstname>
+			<surname>Hess</surname>
+		</author>
+		<date>2006-02-19</date>
+	</refentryinfo>
 
-  <refmeta>
-    <refentrytitle>sponge</refentrytitle>
-    <manvolnum>1</manvolnum>
-  </refmeta>
+	<refmeta>
+		<refentrytitle>sponge</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
 
-  <refnamediv>
-    <refname>sponge</refname>
-    <refpurpose>soak up standard input and write to a file</refpurpose>
-  </refnamediv>
+	<refnamediv>
+		<refname>sponge</refname>
+		<refpurpose>soak up standard input and write to a file</refpurpose>
+	</refnamediv>
 
-  <refsynopsisdiv>
-    <cmdsynopsis>
-      <command>sed '...' file | grep '...' | sponge file</command>
-    </cmdsynopsis>
-  </refsynopsisdiv>
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>sed '...' file | grep '...' | sponge file</command>
+		</cmdsynopsis>
+	</refsynopsisdiv>
 
-  <refsect1>
-    <title>DESCRIPTION</title>
-    
-    <para><command>sponge</command> reads standard input and writes it
-    out to the specified file. Unlike a shell redirect, sponge soaks up
-    all its input before opening the output file. This allows for
-    constructing pipelines that read from and write to the same file.
-    </para>
+	<refsect1>
+		<title>DESCRIPTION</title>
+		
+		<para><command>sponge</command> reads standard input and
+			writes it out to the specified file. Unlike a shell
+			redirect, sponge soaks up all its input before
+			opening the output file. This allows for
+			constructing pipelines that read from and write to
+			the same file. </para>
 
-  </refsect1>
-
+	</refsect1>
 </refentry>

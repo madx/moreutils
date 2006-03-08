@@ -5,6 +5,7 @@ moreutils (0.5) UNRELEASED; urgency=low
   * Made ifdata support -h and print usage on unknown options.
   * Cleaned up ifdata's behavior when asked to print info for nonexistant
     devices. Still needs improvement.
+  * Indentation improvements.
 
  -- Joey Hess <joeyh@debian.org>  Tue,  7 Mar 2006 21:54:45 -0500
 

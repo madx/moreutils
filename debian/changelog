@@ -6,6 +6,7 @@ moreutils (0.5) UNRELEASED; urgency=low
   * Cleaned up ifdata's behavior when asked to print info for nonexistant
     devices. Still needs improvement.
   * Indentation improvements.
+  * README updates based on user feedback.
 
  -- Joey Hess <joeyh@debian.org>  Tue,  7 Mar 2006 21:54:45 -0500
 

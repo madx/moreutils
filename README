@@ -23,32 +23,38 @@ Your suggestions of additional tools to add to this collection are
 apprecitated. Here are some that are under consideration but have not yet
 been included, I also welcome feedback on which of these to include.
 
+_
+	Matt Taggart suggests that and(1) and not(1) be integrated into one
+	utility taking a page from test(1)/[. It would work like this:
+
+	_ file1 and file2
+	_ file1 not file2
+
+	Where any file can be "-" for stdin. Could also add "or", "xor",
+	etc to this. This makes it much clearer which file is on which side
+	of the boolean expression.
+
+	If it's called "_" that should probably be an alias for something
+	longer, such as lcombine. What exactly to call it is the unresolved
+	question -- is "_" something moreutils can justify taking for this?
+
 mime
 	determines the mime type of a file using the gnome mine database
 
 	(More useful than file(1) in many cases but would add a lot of
 	gnome libraries to the package's dependency chain.)
 
-ifcfg
-	find ip address etc easily without complex grepping in ifconfig
-	http://edgard.dyn.fdn.fr/developpements/ifcfg.shtml
-	(Tarball link 404 when last checked.)
-
 z
 	makes another program understand compressed files
 	ex: z zxgv file.bmp.gz
 
-	(Waiting for copyright from Chung-chieh Shan)
 	(Dare I take the "z" name?)
 
 tmp
 	puts stdin into a temp file and passes it to the specified program
 	ex: zcat file.bmp.gz | tmp zxgv
 
-	(Waiting for copyright from Chung-chieh Shan)
 add
 	adds up numbers from stdin
-
-	(Waiting for copyright from Chung-chieh Shan)
 
 -- Joey Hess <joey@kitenet.net>

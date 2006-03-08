@@ -20,4 +20,4 @@ Description: additional unix utilities
   - vipe: edit a pipe using your text editor
   - and: print lines that are present in one file and another
   - not: print lines that are present in one file but not another
-		
+  - ifdata: get network interface info without parsing ifconfig output	

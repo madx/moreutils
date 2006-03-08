@@ -1,3 +1,13 @@
+moreutils (0.5) UNRELEASED; urgency=low
+
+  * Added ifdata, by Benjamin BAYART (originally called ifcfg).
+  * Made ifdata -Wall clean.
+  * Made ifdata support -h and print usage on unknown options.
+  * Cleaned up ifdata's behavior when asked to print info for nonexistant
+    devices. Still needs improvement.
+
+ -- Joey Hess <joeyh@debian.org>  Tue,  7 Mar 2006 21:54:45 -0500
+
 moreutils (0.4) unstable; urgency=low
 
   * Added versions of and(1) and not(1) that support arbitrary numbers of

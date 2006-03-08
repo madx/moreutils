@@ -54,7 +54,8 @@ they accur in file1 (or file2 for the two "or" operations).
 
 Note that this program can be installed as "_" to allow for the syntactic
 sugar shown in the latter half of the synopsis (similar to the test/[
-command). It is not currently installed as "_" by default.
+command). It is not currently installed as "_" by default, but you can
+alias it to that if you like.
 
 =head1 AUTHOR
 

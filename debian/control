@@ -18,6 +18,5 @@ Description: additional unix utilities
   - ts: timestamp standard input
   - vidir: edit a directory in your text editor
   - vipe: edit a pipe using your text editor
-  - and: print lines that are present in one file and another
-  - not: print lines that are present in one file but not another
+  - combine: combine the lines in two files using boolean operations
   - ifdata: get network interface info without parsing ifconfig output	

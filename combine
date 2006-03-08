@@ -1,0 +1,137 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+combine - combine the lines in two files using boolean operations
+
+=head1 SYNOPSIS
+
+combine file1 and file2
+
+combine file1 not file2
+
+combine file1 or file2
+
+combine file1 xor file2
+
+_ file1 and file2 _
+
+_ file1 not file2 _
+
+_ file1 or file2 _
+
+_ file1 xor file2 _
+
+=head1 DESCRIPTION
+
+B<combine> conbines the lines in two files. Depending on the boolean
+operation specified, the contents will be combined in different ways:
+
+=over 4
+
+=item and
+
+Outputs lines that are common to both files.
+
+=item not
+
+Outputs lines that are in file1 but not in file2.
+
+=item or
+
+Outputs lines that are in file1 or file2.
+
+=item xor
+
+Outputs lines that are in either file1 or file2, but not in both files.
+
+=back
+
+"-" can be specified for either file to read stdin for that file.
+
+The input files need not be sorted, and the lines are output in the order
+they accur in file1 (or file2 for the two "or" operations).
+
+Note that this program can be installed as "_" to allow for the syntactic
+sugar shown in the latter half of the synopsis (similar to the test/[
+command). It is not currently installed as "_" by default.
+
+=head1 AUTHOR
+
+Copyright 2006 by Joey Hess <joey@kitenet.net>
+
+Licensed under the GNU GPL.
+
+=cut
+
+use warnings;
+use strict;
+
+sub filemap {
+	my $file=shift;
+	my $sub=shift;
+
+	open (IN, $file) || die "$file: $!\n";
+	while (<IN>) {
+		chomp;
+		$sub->();
+	}
+	close IN;
+}
+
+sub hashify {
+	my $file=shift;
+
+	my %seen;
+	filemap $file, sub { $seen{$_}++ };
+	return \%seen;
+}
+
+sub compare_or {
+	my ($file1, $file2) = @_;
+
+	my $seen;
+	filemap $file1, sub { print "$_\n"; $seen->{$_}++ };
+	filemap $file2, sub { print "$_\n" unless $seen->{$_} };
+}
+
+sub compare_xor {
+	my ($file1, $file2) = @_;
+	
+	compare_not($file1, $file2);
+	compare_not($file2, $file1);
+}
+
+sub compare_not {
+	my ($file1, $file2) = @_;
+
+	my $seen=hashify($file2);
+	filemap $file1, sub { print "$_\n" unless $seen->{$_} };
+}
+
+sub compare_and {
+	my ($file1, $file2) = @_;
+
+	my $seen=hashify($file2);
+	filemap $file1, sub { print "$_\n" if $seen->{$_} };
+}
+
+if (@ARGV >= 4 && $ARGV[3] eq "_") {
+	delete $ARGV[3];
+}
+
+if (@ARGV != 3) {
+	die "usage: combine file1 OP file2\n";
+}
+
+my $file1=shift;
+my $op=shift;
+my $file2=shift;
+
+if ($::{"compare_$op"}) {
+	no strict 'refs';
+	"compare_$op"->($file1, $file2);
+}
+else {
+	die "unknown operation, $op\n";
+}

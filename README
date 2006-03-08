@@ -11,10 +11,8 @@ vidir
 	edit a directory in your text editor
 vipe
 	edit a pipe using your text editor
-and
-	print lines that are present in one file and another
-not
-	print lines that are present in one file but not another
+combine
+	combine the lines in two files using boolean operations
 ifdata
 	get network interface info without parsing ifconfig output
 
@@ -22,21 +20,6 @@ ifdata
 Your suggestions of additional tools to add to this collection are
 apprecitated. Here are some that are under consideration but have not yet
 been included, I also welcome feedback on which of these to include.
-
-_
-	Matt Taggart suggests that and(1) and not(1) be integrated into one
-	utility taking a page from test(1)/[. It would work like this:
-
-	_ file1 and file2
-	_ file1 not file2
-
-	Where any file can be "-" for stdin. Could also add "or", "xor",
-	etc to this. This makes it much clearer which file is on which side
-	of the boolean expression.
-
-	If it's called "_" that should probably be an alias for something
-	longer, such as lcombine. What exactly to call it is the unresolved
-	question -- is "_" something moreutils can justify taking for this?
 
 mime
 	determines the mime type of a file using the gnome mine database

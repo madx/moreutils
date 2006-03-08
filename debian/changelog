@@ -1,4 +1,4 @@
-moreutils (0.5) UNRELEASED; urgency=low
+moreutils (0.5) unstable; urgency=low
 
   * Added ifdata, by Benjamin BAYART (originally called ifcfg).
   * Made ifdata -Wall clean.
@@ -6,9 +6,9 @@ moreutils (0.5) UNRELEASED; urgency=low
   * Cleaned up ifdata's behavior when asked to print info for nonexistant
     devices. Still needs improvement.
   * Indentation improvements.
-  * README updates based on user feedback.
+  * Replaced and(1) and not(1) by combine, based on an idea by Matt Taggart.
 
- -- Joey Hess <joeyh@debian.org>  Tue,  7 Mar 2006 21:54:45 -0500
+ -- Joey Hess <joeyh@debian.org>  Tue,  7 Mar 2006 23:02:14 -0500
 
 moreutils (0.4) unstable; urgency=low
 

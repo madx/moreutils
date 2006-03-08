@@ -1,6 +1,6 @@
 BINS=isutf8 sponge ifdata
-PERLSCRIPTS=vidir vipe ts and not
-MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 and.1 not.1 ifdata.1
+PERLSCRIPTS=vidir vipe ts combine
+MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1
 CFLAGS=-O2 -g -Wall
 
 all: $(BINS) $(MANS)

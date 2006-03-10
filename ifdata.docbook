@@ -197,7 +197,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		<varlistentry>
 			<term><option>-sic</option></term>
 			<listitem>
-				<para>Print the number of input compress.</para>
+				<para>Print the number of input compresed.</para>
 			</listitem>
 		</varlistentry>
 	

@@ -1,10 +1,29 @@
-This package was put together and debianized by Joey Hess
-<joeyh@debian.org>, using sources from all over.
+#!/usr/bin/perl
 
-isutf8 is Copyright (C) 2005 by Lars Wirzenius, under the terms of
-the GPL.
+=head1 NAME
 
-sponge has this copyright:
+sponge - soak up standard input and write to a file
+
+=head1 SYNOPSIS
+
+sed '...' file | grep '...' | sponge file
+
+=head1 DESCRIPTION
+
+sponge reads standard input and writes it out to the specified file.
+Unlike a shell redirect, sponge soaks up all its input before opening the
+output file. This allows for constructing pipelines that read from and write
+to the same file.
+
+=head1 AUTHOR
+
+Colin Watson <cjwatson@debian.org>
+
+=cut
+
+use warnings;
+use strict;
+
 # Copyright (C) 2003 Colin Watson <cjwatson@debian.org>.
 #
 # Permission is hereby granted, free of charge, to any person
@@ -26,10 +45,10 @@ sponge has this copyright:
 # CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-ifdata is Copyright (C) 2002 by Benjamin BAYART, under the terms of
-the GPL. It was originally called ifcfg and has a web page here:
-http://edgard.dyn.fdn.fr/developpements/ifcfg.shtml
-
-Everything else is copyright 2006 by Joey Hess, under the terms of GPL.
-The full text of the GNU GPL can be found in /usr/share/common-licenses/GPL
-on Debian systems.
+my $file=shift || die "usage: sponge file\n";
+binmode STDIN;
+undef $/;
+my $input = <STDIN>;
+open OUT, ">$file" or die "couldn't open $file: $!";
+print OUT $input or die "couldn't write to $file: $!";
+close OUT or die "couldn't close $file: $!";

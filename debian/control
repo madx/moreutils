@@ -17,6 +17,6 @@ Description: additional unix utilities
   - sponge: soak up standard input and write to a file
   - ts: timestamp standard input
   - vidir: edit a directory in your text editor
-  - vipe: edit a pipe using your text editor
+  - vipe: insert a text editor into a pipe
   - combine: combine the lines in two files using boolean operations
   - ifdata: get network interface info without parsing ifconfig output	

@@ -1,3 +1,10 @@
+moreutils (0.6) unstable; urgency=low
+
+  * Revert to perl sponge since the C one corrupts larger files.
+    Hopefully temporary..
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 10 Mar 2006 15:33:43 -0500
+
 moreutils (0.5) unstable; urgency=low
 
   * Added ifdata, by Benjamin BAYART (originally called ifcfg).

@@ -10,7 +10,7 @@ ts
 vidir
 	edit a directory in your text editor
 vipe
-	edit a pipe using your text editor
+	insert a text editor into a pipe
 combine
 	combine the lines in two files using boolean operations
 ifdata
@@ -39,5 +39,19 @@ tmp
 
 add
 	adds up numbers from stdin
+
+todist
+	inputs a list of numbers and outputs their distribution, a value
+	and how many time it occurs in the input
+	http://baruch.ev-en.org/files/todist
+
+	Not a general enough unix tool, probably?
+
+tostats
+	inputs a list of numbers and outputs some statistics about the
+	numbers: average, stddev, min, max, mid point
+	http://baruch.ev-en.org/files/todist
+	
+	Not a general enough unix tool, probably?
 
 -- Joey Hess <joey@kitenet.net>

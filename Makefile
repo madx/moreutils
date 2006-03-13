@@ -1,5 +1,5 @@
-BINS=isutf8 sponge ifdata
-PERLSCRIPTS=vidir vipe ts combine
+BINS=isutf8 ifdata
+PERLSCRIPTS=vidir vipe ts combine sponge
 MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1
 CFLAGS=-O2 -g -Wall
 
@@ -21,9 +21,6 @@ check: isutf8
 
 isutf8.1: isutf8.docbook
 	docbook2x-man isutf8.docbook
-
-sponge.1: sponge.docbook
-	docbook2x-man sponge.docbook
 
 ifdata.1: ifdata.docbook
 	docbook2x-man ifdata.docbook

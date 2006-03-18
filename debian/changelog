@@ -1,8 +1,10 @@
-moreutils (0.7) UNRELEASED; urgency=low
+moreutils (0.7) unstable; urgency=low
 
   * Add pee (pipe tee) contributed by Miek Gieben.
+  * ifdata: Patch from KELEMEN Peter to add support for printing hardware
+    interface. Closes: #357646
 
- -- Joey Hess <joeyh@debian.org>  Tue, 14 Mar 2006 18:07:46 -0500
+ -- Joey Hess <joeyh@debian.org>  Sat, 18 Mar 2006 14:17:08 -0500
 
 moreutils (0.6) unstable; urgency=low
 

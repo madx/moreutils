@@ -41,6 +41,7 @@
 #define DO_SOUTCARRIER 25
 #define DO_SOUTMULTICAST 26
 #define DO_PNETWORK 27
+#define DO_PHWADDRESS 28
 
 struct if_stat {
 	unsigned long long int in_packets;
@@ -136,6 +137,20 @@ void if_flags(char *iface) {
 	PRINT_IF(IFF_AUTOMEDIA,"Auto-detect\n");
 	PRINT_IF(IFF_DYNAMIC,"Dynaddr\n");
 	PRINT_IF(0xffff0000,"Unknown-flags");
+}
+
+void if_hwaddr(char *iface) {
+	unsigned char *hwaddr;
+
+	PREPARE_SOCK(iface);
+	CALL_IOCTL(SIOCGIFHWADDR);
+	if (res < 0) {
+		CALL_ERROR();
+	}
+	hwaddr = (unsigned char *)req.ifr_hwaddr.sa_data;
+	printf("%02X:%02X:%02X:%02X:%02X:%02X",
+		hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]);
+	END_SOCK;
 }
 
 struct sockaddr *if_addr(char *iface) {
@@ -324,6 +339,7 @@ void usage(char *name) {
 	fprintf(stderr,"    -e   Says if iface exists or not\n"
 		       "    -p   Print out the whole config of iface\n"
 		       "    -pe  Print out yes or no according to existence\n"
+		       "    -ph  Print out the hardware address\n"
 		       "    -pa  Print out the address\n"
 		       "    -pn  Print netmask\n"
 		       "    -pN  Print network address\n"
@@ -378,6 +394,9 @@ void please_do(int ndo, int *todo, char *ifname) {
 				} else {
 					printf("no");
 				}
+				break;
+			case DO_PHWADDRESS:
+				if_hwaddr(ifname);
 				break;
 			case DO_PADDRESS:
 				sadr=if_addr(ifname);
@@ -531,6 +550,8 @@ int main(int argc, char *argv[]) {
 			add_do(&ndo,&todo,DO_EXISTS);
 		} else if (!strcmp(argv[narg],"-p")) {
 			add_do(&ndo,&todo,DO_PALL);
+		} else if (!strcmp(argv[narg],"-ph")) {
+			add_do(&ndo,&todo,DO_PHWADDRESS);
 		} else if (!strcmp(argv[narg],"-pa")) {
 			add_do(&ndo,&todo,DO_PADDRESS);
 		} else if (!strcmp(argv[narg],"-pn")) {

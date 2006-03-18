@@ -105,6 +105,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		</varlistentry>
 	
 		<varlistentry>
+			<term><option>-ph</option></term>
+			<listitem>
+				<para>Prints the hardware address of the
+					interface.</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
 			<term><option>-pa</option></term>
 			<listitem>
 				<para>Prints the IPv4 address of the

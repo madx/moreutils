@@ -59,8 +59,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		<title>DESCRIPTION</title>
 		
 		<para><command>pee</command> is like <command>tee</command>
-		but for pipes. Each command is run and standard input is
-		copied into it, as well as being sent to stdout.</para>
+		but for pipes. Each command is run and fed a copy of the
+		stadard input. The output of all commands is sent to
+		stdout.</para>
 		
 	</refsect1>
 	

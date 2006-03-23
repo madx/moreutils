@@ -191,7 +191,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		<varlistentry>
 			<term><option>-sid</option></term>
 			<listitem>
-				<para>Prints the number of input drops.</para>
+				<para>Prints the number of dropped input
+					packets.</para>
 			</listitem>
 		</varlistentry>
 	
@@ -205,14 +206,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		<varlistentry>
 			<term><option>-sic</option></term>
 			<listitem>
-				<para>Print the number of input compresed.</para>
+				<para>Print the number of compressed input
+					packets.</para>
 			</listitem>
 		</varlistentry>
 	
 		<varlistentry>
 			<term><option>-sim</option></term>
 			<listitem>
-				<para>Prints the number of input multicast.</para>
+				<para>Prints the number of input
+					multicase packets.</para>
 			</listitem>
 		</varlistentry>
 
@@ -248,7 +251,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		<varlistentry>
 			<term><option>-sod</option></term>
 			<listitem>
-				<para>Prints the number of output drops.</para>
+				<para>Prints the number of dropped
+					output packets.</para>
 			</listitem>
 		</varlistentry>
 	
@@ -269,14 +273,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		<varlistentry>
 			<term><option>-soc</option></term>
 			<listitem>
-				<para>Prints the number of output carrier loss.</para>
+				<para>Prints the number of output carrier
+					losses.</para>
 			</listitem>
 		</varlistentry>
 	
 		<varlistentry>
 			<term><option>-som</option></term>
 			<listitem>
-				<para>Prints the number of output multicast.</para>
+				<para>Prints the number of output multicast
+					packets.</para>
 			</listitem>
 		</varlistentry>
 

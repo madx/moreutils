@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+Copyright ©	2006	Joey Hess
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+USA
+
+-->
+
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.4//EN"
+"file:///usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd"
+[]>
+
+<refentry>
+
+	<refentryinfo>
+		<author>
+			<firstname>Joey</firstname>
+			<surname>Hess</surname>
+		</author>
+		<date>2006-02-19</date>
+	</refentryinfo>
+
+	<refmeta>
+		<refentrytitle>sponge</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+
+	<refnamediv>
+		<refname>sponge</refname>
+		<refpurpose>soak up standard input and write to a file</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>sed '...' file | grep '...' | sponge file</command>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+
+	<refsect1>
+		<title>DESCRIPTION</title>
+		
+		<para><command>sponge</command> reads standard input and
+			writes it out to the specified file. Unlike a shell
+			redirect, sponge soaks up all its input before
+			opening the output file. This allows for
+			constructing pipelines that read from and write to
+			the same file. </para>
+
+	</refsect1>
+</refentry>

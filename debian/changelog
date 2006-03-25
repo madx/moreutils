@@ -1,11 +1,11 @@
-moreutils (0.8) UNRELEASED; urgency=low
+moreutils (0.8) unstable; urgency=low
 
   * Back to Mithandir's C sponge, now fixed.
   * tss.1, ifdata.1: typo fix. Closes: #358557, #358556
   * ifdata: patch from its author to make it behave properly on big endian
     systems. Closes: #358860
 
- -- Joey Hess <joeyh@debian.org>  Thu, 23 Mar 2006 03:45:30 -0500
+ -- Joey Hess <joeyh@debian.org>  Fri, 24 Mar 2006 20:52:21 -0500
 
 moreutils (0.7) unstable; urgency=low
 

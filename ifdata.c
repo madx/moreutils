@@ -275,9 +275,15 @@ struct if_stat *get_stats(char *iface) {
 	int state=START;
 	int len;
 	struct if_stat *res=malloc(sizeof(struct if_stat));
+
+	if (!res) {
+		perror("malloc");
+		return NULL;
+	}
+	
 	fd=open("/proc/net/dev",O_RDONLY);
 	if (fd==-1) {
-		perror("open");
+		perror("open(\"/proc/net/dev\")");
 		return NULL;
 	}
 	while ((len=read(fd,buffer,4096))) {
@@ -442,39 +448,48 @@ void please_do(int ndo, int *todo, char *ifname) {
 				break;
 			case DO_SINPACKETS:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_packets);
+				if (stats)
+				  printf("%llu",stats->in_packets);
 				break;
 			case DO_SINBYTES:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_bytes);
+				if (stats)
+				  printf("%llu",stats->in_bytes);
 				break;
 			case DO_SINERRORS:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_errors);
+				if (stats)
+				  printf("%llu",stats->in_errors);
 				break;
 			case DO_SINDROPS:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_drops);
+				if (stats)
+				  printf("%llu",stats->in_drops);
 				break;
 			case DO_SINFIFO:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_fifo);
+				if (stats)
+				  printf("%llu",stats->in_fifo);
 				break;
 			case DO_SINFRAME:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_frame);
+				if (stats)
+				  printf("%llu",stats->in_frame);
 				break;
 			case DO_SINCOMPRESSES:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_compress);
+				if (stats)
+				  printf("%llu",stats->in_compress);
 				break;
 			case DO_SINMULTICAST:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->in_multicast);
+				if (stats)
+				  printf("%llu",stats->in_multicast);
 				break;
 			case DO_SINALL:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu %llu %llu %llu %llu %llu %llu %llu",
+				if (stats)
+				  printf("%llu %llu %llu %llu %llu %llu %llu %llu",
 						stats->in_packets,
 						stats->in_bytes,
 						stats->in_errors,
@@ -486,39 +501,48 @@ void please_do(int ndo, int *todo, char *ifname) {
 				break;
 			case DO_SOUTBYTES:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_bytes);
+				if (stats)
+				  printf("%llu",stats->out_bytes);
 				break;
 			case DO_SOUTPACKETS:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_packets);
+				if (stats)
+				  printf("%llu",stats->out_packets);
 				break;
 			case DO_SOUTERRORS:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_errors);
+				if (stats)
+				  printf("%llu",stats->out_errors);
 				break;
 			case DO_SOUTDROPS:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_drops);
+				if (stats)
+				  printf("%llu",stats->out_drops);
 				break;
 			case DO_SOUTFIFO:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_fifo);
+				if (stats)
+				  printf("%llu",stats->out_fifo);
 				break;
 			case DO_SOUTCOLLS:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_colls);
+				if (stats)
+				  printf("%llu",stats->out_colls);
 				break;
 			case DO_SOUTCARRIER:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_carrier);
+				if (stats)
+				  printf("%llu",stats->out_carrier);
 				break;
 			case DO_SOUTMULTICAST:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu",stats->out_multicast);
+				if (stats)
+				  printf("%llu",stats->out_multicast);
 				break;
 			case DO_SOUTALL:
 				if (!stats) stats=get_stats(ifname);
-				printf("%llu %llu %llu %llu %llu %llu %llu %llu",
+				if (stats)
+				  printf("%llu %llu %llu %llu %llu %llu %llu %llu",
 						stats->out_packets,
 						stats->out_bytes,
 						stats->out_errors,

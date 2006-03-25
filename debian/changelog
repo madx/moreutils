@@ -1,3 +1,10 @@
+moreutils (0.9) UNRELEASED; urgency=low
+
+  * ifdata: robustness patch from Adam Lackorzynski, in particular deal with
+    /proc not mounted. Closes: #358930
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 25 Mar 2006 12:51:26 -0500
+
 moreutils (0.8) unstable; urgency=low
 
   * Back to Mithandir's C sponge, now fixed.

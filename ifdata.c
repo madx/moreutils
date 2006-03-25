@@ -64,11 +64,19 @@ struct if_stat {
 
 
 void print_quad_ipv4(unsigned int i) {
+#if      __BYTE_ORDER == __LITTLE_ENDIAN
 	printf("%d.%d.%d.%d",
 			i&0xff,
 			(i&0xff00)>>8,
 			(i&0xff0000)>>16,
 			(i&0xff000000)>>24);
+#else
+	printf("%d.%d.%d.%d",
+			(i&0xff000000)>>24,
+			(i&0xff0000)>>16,
+			(i&0xff00)>>8,
+			i&0xff);
+#endif
 }
 
 void print_quad_ipv6(uint16_t *a) {

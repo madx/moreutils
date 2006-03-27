@@ -1,4 +1,4 @@
-moreutils (0.9) UNRELEASED; urgency=low
+moreutils (0.9) unstable; urgency=low
 
   * ifdata: robustness patch from Adam Lackorzynski, in particular deal with
     /proc not mounted. Closes: #358930
@@ -7,7 +7,7 @@ moreutils (0.9) UNRELEASED; urgency=low
     Seems best for it not to output anything to stdout on its on at all.
     Closes: #359041
 
- -- Joey Hess <joeyh@debian.org>  Sat, 25 Mar 2006 12:51:26 -0500
+ -- Joey Hess <joeyh@debian.org>  Mon, 27 Mar 2006 13:45:45 -0500
 
 moreutils (0.8) unstable; urgency=low
 

@@ -215,7 +215,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 			<term><option>-sim</option></term>
 			<listitem>
 				<para>Prints the number of input
-					multicase packets.</para>
+					multicast packets.</para>
 			</listitem>
 		</varlistentry>
 

@@ -2,6 +2,10 @@ moreutils (0.9) UNRELEASED; urgency=low
 
   * ifdata: robustness patch from Adam Lackorzynski, in particular deal with
     /proc not mounted. Closes: #358930
+  * Typo fixes. Closes: #359039, #359040
+  * pee: don't send a copy of every line sent to every command to stdout.
+    Seems best for it not to output anything to stdout on its on at all.
+    Closes: #359041
 
  -- Joey Hess <joeyh@debian.org>  Sat, 25 Mar 2006 12:51:26 -0500
 

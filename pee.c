@@ -46,7 +46,6 @@ main(int argc, char **argv) {
 				close_pipes(pipes, i);
 				exit(EXIT_FAILURE);
 			}
-			fwrite(buf, sizeof(char), r, stdout);
 		}
 	}
 	close_pipes(pipes, argc);

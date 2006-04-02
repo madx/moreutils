@@ -17,7 +17,8 @@ ifdata
 	get network interface info without parsing ifconfig output
 pee
 	tee standard input to pipes
-
+zrun
+	automatically uncompress arguments to command
 
 Your suggestions of additional tools to add to this collection are
 apprecitated. Here are some that are under consideration but have not yet
@@ -28,12 +29,6 @@ mime
 
 	(More useful than file(1) in many cases but would add a lot of
 	gnome libraries to the package's dependency chain.)
-
-z
-	makes another program understand compressed files
-	ex: z zxgv file.bmp.gz
-
-	(Dare I take the "z" name?)
 
 tmp
 	puts stdin into a temp file and passes it to the specified program

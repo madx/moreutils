@@ -34,5 +34,9 @@ binary-arch: build
 	dh_md5sums
 	dh_builddeb
 
+# Not intended for use by anyone except the author.
+announcedir:
+	@echo ${HOME}/src/joeywiki/code/moreutils/news
+
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary

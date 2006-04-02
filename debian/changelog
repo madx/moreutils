@@ -1,3 +1,14 @@
+moreutils (0.10) UNRELEASED; urgency=low
+
+  * ifdata: patch from Adam Lackorzynski to translate French error messages
+    to English and to convert some #defines to enums.
+  * ifdata: patch from Adam Lackorzynski to avoid printing info for
+    bogus interface. Closes: #360433
+  * Add zrun, contributed by Chung-chieh Shan (you might prefer to alias it to
+    "z").
+
+ -- Joey Hess <joeyh@debian.org>  Sun,  2 Apr 2006 16:15:35 -0400
+
 moreutils (0.9) unstable; urgency=low
 
   * ifdata: robustness patch from Adam Lackorzynski, in particular deal with

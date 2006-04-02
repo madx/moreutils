@@ -12,36 +12,37 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
-//#include <linux/socket.h>
 
-#define DO_EXISTS 1
-#define DO_PEXISTS 2
-#define DO_PADDRESS 3
-#define DO_PMASK 4
-#define DO_PMTU 5
-#define DO_PCAST 6
-#define DO_PALL 7
-#define DO_PFLAGS 8
-#define DO_SINPACKETS 9
-#define DO_SINBYTES 10
-#define DO_SINERRORS 11
-#define DO_SINDROPS 12
-#define DO_SINALL 13
-#define DO_SINFIFO 14
-#define DO_SINFRAME 15
-#define DO_SINCOMPRESSES 16
-#define DO_SINMULTICAST 17
-#define DO_SOUTALL 18
-#define DO_SOUTBYTES 19
-#define DO_SOUTPACKETS 20
-#define DO_SOUTERRORS 21
-#define DO_SOUTDROPS 22
-#define DO_SOUTFIFO 23 
-#define DO_SOUTCOLLS 24 
-#define DO_SOUTCARRIER 25
-#define DO_SOUTMULTICAST 26
-#define DO_PNETWORK 27
-#define DO_PHWADDRESS 28
+enum {
+  DO_EXISTS = 1,
+  DO_PEXISTS,
+  DO_PADDRESS,
+  DO_PMASK,
+  DO_PMTU,
+  DO_PCAST,
+  DO_PALL,
+  DO_PFLAGS,
+  DO_SINPACKETS,
+  DO_SINBYTES,
+  DO_SINERRORS,
+  DO_SINDROPS,
+  DO_SINALL,
+  DO_SINFIFO,
+  DO_SINFRAME,
+  DO_SINCOMPRESSES,
+  DO_SINMULTICAST,
+  DO_SOUTALL,
+  DO_SOUTBYTES,
+  DO_SOUTPACKETS,
+  DO_SOUTERRORS,
+  DO_SOUTDROPS,
+  DO_SOUTFIFO,
+  DO_SOUTCOLLS,
+  DO_SOUTCARRIER,
+  DO_SOUTMULTICAST,
+  DO_PNETWORK,
+  DO_PHWADDRESS,
+};
 
 struct if_stat {
 	unsigned long long int in_packets;
@@ -152,9 +153,7 @@ void if_hwaddr(char *iface) {
 
 	PREPARE_SOCK(iface);
 	CALL_IOCTL(SIOCGIFHWADDR);
-	if (res < 0) {
-		CALL_ERROR();
-	}
+	CALL_ERROR(return);
 	hwaddr = (unsigned char *)req.ifr_hwaddr.sa_data;
 	printf("%02X:%02X:%02X:%02X:%02X:%02X",
 		hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]);
@@ -211,42 +210,29 @@ int if_mtu(char *iface) {
 	return req.ifr_mtu;
 }
 
-#define START 1
-#define SKIP_LINE 2
-#define START_LINE 3
-#define START_IFNAME 4
-#define IFACE_FOUND 5
-#define RX_BYTES 6
-#define WAIT_RX_PACKETS 7
-#define RX_PACKETS 8
-#define WAIT_RX_ERRORS 9
-#define RX_ERRORS 10
-#define WAIT_RX_DROPS 11
-#define RX_DROPS 12
-#define WAIT_RX_FIFO 13
-#define RX_FIFO 14
-#define WAIT_RX_FRAME 15
-#define RX_FRAME 16
-#define WAIT_RX_COMPRESS 17
-#define RX_COMPRESS 18
-#define WAIT_RX_MULTICAST 19
-#define RX_MULTICAST 20
-#define WAIT_TX_BYTES 21
-#define TX_BYTES 22
-#define WAIT_TX_PACKETS 23
-#define TX_PACKETS 24
-#define WAIT_TX_ERRORS 25
-#define TX_ERRORS 26
-#define WAIT_TX_DROPS 27
-#define TX_DROPS 28
-#define WAIT_TX_FIFO 29
-#define TX_FIFO 30
-#define WAIT_TX_COLLS 31
-#define TX_COLLS 32
-#define WAIT_TX_CARRIER 33
-#define TX_CARRIER 34
-#define WAIT_TX_MULTICAST 35
-#define TX_MULTICAST 36
+enum {
+  START = 1,
+  SKIP_LINE,
+  START_LINE,
+  START_IFNAME,
+  IFACE_FOUND,
+  RX_BYTES,
+  WAIT_RX_PACKETS,   RX_PACKETS,
+  WAIT_RX_ERRORS,    RX_ERRORS,
+  WAIT_RX_DROPS,     RX_DROPS,
+  WAIT_RX_FIFO,      RX_FIFO,
+  WAIT_RX_FRAME,     RX_FRAME,
+  WAIT_RX_COMPRESS,  RX_COMPRESS,
+  WAIT_RX_MULTICAST, RX_MULTICAST,
+  WAIT_TX_BYTES,     TX_BYTES,
+  WAIT_TX_PACKETS,   TX_PACKETS,
+  WAIT_TX_ERRORS,    TX_ERRORS,
+  WAIT_TX_DROPS,     TX_DROPS,
+  WAIT_TX_FIFO,      TX_FIFO,
+  WAIT_TX_COLLS,     TX_COLLS,
+  WAIT_TX_CARRIER,   TX_CARRIER,
+  WAIT_TX_MULTICAST, TX_MULTICAST,
+};
 
 #define FIRST_DIGIT(val,digit) do {val=digit-'0'; } while(0)
 #define NEXT_DIGIT(val,digit) do {val*=10; val+=digit-'0'; } while(0)
@@ -340,7 +326,7 @@ struct if_stat *get_stats(char *iface) {
 				READ_INT(TX_CARRIER,res->out_carrier,WAIT_TX_MULTICAST);
 				READ_INT(TX_MULTICAST,res->out_carrier,SKIP_LINE);
 				default:
-					fprintf(stderr,"Mon totomate est po bon!\n");
+					fprintf(stderr,"Internal state machine error!\n");
 					break;
 			}
 		}
@@ -392,7 +378,7 @@ void please_do(int ndo, int *todo, char *ifname) {
 	struct sockaddr *sadr;
 	struct if_stat *stats=NULL;
 	if (!ndo) return;
-//	printf("J'ai %d actions a réaliser\n",ndo);
+//	printf("I have %d items in my queue.\n",ndo);
 	for (i=0; i<ndo; i++) {
 		switch (todo[i]) {
 			case DO_EXISTS:
@@ -553,7 +539,7 @@ void please_do(int ndo, int *todo, char *ifname) {
 						stats->out_multicast);
 				break;
 			default:
-				printf("Je comprends pas ce que je dois faire: %d\n",todo[i]);
+				printf("Unknown command: %d\n",todo[i]);
 				break;
 		}
 		printf("\n");
@@ -649,7 +635,7 @@ int main(int argc, char *argv[]) {
 		usage(me);
 		return 1;
 	}
-//	printf("Je travaille sur l'interface %s\n",ifname);
+//	printf("Interface %s\n",ifname);
 	please_do(ndo,todo,ifname);
 	return 0;
 }

@@ -1,0 +1,82 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+zrun - automatically uncompress arguments to command
+
+=head1 SYNOPSIS
+
+zrun command file.gz [...]
+
+=head1 DESCRIPTION
+
+Prefixing a shell command with "zrun" causes any compressed files that are
+arguments of the command to be transparently uncompressed to temp files
+(not pipes) and the uncompressed files fed to the command.
+
+This is a quick way to run a command that does not itself support
+compressed files, without manually uncompressing the files.
+
+=head1 BUGS
+
+Modifications to the uncompressed temporary file are not fed back into the
+input file, so using this as a quick way to make an editor support
+compressed files won't work.
+
+=head1 AUTHOR
+
+Copyright 2006 by Chung-chieh Shan <ccshan@post.harvard.edu>
+
+=cut
+
+use warnings;
+use strict;
+use IO::Handle;
+use File::Temp qw{tempfile};
+
+my $program = shift;
+
+my @argument;
+my %child;
+foreach my $argument (@ARGV) {
+	if ($argument =~ m{^(.*/)?([^/]*)\.(gz|Z|bz2)$}s) {
+		my $suffix = "-$2";
+		my @preprocess = $3 eq "bz2" ? qw(bzip2 -d -c) : qw(gzip -d -c);
+
+		my ($fh, $tmpname) = tempfile(SUFFIX => $suffix, UNLINK => 1)
+			or die "zrun: cannot create temporary file: $!\n";
+
+		if (my $child = fork) {
+			$child{$child} = $argument;
+			$argument = $tmpname;
+		}
+		elsif (defined $child) {
+			STDOUT->fdopen($fh, "w");
+			exec @preprocess, $argument;
+		}
+		else {
+			die "zrun: cannot fork to handle $argument: $!\n";
+		}
+	}
+	push @argument, $argument;
+}
+
+while (%child and (my $pid = wait) != -1) {
+	if (defined(my $argument = delete $child{$pid})) {
+		if ($? & 255) {
+			die "zrun: preprocessing for $argument terminated abnormally: $?\n";
+		}
+		elsif (my $code = $? >> 8) {
+			die "zrun: preprocessing for $argument terminated with code $code\n";
+		}
+	}
+}
+
+my $status = system $program ($program, @argument);
+if ($status & 255) {
+	die "zrun: $program terminated abnormally: $?\n";
+}
+else {
+	my $code = $? >> 8;
+	exit $code;
+}

@@ -21,3 +21,4 @@ Description: additional unix utilities
   - combine: combine the lines in two files using boolean operations
   - ifdata: get network interface info without parsing ifconfig output	
   - pee: tee standard input to pipes
+  - zrun: automatically uncompress arguments to command

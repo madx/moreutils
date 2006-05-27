@@ -1,3 +1,16 @@
+moreutils (0.11) unstable; urgency=low
+
+  * combine: better synopsis. Closes: #360544
+  * ifdata: basically rewritten by Adam Lackorzynski, code size is 40%
+    smaller, macros removed, return checks added for all lib calls.
+    Closes: #361728
+  * vidir: behave properly if passed a directory name to edit. Closes: #369156
+  * check-isutf8: needs to be a bash script, the way it encodes characters
+    won't work with dash.
+  * check-isutf8: exit nonzero if any tests fail
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 27 May 2006 19:12:50 -0400
+
 moreutils (0.10) unstable; urgency=low
 
   * ifdata: patch from Adam Lackorzynski to translate French error messages

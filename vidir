@@ -78,7 +78,7 @@ foreach my $item (@ARGV) {
 	}
 	elsif (-d $item) {
 		opendir(DIR, $item) || die "$0: cannot read $item: $!\n";
-		push @dir, sort readdir(DIR);
+		push @dir, map { "$item/$_" } sort readdir(DIR);
 		closedir DIR;
 	}
 	else {
@@ -92,7 +92,7 @@ open (OUT, ">".$tmp->filename) || die "$0: cannot write ".$tmp->filename.": $!\n
 my %item;
 my $c=0;
 foreach (@dir) {
-	next if $_ eq '.' || $_ eq '..';
+	next if /(.*\/)?\.$/ || /(.*\/)?\.\.$/;
 	$item{++$c}=$_;
 	print OUT "$c.\t$_\n";
 }

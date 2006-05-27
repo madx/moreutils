@@ -1,8 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+# Bash needed for the character encodings below.
 #
 # Run checks for ./isutf8.
 #
 # Lars Wirzenius <liw@iki.fi>
+
+failed=0
 
 check() {
 	printf "$2" | ./isutf8 -q
@@ -12,6 +15,7 @@ check() {
 		echo "  input: $2"
 		echo "  expected: $1"
 		echo "  got: $ret"
+		failed=1
 	fi
 }
 
@@ -23,3 +27,5 @@ check 0 '\xc2\xa9'
 check 1 '\xc2'
 check 1 '\xc2\x20'
 check 1 '\x20\xc2'
+
+exit $failed

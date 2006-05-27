@@ -20,9 +20,13 @@ pee
 zrun
 	automatically uncompress arguments to command
 
+
+Its web page is here: http://www.kitenet.net/~joey/code/moreutils.html
+
 Your suggestions of additional tools to add to this collection are
-apprecitated. Here are some that are under consideration but have not yet
-been included, I also welcome feedback on which of these to include.
+apprecitated. The web page lists some that are under consideration but
+have not yet been included, I also welcome feedback on which of these to
+include.
 
 mime
 	determines the mime type of a file using the gnome mine database

@@ -14,532 +14,436 @@
 #include <ctype.h>
 
 enum {
-  DO_EXISTS = 1,
-  DO_PEXISTS,
-  DO_PADDRESS,
-  DO_PMASK,
-  DO_PMTU,
-  DO_PCAST,
-  DO_PALL,
-  DO_PFLAGS,
-  DO_SINPACKETS,
-  DO_SINBYTES,
-  DO_SINERRORS,
-  DO_SINDROPS,
-  DO_SINALL,
-  DO_SINFIFO,
-  DO_SINFRAME,
-  DO_SINCOMPRESSES,
-  DO_SINMULTICAST,
-  DO_SOUTALL,
-  DO_SOUTBYTES,
-  DO_SOUTPACKETS,
-  DO_SOUTERRORS,
-  DO_SOUTDROPS,
-  DO_SOUTFIFO,
-  DO_SOUTCOLLS,
-  DO_SOUTCARRIER,
-  DO_SOUTMULTICAST,
-  DO_PNETWORK,
-  DO_PHWADDRESS,
+	DO_EXISTS = 1,
+	DO_PEXISTS,
+	DO_PADDRESS,
+	DO_PMASK,
+	DO_PMTU,
+	DO_PCAST,
+	DO_PALL,
+	DO_PFLAGS,
+	DO_SINPACKETS,
+	DO_SINBYTES,
+	DO_SINERRORS,
+	DO_SINDROPS,
+	DO_SINALL,
+	DO_SINFIFO,
+	DO_SINFRAME,
+	DO_SINCOMPRESSES,
+	DO_SINMULTICAST,
+	DO_SOUTALL,
+	DO_SOUTBYTES,
+	DO_SOUTPACKETS,
+	DO_SOUTERRORS,
+	DO_SOUTDROPS,
+	DO_SOUTFIFO,
+	DO_SOUTCOLLS,
+	DO_SOUTCARRIER,
+	DO_SOUTMULTICAST,
+	DO_PNETWORK,
+	DO_PHWADDRESS,
 };
 
 struct if_stat {
-	unsigned long long int in_packets;
-	unsigned long long int in_bytes;
-	unsigned long long int in_errors;
-	unsigned long long int in_drops;
-	unsigned long long int in_fifo;
-	unsigned long long int in_frame;
-	unsigned long long int in_compress;
-	unsigned long long int in_multicast;
-	unsigned long long int out_bytes;
-	unsigned long long int out_packets;
-	unsigned long long int out_errors;
-	unsigned long long int out_drops;
-	unsigned long long int out_fifo;
-	unsigned long long int out_colls;
-	unsigned long long int out_carrier;
-	unsigned long long int out_multicast;
+	unsigned long long in_packets, in_bytes, in_errors, in_drops;
+	unsigned long long in_fifo, in_frame, in_compress, in_multicast;
+	unsigned long long out_bytes, out_packets, out_errors, out_drops;
+	unsigned long long out_fifo, out_colls, out_carrier, out_multicast;
 };
 
 
-void print_quad_ipv4(unsigned int i) {
-#if      __BYTE_ORDER == __LITTLE_ENDIAN
+void print_quad_ipv4(in_addr_t i) {
+	i = ntohl(i);
 	printf("%d.%d.%d.%d",
-			i&0xff,
-			(i&0xff00)>>8,
-			(i&0xff0000)>>16,
-			(i&0xff000000)>>24);
-#else
-	printf("%d.%d.%d.%d",
-			(i&0xff000000)>>24,
-			(i&0xff0000)>>16,
-			(i&0xff00)>>8,
-			i&0xff);
-#endif
+		(i & 0xff000000) >> 24,
+		(i & 0x00ff0000) >> 16,
+		(i & 0x0000ff00) >>  8,
+		(i & 0x000000ff));
 }
 
 void print_quad_ipv6(uint16_t *a) {
-	int i;
-	for (i=0; i<7; i++) {
-		printf("%04x:",a[i]);
-	}
-	printf("%04x",a[i]);
+	printf("%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x",
+		a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);
 }
 
 void print_quad(struct sockaddr *adr) {
 	switch (adr->sa_family) {
 		case AF_INET:
 			print_quad_ipv4(((struct sockaddr_in*)adr)->sin_addr.s_addr);
-			break;
+		break;
 		case AF_INET6:
 			print_quad_ipv6(((struct sockaddr_in6*)adr)->sin6_addr.s6_addr16);
-			break;
-		default:
-			printf("NON-IP");
-			break;
+		break;
+	default:
+		printf("NON-IP");
+		break;
 	}
 }
 
-#define PREPARE_SOCK(iface)	int sock; \
-				static struct ifreq req; \
-				int res; \
-				sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP); \
-				strcpy(req.ifr_name,iface)
-#define CALL_IOCTL(call)	res=ioctl(sock,call,&req)
-#define END_SOCK		close(sock)
-#define CALL_ERROR(todo)	if (res==-1) { perror("ioctl"); close(sock); todo; }
+enum print_error_enum {
+	PRINT_ERROR,
+	PRINT_NO_ERROR,
+};
 
-int if_exists(char *iface) {
-	PREPARE_SOCK(iface);
-	CALL_IOCTL(SIOCGIFFLAGS);
-	if (res==-1 && errno==ENODEV) {
-		END_SOCK;
-		return 0;
+/**
+ * return 0 success
+ *        1 error
+ */
+static int do_socket_ioctl(const char *ifname, const int request,
+                           struct ifreq *req, int *ioctl_errno,
+                           const enum print_error_enum print_error) {
+	int sock, res;
+
+	if ((sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP)) == -1)
+		return 1;
+	strncpy(req->ifr_name, ifname, IFNAMSIZ);
+	req->ifr_name[IFNAMSIZ - 1] = 0;
+
+	if ((res = ioctl(sock, request, req)) == -1) {
+		if (ioctl_errno)
+			*ioctl_errno = errno;
+		if (print_error == PRINT_ERROR)
+			fprintf(stderr, "ioctl on %s: %s\n", ifname, strerror(errno));
+		close(sock);
+		return 1;
 	}
-	CALL_ERROR(return 0);
-	END_SOCK;
-	return 1;
+
+	close(sock);
+
+	return 0;
 }
 
-#define PRINT_IF(cond,tell) if (req.ifr_flags & cond) printf(tell); else printf("No "tell)
-
-void if_flags(char *iface) {
-	PREPARE_SOCK(iface);
-	CALL_IOCTL(SIOCGIFFLAGS);
-	CALL_ERROR(return);
-	PRINT_IF(IFF_UP,"Up\n");
-	PRINT_IF(IFF_BROADCAST,"Broadcast\n");
-	PRINT_IF(IFF_DEBUG,"Debugging\n");
-	PRINT_IF(IFF_LOOPBACK,"Loopback\n");
-	PRINT_IF(IFF_POINTOPOINT,"Ppp\n");
-	PRINT_IF(IFF_NOTRAILERS,"No-trailers\n");
-	PRINT_IF(IFF_RUNNING,"Running\n");
-	PRINT_IF(IFF_NOARP,"No-arp\n");
-	PRINT_IF(IFF_PROMISC,"Promiscuous\n");
-	PRINT_IF(IFF_ALLMULTI,"All-multicast\n");
-	PRINT_IF(IFF_MASTER,"Load-master\n");
-	PRINT_IF(IFF_SLAVE,"Load-slave\n");
-	PRINT_IF(IFF_MULTICAST,"Multicast\n");
-	PRINT_IF(IFF_PORTSEL,"Port-select\n");
-	PRINT_IF(IFF_AUTOMEDIA,"Auto-detect\n");
-	PRINT_IF(IFF_DYNAMIC,"Dynaddr\n");
-	PRINT_IF(0xffff0000,"Unknown-flags");
+int if_exists(const char *iface) {
+	struct ifreq r;
+	return !do_socket_ioctl(iface, SIOCGIFFLAGS, &r, NULL, PRINT_NO_ERROR);
 }
 
-void if_hwaddr(char *iface) {
+void if_flags(const char *iface) {
+	struct ifreq r;
+	unsigned int i;
+	const struct {
+		unsigned int flag;
+		char *name;
+	} flags[] = {
+		{ IFF_UP,          "Up" },
+		{ IFF_BROADCAST,   "Broadcast" },
+		{ IFF_DEBUG,       "Debugging" },
+		{ IFF_LOOPBACK,    "Loopback" },
+		{ IFF_POINTOPOINT, "Ppp" },
+		{ IFF_NOTRAILERS,  "No-trailers" },
+		{ IFF_RUNNING,     "Running" },
+		{ IFF_NOARP,       "No-arp" },
+		{ IFF_PROMISC,     "Promiscuous" },
+		{ IFF_ALLMULTI,    "All-multicast" },
+		{ IFF_MASTER,      "Load-master" },
+		{ IFF_SLAVE,       "Load-slave" },
+		{ IFF_MULTICAST,   "Multicast" },
+		{ IFF_PORTSEL,     "Port-select" },
+		{ IFF_AUTOMEDIA,   "Auto-detect" },
+		{ IFF_DYNAMIC,     "Dynaddr" },
+		{ 0xffff0000,      "Unknown-flags" },
+	};
+
+	if (do_socket_ioctl(iface, SIOCGIFFLAGS, &r, NULL, PRINT_ERROR))
+		return;
+
+	for (i = 0; i < sizeof(flags) / sizeof(flags[0]); i++)
+		printf("%s%s%s", (r.ifr_flags & flags[i].flag) ? "On  " : "Off ",
+		       flags[i].name,
+		       sizeof(flags) / sizeof(flags[0]) - 1 == i ? "" : "\n");
+}
+
+void if_hwaddr(const char *iface) {
+	struct ifreq r;
 	unsigned char *hwaddr;
 
-	PREPARE_SOCK(iface);
-	CALL_IOCTL(SIOCGIFHWADDR);
-	CALL_ERROR(return);
-	hwaddr = (unsigned char *)req.ifr_hwaddr.sa_data;
+	if (do_socket_ioctl(iface, SIOCGIFHWADDR, &r, NULL, PRINT_ERROR))
+		return;
+
+	hwaddr = (unsigned char *)r.ifr_hwaddr.sa_data;
 	printf("%02X:%02X:%02X:%02X:%02X:%02X",
-		hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]);
-	END_SOCK;
+	       hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]);
 }
 
-struct sockaddr *if_addr(char *iface) {
-	PREPARE_SOCK(iface);
-	CALL_IOCTL(SIOCGIFADDR);
-	if (res==-1 && errno==EADDRNOTAVAIL) {
-		return &req.ifr_addr;
+static struct sockaddr *if_addr_value(const char *iface, struct ifreq *r, 
+                                      int request) {
+	int e;
+
+	if (do_socket_ioctl(iface, request, r, &e, PRINT_NO_ERROR)) {
+		if (e == EADDRNOTAVAIL)
+			return &r->ifr_addr;
+		return NULL;
 	}
-	CALL_ERROR(return NULL);
-	END_SOCK;
-	return &req.ifr_addr;
+	return &r->ifr_addr;
 }
 
-struct sockaddr *if_mask(char *iface) {
-	PREPARE_SOCK(iface);
-	CALL_IOCTL(SIOCGIFNETMASK);
-	if (res==-1 && errno==EADDRNOTAVAIL) {
-		return &req.ifr_addr;
-	}
-	CALL_ERROR(return NULL);
-	END_SOCK;
-	return &req.ifr_addr;
+struct sockaddr *if_addr(const char *iface, struct ifreq *r) {
+	return if_addr_value(iface, r, SIOCGIFADDR);
 }
 
-struct sockaddr *if_network(char *iface) {
-	struct sockaddr *res;
-	res=if_mask(iface);
-	long int mask=((struct sockaddr_in*)res)->sin_addr.s_addr;
-	res=if_addr(iface);
-	((struct sockaddr_in*)res)->sin_addr.s_addr &= mask;
-	return res;
+struct sockaddr *if_mask(const char *iface, struct ifreq *r) {
+	return if_addr_value(iface, r, SIOCGIFNETMASK);
 }
 
-struct sockaddr *if_bcast(char *iface) {
-	PREPARE_SOCK(iface);
-	CALL_IOCTL(SIOCGIFBRDADDR);
-	if (res==-1 && errno==EADDRNOTAVAIL) {
-		return &req.ifr_addr;
-	}
-	CALL_ERROR(return NULL);
-	END_SOCK;
-	return &req.ifr_addr;
+struct sockaddr *if_bcast(const char *iface, struct ifreq *r) {
+	return if_addr_value(iface, r, SIOCGIFBRDADDR);
 }
 
-int if_mtu(char *iface) {
-	PREPARE_SOCK(iface);
-	CALL_IOCTL(SIOCGIFMTU);
-	CALL_ERROR(return 0);
-	END_SOCK;
+struct sockaddr *if_network(const char *iface) {
+	struct sockaddr *saddr;
+	struct ifreq req;
+	unsigned int mask;
+
+	if (!(saddr = if_mask(iface, &req)))
+		return NULL;
+
+	mask  = ((struct sockaddr_in*)saddr)->sin_addr.s_addr;
+
+	if (!(saddr = if_addr(iface, &req)))
+		return NULL;
+
+	((struct sockaddr_in*)saddr)->sin_addr.s_addr &= mask;
+	return saddr;
+}
+
+int if_mtu(const char *iface) {
+	struct ifreq req;
+
+	if (do_socket_ioctl(iface, SIOCGIFMTU, &req, NULL, PRINT_ERROR))
+		return 0;
+
 	return req.ifr_mtu;
 }
 
-enum {
-  START = 1,
-  SKIP_LINE,
-  START_LINE,
-  START_IFNAME,
-  IFACE_FOUND,
-  RX_BYTES,
-  WAIT_RX_PACKETS,   RX_PACKETS,
-  WAIT_RX_ERRORS,    RX_ERRORS,
-  WAIT_RX_DROPS,     RX_DROPS,
-  WAIT_RX_FIFO,      RX_FIFO,
-  WAIT_RX_FRAME,     RX_FRAME,
-  WAIT_RX_COMPRESS,  RX_COMPRESS,
-  WAIT_RX_MULTICAST, RX_MULTICAST,
-  WAIT_TX_BYTES,     TX_BYTES,
-  WAIT_TX_PACKETS,   TX_PACKETS,
-  WAIT_TX_ERRORS,    TX_ERRORS,
-  WAIT_TX_DROPS,     TX_DROPS,
-  WAIT_TX_FIFO,      TX_FIFO,
-  WAIT_TX_COLLS,     TX_COLLS,
-  WAIT_TX_CARRIER,   TX_CARRIER,
-  WAIT_TX_MULTICAST, TX_MULTICAST,
-};
+static void skipline(FILE *fd) {
+	int ch;
+	do {
+		ch = getc(fd);
+	} while (ch != '\n' && ch != EOF);
+}
 
-#define FIRST_DIGIT(val,digit) do {val=digit-'0'; } while(0)
-#define NEXT_DIGIT(val,digit) do {val*=10; val+=digit-'0'; } while(0)
+struct if_stat *get_stats(const char *iface) {
+	FILE *fd;
+	struct if_stat *ifstat;
+	char name[10];
 
-#define READ_INT(cas,val,next)	\
-	case WAIT_##cas: \
-		if (isdigit(buffer[i])) { \
-			state=cas; \
-			FIRST_DIGIT(val,buffer[i]); \
-		} \
-		break; \
-	case cas: \
-		if (isdigit(buffer[i])) \
-			NEXT_DIGIT(val,buffer[i]); \
-		else \
-			state=next; \
-		break;
-
-
-//#define FIRST_DIGIT(val,digit) do {val=digit-'0'; printf(#val " = %d\n",val); } while(0)
-//#define NEXT_DIGIT(val,digit) do {val*=10; val+=digit-'0'; printf(#val " -> %d\n",val);} while(0)
-struct if_stat *get_stats(char *iface) {
-	int fd;
-	unsigned char buffer[4096];
-	int i,j=0;
-	int state=START;
-	int len;
-	struct if_stat *res=malloc(sizeof(struct if_stat));
-
-	if (!res) {
+	if (!(ifstat = malloc(sizeof(struct if_stat)))) {
 		perror("malloc");
 		return NULL;
 	}
-	
-	fd=open("/proc/net/dev",O_RDONLY);
-	if (fd==-1) {
-		perror("open(\"/proc/net/dev\")");
+
+	if ((fd = fopen("/proc/net/dev", "r")) == NULL) {
+		perror("fopen(\"/proc/net/dev\")");
+		free(ifstat);
 		return NULL;
 	}
-	while ((len=read(fd,buffer,4096))) {
-		for (i=0; i<len; i++) {
-			switch (state) {
-				case START:
-					if (buffer[i]=='\n') state=SKIP_LINE;
-					break;
-				case SKIP_LINE:
-					if (buffer[i]=='\n') state=START_LINE;
-					break;
-				case START_LINE:
-					if (buffer[i]!=' ') {
-						if (buffer[i]==iface[0]) {
-							state=START_IFNAME;
-							j=1;
-						} else
-							state=SKIP_LINE;
-					}
-					break;
-				case START_IFNAME:
-					if (buffer[i]==':' && iface[j]==0)
-						state=IFACE_FOUND;
-					else if (buffer[i]==iface[j])
-						j++;
-					else
-						state=SKIP_LINE;
-					break;
-				case IFACE_FOUND:
-					if (isdigit(buffer[i])) {
-						state=RX_BYTES;
-						FIRST_DIGIT(res->in_bytes,buffer[i]);
-					}
-					break;
-				case RX_BYTES:
-					if (isdigit(buffer[i]))
-						NEXT_DIGIT(res->in_bytes,buffer[i]);
-					else
-						state=WAIT_RX_PACKETS;
-					break;
-				READ_INT(RX_PACKETS,res->in_packets,WAIT_RX_ERRORS);
-				READ_INT(RX_ERRORS,res->in_errors,WAIT_RX_DROPS);
-				READ_INT(RX_DROPS,res->in_drops,WAIT_RX_FIFO);
-				READ_INT(RX_FIFO,res->in_fifo,WAIT_RX_FRAME);
-				READ_INT(RX_FRAME,res->in_frame,WAIT_RX_COMPRESS);
-				READ_INT(RX_COMPRESS,res->in_compress,WAIT_RX_MULTICAST);
-				READ_INT(RX_MULTICAST,res->in_multicast,WAIT_TX_BYTES);
-				READ_INT(TX_BYTES,res->out_bytes,WAIT_TX_PACKETS);
-				READ_INT(TX_PACKETS,res->out_packets,WAIT_TX_ERRORS);
-				READ_INT(TX_ERRORS,res->out_errors,WAIT_TX_DROPS);
-				READ_INT(TX_DROPS,res->out_drops,WAIT_TX_FIFO);
-				READ_INT(TX_FIFO,res->out_fifo,WAIT_TX_COLLS);
-				READ_INT(TX_COLLS,res->out_colls,WAIT_TX_CARRIER);
-				READ_INT(TX_CARRIER,res->out_carrier,WAIT_TX_MULTICAST);
-				READ_INT(TX_MULTICAST,res->out_carrier,SKIP_LINE);
-				default:
-					fprintf(stderr,"Internal state machine error!\n");
-					break;
-			}
+
+	/* Skip header */
+	skipline(fd);
+	skipline(fd);
+
+	do {
+		int items = fscanf(fd,
+			" %6[^:]:%llu %llu %llu %llu %llu %llu %llu %llu "
+			"%llu %llu %llu %llu %llu %llu %llu %llu",
+			name,
+			&ifstat->in_bytes,    &ifstat->in_packets,
+			&ifstat->in_errors,   &ifstat->in_drops,
+			&ifstat->in_fifo,     &ifstat->in_frame,
+			&ifstat->in_compress, &ifstat->in_multicast,
+			&ifstat->out_bytes,   &ifstat->out_packets,
+			&ifstat->out_errors,  &ifstat->out_drops,
+			&ifstat->out_fifo,    &ifstat->out_colls,
+			&ifstat->out_carrier, &ifstat->out_carrier
+		);
+		
+		if (items == -1)
+			break;
+		if (items != 17) {
+			fprintf(stderr, "Invalid data read, check!\n");
+			break;
 		}
-	}
-	return res;
+
+		if (!strncmp(name, iface, sizeof(name))) {
+			fclose(fd);
+			return ifstat;
+		}
+	} while (!feof(fd));
+
+	fclose(fd);
+	free(ifstat);
+	return NULL;
 }
 
-void usage(char *name) {
-	fprintf(stderr,"Usage: %s [options] iface\n",name);
-	fprintf(stderr,"    -e   Says if iface exists or not\n"
-		       "    -p   Print out the whole config of iface\n"
-		       "    -pe  Print out yes or no according to existence\n"
-		       "    -ph  Print out the hardware address\n"
-		       "    -pa  Print out the address\n"
-		       "    -pn  Print netmask\n"
-		       "    -pN  Print network address\n"
-		       "    -pb  Print broadcast\n"
-		       "    -pm  Print mtu\n"
-		       "    -pf  Print flags\n"
-		       "    -si  Print all statistics on input\n"
-		       "    -sip Print # of in packets\n"
-		       "    -sib Print # of in bytes\n"
-		       "    -sie Print # of in errors\n"
-		       "    -sid Print # of in drops\n"
-		       "    -sif Print # of in fifo overruns\n"
-		       "    -sic Print # of in compress\n"
-		       "    -sim Print # of in multicast\n"
-		       "    -so  Print all statistics on output\n"
-		       "    -sop Print # of out packets\n"
-		       "    -sob Print # of out bytes\n"
-		       "    -soe Print # of out errors\n"
-		       "    -sod Print # of out drops\n"
-		       "    -sof Print # of out fifo overruns\n"
-		       "    -sox Print # of out collisions\n"
-		       "    -soc Print # of out carrier loss\n"
-		       "    -som Print # of out multicast\n");
+const struct {
+	char *option;
+	unsigned int flag;
+	unsigned int is_stat;
+	char *description;
+} options[] = {
+	{ "-e",   DO_EXISTS,        0, "Reports interface exitance via return code" },
+	{ "-p",   DO_PALL,          0, "Print out the whole config of iface" },
+	{ "-pe",  DO_PEXISTS,       0, "Print out yes or no according to existence" },
+	{ "-ph",  DO_PHWADDRESS,    0, "Print out the hardware address" },
+	{ "-pa",  DO_PADDRESS,      0, "Print out the address" },
+	{ "-pn",  DO_PMASK,         0, "Print netmask" },
+	{ "-pN",  DO_PNETWORK,      0, "Print network address" },
+	{ "-pb",  DO_PCAST,         0, "Print broadcast" },
+	{ "-pm",  DO_PMTU,          0, "Print mtu" },
+	{ "-pf",  DO_PFLAGS,        0, "Print flags" },
+
+	{ "-si",  DO_SINALL,        1, "Print all statistics on input" },
+	{ "-sip", DO_SINPACKETS,    1, "Print # of in packets" },
+	{ "-sib", DO_SINBYTES,      1, "Print # of in bytes" },
+	{ "-sie", DO_SINERRORS,     1, "Print # of in errors" },
+	{ "-sid", DO_SINDROPS,      1, "Print # of in drops" },
+	{ "-sif", DO_SINFIFO,       1, "Print # of in fifo overruns" },
+	{ "-sic", DO_SINCOMPRESSES, 1, "Print # of in compress" },
+	{ "-sim", DO_SINMULTICAST,  1, "Print # of in multicast" },
+	{ "-so",  DO_SOUTALL,       1, "Print all statistics on output" },
+	{ "-sop", DO_SOUTPACKETS,   1, "Print # of out packets" },
+	{ "-sob", DO_SOUTBYTES,     1, "Print # of out bytes" },
+	{ "-soe", DO_SOUTERRORS,    1, "Print # of out errors" },
+	{ "-sod", DO_SOUTDROPS,     1, "Print # of out drops" },
+	{ "-sof", DO_SOUTFIFO,      1, "Print # of out fifo overruns" },
+	{ "-sox", DO_SOUTCOLLS,     1, "Print # of out collisions" },
+	{ "-soc", DO_SOUTCARRIER,   1, "Print # of out carrier loss" },
+	{ "-som", DO_SOUTMULTICAST, 1, "Print # of out multicast" },
+};
+
+void usage(const char *name) {
+	unsigned int i;
+
+	fprintf(stderr, "Usage: %s [options] iface\n", name);
+	for (i = 0; i < sizeof(options) / sizeof(options[0]); i++) {
+		fprintf(stderr, "  %5s   %s\n",
+			options[i].option, options[i].description);
+	}
 }
 
 void add_do(int *ndo, int **todo, int act) {
-	*todo=realloc(*todo,(*ndo+1)*sizeof(int));
-	(*todo)[*ndo]=act;
-	*ndo+=1;
+	*todo = realloc(*todo, (*ndo+1) * sizeof(int));
+	(*todo)[*ndo] = act;
+	*ndo += 1;
 }
 
-#define PRINT_OR_ERR(adr) if (adr) print_quad(adr); else { fprintf(stderr, "Error\n"); exit(1); }
+static void print_addr(struct sockaddr *sadr) {
+	if (!sadr) {
+		fprintf(stderr, "Error\n");
+		exit(1);
+	}
+	print_quad(sadr);
+}
 
-void please_do(int ndo, int *todo, char *ifname) {
+struct if_stat *ifstats;
+
+void please_do(int ndo, int *todo, const char *ifname) {
 	int i;
-	struct sockaddr *sadr;
-	struct if_stat *stats=NULL;
+	struct ifreq req;
 	if (!ndo) return;
-//	printf("I have %d items in my queue.\n",ndo);
+	// printf("I have %d items in my queue.\n",ndo);
 	for (i=0; i<ndo; i++) {
 		switch (todo[i]) {
 			case DO_EXISTS:
-				if (if_exists(ifname)) {
-					exit(0);
-				} else {
-					exit(1);
-				}
-				break;
+				exit(!if_exists(ifname));
 			case DO_PEXISTS:
-				if (if_exists(ifname)) {
-					printf("yes");
-				} else {
-					printf("no");
-				}
+				printf("%s", if_exists(ifname) ? "yes" : "no");
 				break;
 			case DO_PHWADDRESS:
 				if_hwaddr(ifname);
 				break;
 			case DO_PADDRESS:
-				sadr=if_addr(ifname);
-				PRINT_OR_ERR(sadr);
+				print_addr(if_addr(ifname, &req));
 				break;
 			case DO_PFLAGS:
 				if_flags(ifname);
 				break;
 			case DO_PMASK:
-				sadr=if_mask(ifname);
-				PRINT_OR_ERR(sadr);
+				print_addr(if_mask(ifname, &req));
 				break;
 			case DO_PCAST:
-				sadr=if_bcast(ifname);
-				PRINT_OR_ERR(sadr);
+				print_addr(if_bcast(ifname, &req));
 				break;
 			case DO_PMTU:
-				printf("%d",if_mtu(ifname));
+				printf("%d", if_mtu(ifname));
 				break;
 			case DO_PNETWORK:
-				sadr=if_network(ifname);
-				PRINT_OR_ERR(sadr);
+				print_addr(if_network(ifname));
 				break;
 			case DO_PALL:
-				sadr=if_addr(ifname);
-				PRINT_OR_ERR(sadr);
+				print_addr(if_addr(ifname, &req));
 				printf(" ");
-				sadr=if_mask(ifname);
-				PRINT_OR_ERR(sadr);
+				print_addr(if_mask(ifname, &req));
 				printf(" ");
-				sadr=if_bcast(ifname);
-				PRINT_OR_ERR(sadr);
+				print_addr(if_bcast(ifname, &req));
 				printf(" ");
-				printf("%d",if_mtu(ifname));
+				printf("%d", if_mtu(ifname));
 				break;
+
 			case DO_SINPACKETS:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_packets);
+				printf("%llu",ifstats->in_packets);
 				break;
 			case DO_SINBYTES:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_bytes);
+				printf("%llu",ifstats->in_bytes);
 				break;
 			case DO_SINERRORS:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_errors);
+				printf("%llu",ifstats->in_errors);
 				break;
 			case DO_SINDROPS:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_drops);
+				printf("%llu",ifstats->in_drops);
 				break;
 			case DO_SINFIFO:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_fifo);
+				printf("%llu",ifstats->in_fifo);
 				break;
 			case DO_SINFRAME:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_frame);
+				printf("%llu",ifstats->in_frame);
 				break;
 			case DO_SINCOMPRESSES:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_compress);
+				printf("%llu",ifstats->in_compress);
 				break;
 			case DO_SINMULTICAST:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->in_multicast);
+				printf("%llu",ifstats->in_multicast);
 				break;
 			case DO_SINALL:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu %llu %llu %llu %llu %llu %llu %llu",
-						stats->in_packets,
-						stats->in_bytes,
-						stats->in_errors,
-						stats->in_drops,
-						stats->in_fifo,
-						stats->in_frame,
-						stats->in_compress,
-						stats->in_multicast);
+				printf("%llu %llu %llu %llu %llu %llu %llu %llu",
+					ifstats->in_bytes, ifstats->in_packets,
+					ifstats->in_errors, ifstats->in_drops,
+					ifstats->in_fifo, ifstats->in_frame,
+					ifstats->in_compress, ifstats->in_multicast);
 				break;
 			case DO_SOUTBYTES:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_bytes);
+				printf("%llu",ifstats->out_bytes);
 				break;
 			case DO_SOUTPACKETS:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_packets);
+				printf("%llu",ifstats->out_packets);
 				break;
 			case DO_SOUTERRORS:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_errors);
+				printf("%llu",ifstats->out_errors);
 				break;
 			case DO_SOUTDROPS:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_drops);
+				printf("%llu",ifstats->out_drops);
 				break;
 			case DO_SOUTFIFO:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_fifo);
+				printf("%llu",ifstats->out_fifo);
 				break;
 			case DO_SOUTCOLLS:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_colls);
+				printf("%llu",ifstats->out_colls);
 				break;
 			case DO_SOUTCARRIER:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_carrier);
+				printf("%llu",ifstats->out_carrier);
 				break;
 			case DO_SOUTMULTICAST:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu",stats->out_multicast);
+				printf("%llu",ifstats->out_multicast);
 				break;
 			case DO_SOUTALL:
-				if (!stats) stats=get_stats(ifname);
-				if (stats)
-				  printf("%llu %llu %llu %llu %llu %llu %llu %llu",
-						stats->out_packets,
-						stats->out_bytes,
-						stats->out_errors,
-						stats->out_drops,
-						stats->out_fifo,
-						stats->out_colls,
-						stats->out_carrier,
-						stats->out_multicast);
+				printf("%llu %llu %llu %llu %llu %llu %llu %llu",
+					ifstats->out_bytes, ifstats->out_packets,
+					ifstats->out_errors, ifstats->out_drops,
+					ifstats->out_fifo, ifstats->out_colls,
+					ifstats->out_carrier, ifstats->out_multicast);
 				break;
 			default:
-				printf("Unknown command: %d\n",todo[i]);
+				printf("Unknown command: %d", todo[i]);
 				break;
 		}
 		printf("\n");
@@ -549,95 +453,54 @@ void please_do(int ndo, int *todo, char *ifname) {
 int main(int argc, char *argv[]) {
 	int ndo=0;
 	int *todo=NULL;
-	char *me=*argv;
 	char *ifname=NULL;
-	int narg=0;
-	/*
-	print_quad(&res.ifr_addr);
-	s=socket(PF_INET6,SOCK_DGRAM,IPPROTO_IP);
-	ret=ioctl(s,SIOCGIFADDR,&res);
-	print_quad(&res.ifr_addr);
-	*/
-	if (argc==1) {
-		usage(me);
+	int narg = 0;
+	int do_stats = 0;
+	unsigned int i, found;
+
+	if (argc == 1) {
+		usage(*argv);
 		return 1;
 	}
-	narg++;
-	while (narg<argc) {
-		if (!strcmp(argv[narg],"-e")) {
-			add_do(&ndo,&todo,DO_EXISTS);
-		} else if (!strcmp(argv[narg],"-p")) {
-			add_do(&ndo,&todo,DO_PALL);
-		} else if (!strcmp(argv[narg],"-ph")) {
-			add_do(&ndo,&todo,DO_PHWADDRESS);
-		} else if (!strcmp(argv[narg],"-pa")) {
-			add_do(&ndo,&todo,DO_PADDRESS);
-		} else if (!strcmp(argv[narg],"-pn")) {
-			add_do(&ndo,&todo,DO_PMASK);
-		} else if (!strcmp(argv[narg],"-pN")) {
-			add_do(&ndo,&todo,DO_PNETWORK);
-		} else if (!strcmp(argv[narg],"-pb")) {
-			add_do(&ndo,&todo,DO_PCAST);
-		} else if (!strcmp(argv[narg],"-pm")) {
-			add_do(&ndo,&todo,DO_PMTU);
-		} else if (!strcmp(argv[narg],"-pe")) {
-			add_do(&ndo,&todo,DO_PEXISTS);
-		} else if (!strcmp(argv[narg],"-pf")) {
-			add_do(&ndo,&todo,DO_PFLAGS);
-		} else if (!strcmp(argv[narg],"-si")) {
-			add_do(&ndo,&todo,DO_SINALL);
-		} else if (!strcmp(argv[narg],"-sip")) {
-			add_do(&ndo,&todo,DO_SINPACKETS);
-		} else if (!strcmp(argv[narg],"-sib")) {
-			add_do(&ndo,&todo,DO_SINBYTES);
-		} else if (!strcmp(argv[narg],"-sie")) {
-			add_do(&ndo,&todo,DO_SINERRORS);
-		} else if (!strcmp(argv[narg],"-sid")) {
-			add_do(&ndo,&todo,DO_SINDROPS);
-		} else if (!strcmp(argv[narg],"-sif")) {
-			add_do(&ndo,&todo,DO_SINFIFO);
-		} else if (!strcmp(argv[narg],"-sic")) {
-			add_do(&ndo,&todo,DO_SINCOMPRESSES);
-		} else if (!strcmp(argv[narg],"-sim")) {
-			add_do(&ndo,&todo,DO_SINMULTICAST);
-		} else if (!strcmp(argv[narg],"-so")) {
-			add_do(&ndo,&todo,DO_SOUTALL);
-		} else if (!strcmp(argv[narg],"-sop")) {
-			add_do(&ndo,&todo,DO_SOUTPACKETS);
-		} else if (!strcmp(argv[narg],"-sob")) {
-			add_do(&ndo,&todo,DO_SOUTBYTES);
-		} else if (!strcmp(argv[narg],"-soe")) {
-			add_do(&ndo,&todo,DO_SOUTERRORS);
-		} else if (!strcmp(argv[narg],"-sod")) {
-			add_do(&ndo,&todo,DO_SOUTDROPS);
-		} else if (!strcmp(argv[narg],"-sof")) {
-			add_do(&ndo,&todo,DO_SOUTFIFO);
-		} else if (!strcmp(argv[narg],"-sox")) {
-			add_do(&ndo,&todo,DO_SOUTCOLLS);
-		} else if (!strcmp(argv[narg],"-soc")) {
-			add_do(&ndo,&todo,DO_SOUTCARRIER);
-		} else if (!strcmp(argv[narg],"-som")) {
-			add_do(&ndo,&todo,DO_SOUTMULTICAST);
-		} else if (!strcmp(argv[narg],"-som")) {
-			usage(me);
+
+	while (narg < argc) {
+		narg++;
+
+		found = 0;
+
+		for (i = 0; i < sizeof(options) / sizeof(options[0]); i++) {
+			if (!strcmp(argv[narg], options[i].option)) {
+				add_do(&ndo, &todo, options[i].flag);
+				do_stats |= options[i].is_stat;
+				found = 1;
+				break;
+			}
+		}
+
+		if (found)
+			continue;
+
+		if (argv[narg][0] == '-') {
+			usage(*argv);
 			return 1;
-		} else if (argv[narg][0] == '-') {
-			usage(me);
-			return 1;
-		} else {
-			ifname=argv[narg];
-			narg++;
+		}
+		else {
+			ifname = argv[narg];
 			break;
 		}
-		narg++;
 	}
-	if (narg<argc || ifname==NULL) {
-		usage(me);
+
+	if (narg + 1 < argc || !ifname) {
+		usage(*argv);
 		return 1;
 	}
-//	printf("Interface %s\n",ifname);
-	please_do(ndo,todo,ifname);
+
+	if (do_stats && (ifstats = get_stats(ifname)) == NULL) {
+		fprintf(stderr, "Error getting statistics for %s\n", ifname);
+		return 1;
+	}
+
+	please_do(ndo, todo, ifname);
+
 	return 0;
 }
-
-

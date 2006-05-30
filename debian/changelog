@@ -1,3 +1,9 @@
+moreutils (0.12) UNRELEASED; urgency=low
+
+  * Really fix typo. Closes: #369485
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 30 May 2006 11:53:42 -0400
+
 moreutils (0.11) unstable; urgency=low
 
   * combine: better synopsis. Closes: #360544

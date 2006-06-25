@@ -122,7 +122,7 @@ if (@ARGV >= 4 && $ARGV[3] eq "_") {
 }
 
 if (@ARGV != 3) {
-	die "usage: combine file1 OP file2\n";
+	die "Usage: combine file1 OP file2\n";
 }
 
 my $file1=shift;

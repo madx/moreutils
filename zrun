@@ -36,6 +36,10 @@ use File::Temp qw{tempfile};
 
 my $program = shift;
 
+if (! @ARGV) {
+	die "Usage: zrun <command> <args>\n";
+}
+
 my @argument;
 my %child;
 foreach my $argument (@ARGV) {

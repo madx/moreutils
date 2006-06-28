@@ -126,7 +126,7 @@ if (@ARGV != 3) {
 }
 
 my $file1=shift;
-my $op=shift;
+my $op=lc shift;
 my $file2=shift;
 
 if ($::{"compare_$op"}) {

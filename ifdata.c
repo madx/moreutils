@@ -463,7 +463,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	while (narg < argc) {
+	while (narg < argc - 1) {
 		narg++;
 
 		found = 0;

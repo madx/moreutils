@@ -2,8 +2,10 @@ moreutils (0.12) UNRELEASED; urgency=low
 
   * Really fix typo. Closes: #369485
   * zrun: Add usage message.
+  * ifdata: Fix bug in argument parsing that could make it segfault.
+  * combine: Allow operators to be written in any case.
 
- -- Joey Hess <joeyh@debian.org>  Sat, 24 Jun 2006 22:10:53 -0400
+ -- Joey Hess <joeyh@debian.org>  Wed, 28 Jun 2006 14:03:21 -0400
 
 moreutils (0.11) unstable; urgency=low
 

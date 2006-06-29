@@ -281,7 +281,7 @@ const struct {
 	unsigned int is_stat;
 	char *description;
 } options[] = {
-	{ "-e",   DO_EXISTS,        0, "Reports interface exitance via return code" },
+	{ "-e",   DO_EXISTS,        0, "Reports interface existence via return code" },
 	{ "-p",   DO_PALL,          0, "Print out the whole config of iface" },
 	{ "-pe",  DO_PEXISTS,       0, "Print out yes or no according to existence" },
 	{ "-ph",  DO_PHWADDRESS,    0, "Print out the hardware address" },

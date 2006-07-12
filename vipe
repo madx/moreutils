@@ -51,16 +51,16 @@ open(OUT, ">&STDOUT") || die "save stdout: $!";
 close STDOUT;
 open(STDOUT, ">/dev/tty") || die "reopen stdout: $!";
 
-my $editor="vi";
+my @editor="vi";
 if (exists $ENV{EDITOR}) {
-	$editor=$ENV{EDITOR};
+	@editor=split(' ', $ENV{EDITOR});
 }
 if (exists $ENV{VISUAL}) {
-	$editor=$ENV{VISUAL};
+	@editor=split(' ', $ENV{VISUAL});
 }
-my $ret=system($editor, $tmp);
+my $ret=system(@editor, $tmp);
 if ($ret != 0) {
-	die "$editor exited nonzero, aborting\n";
+	die "@editor exited nonzero, aborting\n";
 }
 
 open (IN, $tmp) || die "$0: cannot read $tmp: $!\n";

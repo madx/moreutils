@@ -1,8 +1,9 @@
-moreutils (0.13) UNRELEASED; urgency=low
+moreutils (0.13) unstable; urgency=low
 
   * ifdata: typo
+  * vipe: Support EDITOR or VISUAL that contains spaces and parameters.
 
- -- Joey Hess <joeyh@debian.org>  Thu, 29 Jun 2006 12:00:59 -0400
+ -- Joey Hess <joeyh@debian.org>  Wed, 12 Jul 2006 12:53:44 -0400
 
 moreutils (0.12) unstable; urgency=low
 

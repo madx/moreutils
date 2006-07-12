@@ -1,3 +1,9 @@
+moreutils (0.14) unstable; urgency=low
+
+  * vidir: Also support EDITOR or VISUAL that contains spaces and parameters.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 12 Jul 2006 13:35:49 -0400
+
 moreutils (0.13) unstable; urgency=low
 
   * ifdata: typo

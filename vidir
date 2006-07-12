@@ -99,16 +99,16 @@ foreach (@dir) {
 @dir=();
 close OUT;
 
-my $editor="vi";
+my @editor="vi";
 if (exists $ENV{EDITOR}) {
-	$editor=$ENV{EDITOR};
+	@editor=split(' ', $ENV{EDITOR});
 }
 if (exists $ENV{VISUAL}) {
-	$editor=$ENV{VISUAL};
+	@editor=split(' ', $ENV{VISUAL});
 }
-$ret=system($editor, $tmp);
+$ret=system(@editor, $tmp);
 if ($ret != 0) {
-	die "$editor exited nonzero, aborting\n";
+	die "@editor exited nonzero, aborting\n";
 }
 
 open (IN, $tmp->filename) || die "$0: cannot read ".$tmp->filename.": $!\n";

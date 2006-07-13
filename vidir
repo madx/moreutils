@@ -11,9 +11,13 @@ B<vidir> [--verbose] [directory|file|-] ...
 =head1 DESCRIPTION
 
 vidir allows editing of the contents of a directory in a text editor. If no
-directory is specified, the current directory is edited. Each item in the
-directory is listed. Delete items to remove them from the directory, or
-edit their names to rename them.
+directory is specified, the current directory is edited. 
+
+When editing a directory, each item in the directory will appear on its own
+numbered line. These numbers are how vidir keeps track of what items are
+changed. Delete lines to remove files from the directory, or
+edit filenames to rename files. You can also switch pairs of numbers to
+swap filenames.
 
 Note that if "-" is specified as the directory to edit, it reads a list of
 filenames from stdin and displays those for editing. Alternatively, a list
@@ -94,7 +98,7 @@ my $c=0;
 foreach (@dir) {
 	next if /(.*\/)?\.$/ || /(.*\/)?\.\.$/;
 	$item{++$c}=$_;
-	print OUT "$c.\t$_\n";
+	print OUT "$c\t$_\n";
 }
 @dir=();
 close OUT;
@@ -114,7 +118,7 @@ if ($ret != 0) {
 open (IN, $tmp->filename) || die "$0: cannot read ".$tmp->filename.": $!\n";
 while (<IN>) {
 	chomp;
-	if (/^(\d+)\.\t(.*)/) {
+	if (/^(\d+)\t{0,1}(.*)/) {
 		my $num=$1;
 		my $name=$2;
 		if (! exists $item{$num}) {
@@ -122,6 +126,7 @@ while (<IN>) {
 			$error=1;
 		}
 		elsif ($name ne $item{$num}) {
+			next unless length $name;
 			my $src=$item{$num};
 			
 			# deal with swaps
@@ -155,6 +160,9 @@ while (<IN>) {
 			}
 		}
 		delete $item{$num};
+	}
+	elsif (/^\s*$/) {
+		# skip empty line
 	}
 	else {
 		die "$0: unable to parse line \"$_\", aborting\n";

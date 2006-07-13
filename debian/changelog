@@ -1,8 +1,14 @@
 moreutils (0.15) UNRELEASED; urgency=low
 
   * Remove notes about potential tools from README, moved to wiki.
+  * vidir: Don't abort if it sees an empty or all-whitespace line.
+  * vidir: If just a filename is removed and the number is left,
+    treat this the same as removing the whole line, and delete the file,
+    instead of trying to rename the file to "".
+  * vidir: Remove the periods after the item numbers.
+  * vidir: Man page improvements. Closes: #378122
 
- -- Joey Hess <joeyh@debian.org>  Thu, 13 Jul 2006 12:21:38 -0400
+ -- Joey Hess <joeyh@debian.org>  Thu, 13 Jul 2006 16:58:20 -0400
 
 moreutils (0.14) unstable; urgency=low
 

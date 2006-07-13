@@ -1,3 +1,9 @@
+moreutils (0.15) UNRELEASED; urgency=low
+
+  * Remove notes about potential tools from README, moved to wiki.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 13 Jul 2006 12:21:38 -0400
+
 moreutils (0.14) unstable; urgency=low
 
   * vidir: Also support EDITOR or VISUAL that contains spaces and parameters.

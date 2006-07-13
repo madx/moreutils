@@ -28,31 +28,4 @@ apprecitated. The web page lists some that are under consideration but
 have not yet been included, I also welcome feedback on which of these to
 include.
 
-mime
-	determines the mime type of a file using the gnome mine database
-
-	(More useful than file(1) in many cases but would add a lot of
-	gnome libraries to the package's dependency chain.)
-
-tmp
-	puts stdin into a temp file and passes it to the specified program
-	ex: zcat file.bmp.gz | tmp zxgv
-
-add
-	adds up numbers from stdin
-
-todist
-	inputs a list of numbers and outputs their distribution, a value
-	and how many time it occurs in the input
-	http://baruch.ev-en.org/files/todist
-
-	Not a general enough unix tool, probably?
-
-tostats
-	inputs a list of numbers and outputs some statistics about the
-	numbers: average, stddev, min, max, mid point
-	http://baruch.ev-en.org/files/todist
-	
-	Not a general enough unix tool, probably?
-
 -- Joey Hess <joey@kitenet.net>

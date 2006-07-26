@@ -19,7 +19,7 @@ edit the data that is being piped between programs.
 
 =item EDITOR
 
-Editor to use. Defaults to vi if not set.
+Editor to use.
 
 =item VISUAL
 
@@ -52,6 +52,9 @@ close STDOUT;
 open(STDOUT, ">/dev/tty") || die "reopen stdout: $!";
 
 my @editor="vi";
+if (-x "/usr/bin/editor") {
+	@editor="/usr/bin/editor";
+}
 if (exists $ENV{EDITOR}) {
 	@editor=split(' ', $ENV{EDITOR});
 }

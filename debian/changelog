@@ -13,6 +13,9 @@ moreutils (0.15) UNRELEASED; urgency=low
     a file. Changed behavior to just print all lines from both files, even
     if this means printing dups. Not sure I like this behavior either, but
     it's consistent with the very useful behaviors of "and" and "not".
+  * vidir, vipe: Use /usr/bin/editor if it's present, and EDITOR and VISUAL
+    arn't set, to comply with Debian policy. For portability, fall back to vi
+    if there's no /usr/bin/editor. Closes: #378623
 
  -- Joey Hess <joeyh@debian.org>  Tue, 25 Jul 2006 22:26:56 -0400
 

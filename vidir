@@ -39,7 +39,7 @@ Verbosely display the actions taken by the program.
 
 =item EDITOR
 
-Editor to use. Defaults to vi if not set.
+Editor to use.
 
 =item VISUAL
 
@@ -104,6 +104,9 @@ foreach (@dir) {
 close OUT;
 
 my @editor="vi";
+if (-x "/usr/bin/editor") {
+	@editor="/usr/bin/editor";
+}
 if (exists $ENV{EDITOR}) {
 	@editor=split(' ', $ENV{EDITOR});
 }

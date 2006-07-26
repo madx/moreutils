@@ -31,7 +31,7 @@ operation specified, the contents will be combined in different ways:
 
 =item and
 
-Outputs lines that are common to both files.
+Outputs lines that are in file1 if they are also present in file2.
 
 =item not
 
@@ -50,7 +50,10 @@ Outputs lines that are in either file1 or file2, but not in both files.
 "-" can be specified for either file to read stdin for that file.
 
 The input files need not be sorted, and the lines are output in the order
-they accur in file1 (or file2 for the two "or" operations).
+they occur in file1 (followed by the order they occur in file2 for the two
+"or" operations). Bear in mind that this means that the operations are not
+commutative; "a and b" will not necessarily be the same as "b and a". To
+obtain communtative behavior sort and uniq the result.
 
 Note that this program can be installed as "_" to allow for the syntactic
 sugar shown in the latter half of the synopsis (similar to the test/[
@@ -91,9 +94,8 @@ sub hashify {
 sub compare_or {
 	my ($file1, $file2) = @_;
 
-	my $seen;
-	filemap $file1, sub { print "$_\n"; $seen->{$_}++ };
-	filemap $file2, sub { print "$_\n" unless $seen->{$_} };
+	filemap $file1, sub { print "$_\n" };
+	filemap $file2, sub { print "$_\n" };
 }
 
 sub compare_xor {

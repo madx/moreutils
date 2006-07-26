@@ -7,8 +7,14 @@ moreutils (0.15) UNRELEASED; urgency=low
     instead of trying to rename the file to "".
   * vidir: Remove the periods after the item numbers.
   * vidir: Man page improvements. Closes: #378122
+  * combine: Man page improvements, to clarify even more that order does
+    matter and that the operations are not commutative. Closes: #361123
+  * combine: The behavior of "or" was fairly strange if lines were repeated in
+    a file. Changed behavior to just print all lines from both files, even
+    if this means printing dups. Not sure I like this behavior either, but
+    it's consistent with the very useful behaviors of "and" and "not".
 
- -- Joey Hess <joeyh@debian.org>  Thu, 13 Jul 2006 16:58:20 -0400
+ -- Joey Hess <joeyh@debian.org>  Tue, 25 Jul 2006 22:26:56 -0400
 
 moreutils (0.14) unstable; urgency=low
 

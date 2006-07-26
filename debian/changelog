@@ -1,4 +1,4 @@
-moreutils (0.15) UNRELEASED; urgency=low
+moreutils (0.15) unstable; urgency=low
 
   * Remove notes about potential tools from README, moved to wiki.
   * vidir: Don't abort if it sees an empty or all-whitespace line.

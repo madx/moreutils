@@ -8,6 +8,7 @@ Standards-Version: 3.7.2
 Package: moreutils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}
+Suggests: libtime-duration-perl, libtimedate-perl
 Description: additional unix utilities
  This is a growing collection of the unix tools that nobody thought
  to write thirty years ago.

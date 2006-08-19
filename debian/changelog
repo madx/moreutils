@@ -1,11 +1,12 @@
-moreutils (0.16) UNRELEASED; urgency=low
+moreutils (0.16) unstable; urgency=low
 
   * Change the default ts format to include the month and day, for consistency
     with syslog format.
   * Add -r switch to ts, which makes it convert existing timestamps in
-    the input into relative times, such as "15m2s ago".
+    the input into relative times, such as "15m2s ago". Many common date
+    formats are supported.
 
- -- Joey Hess <joeyh@debian.org>  Fri, 18 Aug 2006 01:36:37 -0400
+ -- Joey Hess <joeyh@debian.org>  Sat, 19 Aug 2006 15:27:42 -0400
 
 moreutils (0.15) unstable; urgency=low
 

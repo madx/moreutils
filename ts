@@ -75,6 +75,9 @@ while (<>) {
 						# 16 Jun 94 07:29:35
 				(?:\s+\w\w\w|\s+-\d\d\d\d)?
 						#	(optional timezone)
+			|
+			\w\w\w\s+\w\w\w\s+\d\d\s+\d\d:\d\d
+						# lastlog format
 		  )\b
 		}{
 			concise(ago(time - str2time($1), 2))

@@ -1,3 +1,9 @@
+moreutils (0.17) UNRELEASED; urgency=low
+
+  * Add missing \n to sponge usage. Closes: #383944
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 20 Aug 2006 18:36:04 -0400
+
 moreutils (0.16) unstable; urgency=low
 
   * Change the default ts format to include the month and day, for consistency

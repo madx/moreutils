@@ -30,7 +30,7 @@
 #include <string.h>
 
 void usage() {
-	printf("sponge <file>: suck in all input from stdin and write it to <file>");
+	printf("sponge <file>: suck in all input from stdin and write it to <file>\n");
 	exit(0);
 }
 

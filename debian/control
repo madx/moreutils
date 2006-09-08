@@ -23,3 +23,4 @@ Description: additional unix utilities
   - ifdata: get network interface info without parsing ifconfig output
   - pee: tee standard input to pipes
   - zrun: automatically uncompress arguments to command
+  - mispipe: pipe two commands, returning the exit status of the first

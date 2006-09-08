@@ -19,6 +19,8 @@ pee
 	tee standard input to pipes
 zrun
 	automatically uncompress arguments to command
+mispipe
+	pipe two commands, returning the exit status of the first
 
 
 Its web page is here: http://kitenet.net/~joey/code/moreutils.html

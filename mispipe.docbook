@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+Copyright 2006 Joey Hess <joey@kitenet.net>
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+-->
+
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.4//EN"
+"file:///usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd"
+[]>
+
+<refentry>
+	<refentryinfo>
+		<address>
+			<email>neroden@fastmail.fm</email>
+		</address>
+		<author>
+			<firstname>Nathanael</firstname>
+			<surname>Nerode</surname>
+		</author>
+		<date>2006-09-07</date>
+	</refentryinfo>
+
+	<refmeta>
+		<refentrytitle>mispipe</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+
+	<refnamediv>
+		<refname>mispipe</refname> 
+		<refpurpose>pipe two commands, returning the exit status of
+		the first</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>mispope</command>
+			<arg><replaceable>"command1"</replaceable></arg>
+			<arg><replaceable>"command2"</replaceable></arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>DESCRIPTION</title>
+		
+		<para><command>mispipe</command> pipes two commands
+		together like the shell does, but unlike piping in the
+		shell, the exit status of the first command is returned.
+		</para>
+
+		<para>
+		Note that some shells, notably <command>bash</command>,
+		do offer a pipefail option, however, that option does not
+		behave the same since it makes a failure of any command in
+		the pipeline be returned, not just the exit status of the
+		first.
+		</para>
+
+	</refsect1>
+	
+	<refsect1>
+		<title>EXIT STATUS</title>
+		
+		<para>The exit status of the first command. If the process
+		terminated abnormally (due to a signal), 128 will be added
+		to its exit status.</para>
+		
+	</refsect1>
+</refentry>

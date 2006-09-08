@@ -4,7 +4,7 @@ This package was put together and debianized by Joey Hess
 isutf8 is Copyright (C) 2005 by Lars Wirzenius, under the terms of
 the GPL.
 
-spong is Copyright (C) 2006 by Tollef Fog Heen, under the terms of
+sponge is Copyright (C) 2006 by Tollef Fog Heen, under the terms of
 the GPL version 2. Name and concept by Colin Watson.
 
 ifdata is Copyright (C) 2002 by Benjamin BAYART, under the terms of
@@ -15,6 +15,9 @@ pee is Copyright (c) Miek Gieben, 2006, under the terms of the GPL.
 
 zrun is Copyright (c) Chung-chieh Shan, under the terms of the GPL, version
 2 or later.
+
+mispipe is Copyright (c) Nathanael Nerode, under the terms of the GPL,
+version 2 or later. (It's also dual-licensed under the MIT/Expat licence.)
 
 Everything else is copyright 2006 by Joey Hess, under the terms of GPL.
 The full text of the GNU GPL can be found in /usr/share/common-licenses/GPL

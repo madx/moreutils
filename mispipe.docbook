@@ -49,7 +49,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 	<refsynopsisdiv>
 		<cmdsynopsis>
-			<command>mispope</command>
+			<command>mispipe</command>
 			<arg><replaceable>"command1"</replaceable></arg>
 			<arg><replaceable>"command2"</replaceable></arg>
 		</cmdsynopsis>

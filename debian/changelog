@@ -1,3 +1,9 @@
+moreutils (0.18) UNRELEASED; urgency=low
+
+  * mispipe.docbook: Typo. Closes: #386756
+
+ -- Joey Hess <joeyh@debian.org>  Sat,  9 Sep 2006 18:46:41 -0400
+
 moreutils (0.17) unstable; urgency=low
 
   * Add missing \n to sponge usage. Closes: #383944

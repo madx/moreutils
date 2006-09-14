@@ -1,8 +1,11 @@
 moreutils (0.18) UNRELEASED; urgency=low
 
   * mispipe.docbook: Typo. Closes: #386756
+  * spongs: Output to stdout if no file is specified, useful in a pipeline
+    such as: cvs diff | sponge | patch -R -p0
+    Closes: #387501
 
- -- Joey Hess <joeyh@debian.org>  Sat,  9 Sep 2006 18:46:41 -0400
+ -- Joey Hess <joeyh@debian.org>  Thu, 14 Sep 2006 15:11:55 -0400
 
 moreutils (0.17) unstable; urgency=low
 

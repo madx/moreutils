@@ -59,6 +59,8 @@ USA
 			opening the output file. This allows for
 			constructing pipelines that read from and write to
 			the same file. </para>
+		<para>If no output file is specified, sponge outputs to
+			stdout.</para>
 
 	</refsect1>
 </refentry>

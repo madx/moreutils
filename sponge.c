@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
 	ssize_t i = 0;
 	int outfd;
 	
-	if (argc != 2) {
+	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
 		usage();
 	}
   
@@ -68,10 +68,15 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
   
-	outfd = open(argv[1], O_CREAT | O_TRUNC | O_WRONLY, 0666);
-	if (outfd == -1) {
-		fprintf(stderr, "Can't open %s: %s\n", argv[1], strerror(errno));
-		exit(1);
+	if (argc == 2) {
+		outfd = open(argv[1], O_CREAT | O_TRUNC | O_WRONLY, 0666);
+		if (outfd == -1) {
+			fprintf(stderr, "Can't open %s: %s\n", argv[1], strerror(errno));
+			exit(1);
+		}
+	}
+	else {
+		outfd = 1;
 	}
 
 	i = write(outfd, bufstart, bufused);

@@ -1,3 +1,10 @@
+moreutils (0.19) unstable; urgency=low
+
+  * vidir: Don't ignore files whose names end in dots. Closes: #398141
+    Thanks, Bram Sanders.
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 11 Nov 2006 22:02:17 -0500
+
 moreutils (0.18) unstable; urgency=low
 
   * mispipe.docbook: Typo. Closes: #386756

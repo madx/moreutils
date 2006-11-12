@@ -96,7 +96,7 @@ open (OUT, ">".$tmp->filename) || die "$0: cannot write ".$tmp->filename.": $!\n
 my %item;
 my $c=0;
 foreach (@dir) {
-	next if /(.*\/)?\.$/ || /(.*\/)?\.\.$/;
+	next if /^(.*\/)?\.$/ || /^(.*\/)?\.\.$/;
 	$item{++$c}=$_;
 	print OUT "$c\t$_\n";
 }

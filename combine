@@ -24,7 +24,7 @@ _ file1 xor file2 _
 
 =head1 DESCRIPTION
 
-B<combine> conbines the lines in two files. Depending on the boolean
+B<combine> combines the lines in two files. Depending on the boolean
 operation specified, the contents will be combined in different ways:
 
 =over 4
@@ -53,7 +53,7 @@ The input files need not be sorted, and the lines are output in the order
 they occur in file1 (followed by the order they occur in file2 for the two
 "or" operations). Bear in mind that this means that the operations are not
 commutative; "a and b" will not necessarily be the same as "b and a". To
-obtain communtative behavior sort and uniq the result.
+obtain commutative behavior sort and uniq the result.
 
 Note that this program can be installed as "_" to allow for the syntactic
 sugar shown in the latter half of the synopsis (similar to the test/[

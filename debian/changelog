@@ -1,8 +1,10 @@
-moreutils (0.20) UNRELEASED; urgency=low
+moreutils (0.20) unstable; urgency=low
 
   * Typo fixes from Ralf Wildenhues.
+  * ifdata: Add -bips and -bops options contributed by André Appel,
+    to print the number of bytes of incoming/outgoing traffic per second.
 
- -- Joey Hess <joeyh@debian.org>  Sun, 26 Nov 2006 14:48:57 -0500
+ -- Joey Hess <joeyh@debian.org>  Sat, 23 Dec 2006 15:55:45 -0500
 
 moreutils (0.19) unstable; urgency=low
 

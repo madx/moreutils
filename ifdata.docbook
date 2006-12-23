@@ -285,6 +285,22 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 					packets.</para>
 			</listitem>
 		</varlistentry>
+		
+		<varlistentry>
+			<term><option>-bips</option></term>
+			<listitem>
+				<para>Prints the number of bytes of
+				incoming traffic measured in one second.</para>
+			</listitem>
+		</varlistentry>
+		
+		<varlistentry>
+			<term><option>-bops</option></term>
+			<listitem>
+				<para>Prints the number of bytes of
+                                outgoing traffic measured in one second.</para>
+			</listitem>
+		</varlistentry>
 
 	</variablelist>
 	</refsect1>

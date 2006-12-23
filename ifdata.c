@@ -42,6 +42,8 @@ enum {
 	DO_SOUTMULTICAST,
 	DO_PNETWORK,
 	DO_PHWADDRESS,
+	DO_BIPS,
+	DO_BOPS
 };
 
 struct if_stat {
@@ -309,6 +311,8 @@ const struct {
 	{ "-sox", DO_SOUTCOLLS,     1, "Print # of out collisions" },
 	{ "-soc", DO_SOUTCARRIER,   1, "Print # of out carrier loss" },
 	{ "-som", DO_SOUTMULTICAST, 1, "Print # of out multicast" },
+	{ "-bips",DO_BIPS,          1, "Print # of incoming bytes per second" },
+	{ "-bops",DO_BOPS,          1, "Print # of outgoing bytes per second" },
 };
 
 void usage(const char *name) {
@@ -335,7 +339,7 @@ static void print_addr(struct sockaddr *sadr) {
 	print_quad(sadr);
 }
 
-struct if_stat *ifstats;
+struct if_stat *ifstats, *ifstats2 = NULL;
 
 void please_do(int ndo, int *todo, const char *ifname) {
 	int i;
@@ -434,6 +438,20 @@ void please_do(int ndo, int *todo, const char *ifname) {
 				break;
 			case DO_SOUTMULTICAST:
 				printf("%llu",ifstats->out_multicast);
+				break;
+			case DO_BIPS:
+				if (ifstats2 == NULL) {
+					sleep(1);
+					ifstats2 = get_stats(ifname);
+				}
+				printf("%llu", ifstats2->in_bytes-ifstats->in_bytes);
+				break;
+			case DO_BOPS:
+				if (ifstats2 == NULL) {
+					sleep(1);
+					ifstats2 = get_stats(ifname);
+				}
+				printf("%llu", ifstats2->out_bytes-ifstats->out_bytes);
 				break;
 			case DO_SOUTALL:
 				printf("%llu %llu %llu %llu %llu %llu %llu %llu",

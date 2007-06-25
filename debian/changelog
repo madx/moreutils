@@ -1,8 +1,8 @@
-moreutils (0.21) UNRELEASED; urgency=low
+moreutils (0.21) unstable; urgency=low
 
   * Patch from Sergej Pupykin fixing ifdata -pN.
 
- -- Joey Hess <joeyh@debian.org>  Mon, 25 Jun 2007 13:06:21 -0400
+ -- Joey Hess <joeyh@debian.org>  Mon, 25 Jun 2007 13:07:21 -0400
 
 moreutils (0.20) unstable; urgency=low
 

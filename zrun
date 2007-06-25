@@ -32,6 +32,7 @@ Copyright 2006 by Chung-chieh Shan <ccshan@post.harvard.edu>
 use warnings;
 use strict;
 use IO::Handle;
+use File::Spec;
 use File::Temp qw{tempfile};
 
 my $program = shift;
@@ -47,7 +48,8 @@ foreach my $argument (@ARGV) {
 		my $suffix = "-$2";
 		my @preprocess = $3 eq "bz2" ? qw(bzip2 -d -c) : qw(gzip -d -c);
 
-		my ($fh, $tmpname) = tempfile(SUFFIX => $suffix, UNLINK => 1)
+		my ($fh, $tmpname) = tempfile(SUFFIX => $suffix,
+			DIR => File::Spec->tmpdir, UNLINK => 1)
 			or die "zrun: cannot create temporary file: $!\n";
 
 		if (my $child = fork) {

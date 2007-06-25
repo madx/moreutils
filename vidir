@@ -60,6 +60,7 @@ Licensed under the GNU GPL.
 
 =cut
 
+use File::Spec;
 use File::Temp;
 use Getopt::Long;
 
@@ -90,7 +91,7 @@ foreach my $item (@ARGV) {
 	}
 }
 	
-my $tmp=File::Temp->new(template => "dirXXXXX");
+my $tmp=File::Temp->new(TEMPLATE => "dirXXXXX", DIR => File::Spec->tmpdir);
 open (OUT, ">".$tmp->filename) || die "$0: cannot write ".$tmp->filename.": $!\n";
 
 my %item;

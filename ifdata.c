@@ -193,7 +193,7 @@ struct sockaddr *if_bcast(const char *iface, struct ifreq *r) {
 
 struct sockaddr *if_network(const char *iface) {
 	struct sockaddr *saddr;
-	struct ifreq req;
+	static struct ifreq req;
 	unsigned int mask;
 
 	if (!(saddr = if_mask(iface, &req)))
@@ -209,7 +209,7 @@ struct sockaddr *if_network(const char *iface) {
 }
 
 int if_mtu(const char *iface) {
-	struct ifreq req;
+	static struct ifreq req;
 
 	if (do_socket_ioctl(iface, SIOCGIFMTU, &req, NULL, PRINT_ERROR))
 		return 0;
@@ -343,7 +343,7 @@ struct if_stat *ifstats, *ifstats2 = NULL;
 
 void please_do(int ndo, int *todo, const char *ifname) {
 	int i;
-	struct ifreq req;
+	static struct ifreq req;
 	if (!ndo) return;
 	// printf("I have %d items in my queue.\n",ndo);
 	for (i=0; i<ndo; i++) {

@@ -2,7 +2,7 @@ moreutils (0.22) unstable; urgency=low
 
   * vidir, zrun: Don't put temp files in the current directory. Closes: #429367
 
- -- Joey Hess <joeyh@debian.org>  Mon, 25 Jun 2007 16:08:14 -0400
+ -- Joey Hess <joeyh@debian.org>  Mon, 25 Jun 2007 16:11:27 -0400
 
 moreutils (0.21) unstable; urgency=low
 

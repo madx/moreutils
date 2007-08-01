@@ -60,6 +60,10 @@ sugar shown in the latter half of the synopsis (similar to the test/[
 command). It is not currently installed as "_" by default, but you can
 alias it to that if you like.
 
+=head1 SEE ALSO
+
+join(1)
+
 =head1 AUTHOR
 
 Copyright 2006 by Joey Hess <joey@kitenet.net>

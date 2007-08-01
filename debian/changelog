@@ -1,3 +1,9 @@
+moreutils (0.23) UNRELEASED; urgency=low
+
+  * Add pointer to join from combine's man page. Closes: #435516
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 01 Aug 2007 13:45:23 -0400
+
 moreutils (0.22) unstable; urgency=low
 
   * vidir, zrun: Don't put temp files in the current directory. Closes: #429367

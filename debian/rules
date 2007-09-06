@@ -21,7 +21,7 @@ binary-arch: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	$(MAKE) PREFIX=debian/moreutils install
+	$(MAKE) PREFIX=debian/moreutils INSTALL_BIN=install install
 	dh_installdocs README
 	dh_installchangelogs
 	dh_perl

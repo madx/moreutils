@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+Written by Michael Tokarev <mjt@tls.msk.ru>
+Public domain.
+
+-->
+
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.4//EN"
+"file:///usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd"
+[]>
+
+<refentry>
+	<refentryinfo>
+		<address>
+			<email>mjt@tls.msk.ru</email>
+		</address>
+		<author>
+			<firstname>Michael</firstname>
+			<surname>Tokarev</surname>
+		</author>
+		<date>2007-08-15</date>
+	</refentryinfo>
+
+	<refmeta>
+		<refentrytitle>lckdo</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+
+	<refnamediv>
+		<refname>lckdo</refname> 
+		<refpurpose>run a program with a lock held</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>lckdo</command>
+			<arg>options</arg>
+			<arg choice="req">lockfile</arg>
+			<arg choice="req">program</arg>
+			<arg>arguments</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>DESCRIPTION</title>
+		
+		<para><command>lckdo</command> runs a program with a lock
+		held, in order to prevent multiple processes from running in
+		parallel. Use just like <command>nice</command> or
+		<command>nohup</command>.</para>
+
+	</refsect1>
+	
+	<refsect1>
+		<title>OPTIONS</title>
+		
+		<variablelist>
+		
+		<varlistentry>
+			<term><option>-w</option></term>
+			<listitem>
+				<para>If the lock is already held by another process,
+				wait for it to complete instead of failing
+				immediately.</para>
+			</listitem>
+		</varlistentry>
+		
+		<varlistentry>
+			<term><option>-W {sec}</option></term>
+			<listitem>
+				<para>The same as -w but wait not more than sec
+				seconds.</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-e</option></term>
+			<listitem>
+				<para>Execute the program directly without forking and
+				waiting (keeps an extra file descriptor open).</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-E {nnn}</option></term>
+			<listitem>
+				<para>Set the file descriptor number to keep open when
+				exec()ing (implies -e).</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-n</option></term>
+			<listitem>
+				<para>Do not create the lock file if it does not
+				exist.</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-q</option></term>
+			<listitem>
+				<para>Produce no output if lock is already held.</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-s</option></term>
+			<listitem>
+				<para>Lock in shared (read) mode.</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-x</option></term>
+			<listitem>
+				<para>Lock in exclusive (write) mode (default).</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-t</option></term>
+			<listitem>
+				<para>Test for lock existence.</para>
+			</listitem>
+		</varlistentry>
+
+		</variablelist>
+		
+	</refsect1>
+	
+	<refsect1>
+		<title>EXIT STATUS</title>
+
+        <para>If the lock was successfully acquired, the return value is that
+        of the program invoked by <command>lckdo</command>. If the lock
+        couldn't be acquired, EX_TEMPFAIL is returned. If there was a problem
+        opening/creating or locking the lock file, EX_CANTCREAT or EX_OSERR
+        will be returned.</para>
+		
+	</refsect1>
+
+</refentry>

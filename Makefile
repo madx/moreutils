@@ -1,7 +1,8 @@
-BINS=isutf8 ifdata pee sponge mispipe
+BINS=isutf8 ifdata pee sponge mispipe lckdo
 PERLSCRIPTS=vidir vipe ts combine zrun
-MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 pee.1 zrun.1 mispipe.1
+MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 pee.1 zrun.1 mispipe.1 lckdo.1
 CFLAGS=-O2 -g -Wall
+INSTALL_BIN=install -s
 
 all: $(BINS) $(MANS)
 
@@ -10,7 +11,7 @@ clean:
 
 install:
 	mkdir -p $(PREFIX)/usr/bin
-	install -s $(BINS) $(PREFIX)/usr/bin
+	$(INSTALL_BIN) $(BINS) $(PREFIX)/usr/bin
 	install $(PERLSCRIPTS) $(PREFIX)/usr/bin
 	
 	mkdir -p $(PREFIX)/usr/share/man/man1
@@ -32,6 +33,9 @@ sponge.1: sponge.docbook
 	docbook2x-man $<
 
 mispipe.1: mispipe.docbook
+	docbook2x-man $<
+
+lckdo.1: lckdo.docbook
 	docbook2x-man $<
 
 %.1: %

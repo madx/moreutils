@@ -10,6 +10,8 @@ Package: moreutils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}
 Suggests: libtime-duration-perl, libtimedate-perl
+Conflicts: lckdo
+Replaces: lckdo
 Description: additional unix utilities
  This is a growing collection of the unix tools that nobody thought
  to write thirty years ago.
@@ -25,3 +27,4 @@ Description: additional unix utilities
   - zrun: automatically uncompress arguments to command
   - mispipe: pipe two commands, returning the exit status of the first
   - isutf8: check if a file or standard input is utf-8
+  - lckdo: execute a program with a lock held

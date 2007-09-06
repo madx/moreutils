@@ -1,4 +1,4 @@
-moreutils (0.23) UNRELEASED; urgency=low
+moreutils (0.23) unstable; urgency=low
 
   * Add pointer to join from combine's man page. Closes: #435516
   * Don't strip binaries for debian package if built with
@@ -7,7 +7,7 @@ moreutils (0.23) UNRELEASED; urgency=low
     current lckdo package. (Robert Edmonds) Closes: #432906
   * lckdo: Don't clear other flags when setting close on exec.
 
- -- Joey Hess <joeyh@debian.org>  Wed, 05 Sep 2007 21:21:29 -0400
+ -- Joey Hess <joeyh@debian.org>  Wed, 05 Sep 2007 21:45:25 -0400
 
 moreutils (0.22) unstable; urgency=low
 

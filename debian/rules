@@ -11,7 +11,7 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp
-	-$(MAKE) -i clean
+	$(MAKE) -i clean
 	dh_clean
 
 binary-indep: build

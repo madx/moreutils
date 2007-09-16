@@ -1,3 +1,11 @@
+moreutils (0.24) unstable; urgency=low
+
+  * vidir: Force numbers to normalised integers.
+  * vidir: Abort on unknown item numbers rather than deleting them.
+    Closes: #442440
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 16 Sep 2007 13:05:54 -0400
+
 moreutils (0.23) unstable; urgency=low
 
   * Add pointer to join from combine's man page. Closes: #435516

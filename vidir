@@ -123,11 +123,10 @@ open (IN, $tmp->filename) || die "$0: cannot read ".$tmp->filename.": $!\n";
 while (<IN>) {
 	chomp;
 	if (/^(\d+)\t{0,1}(.*)/) {
-		my $num=$1;
+		my $num=int($1);
 		my $name=$2;
 		if (! exists $item{$num}) {
-			print STDERR "$0: unknown item number $num\n";
-			$error=1;
+			die "$0: unknown item number $num\n";
 		}
 		elsif ($name ne $item{$num}) {
 			next unless length $name;

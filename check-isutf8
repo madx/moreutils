@@ -27,5 +27,6 @@ check 0 '\xc2\xa9'
 check 1 '\xc2'
 check 1 '\xc2\x20'
 check 1 '\x20\xc2'
+check 1 '\300\200'
 
 exit $failed

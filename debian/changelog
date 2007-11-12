@@ -1,3 +1,10 @@
+moreutils (0.25) unstable; urgency=low
+
+  * isutf8: Detect and reject overlong UTF-8 sequences. Closes: #440951
+    Many thanks to liw for the patch.
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 12 Nov 2007 11:58:07 -0500
+
 moreutils (0.24) unstable; urgency=low
 
   * vidir: Force numbers to normalised integers.

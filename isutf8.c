@@ -258,7 +258,7 @@ int main(int argc, char **argv) {
 				                strerror(errno));
 				ok = 0;
 			} else {
-			        if (is_utf8_byte_stream(file, argv[i], quiet))
+			        if (! is_utf8_byte_stream(file, argv[i], quiet))
 			            ok = 0;
 				(void) fclose(file);
 			}

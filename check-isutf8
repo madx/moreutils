@@ -17,6 +17,17 @@ check() {
 		echo "  got: $ret"
 		failed=1
 	fi
+	printf "$2" > check-isutf8.tmp.$$ 
+	./isutf8 -q check-isutf8.tmp.$$
+	ret=$?
+	rm -f check-isutf8.tmp.$$
+	if [ $ret != $1 ]; then
+		echo "Failure (from file):"
+		echo "  input: $2"
+		echo "  expected: $1"
+		echo "  got: $ret"
+		failed=1
+	fi
 }
 
 check 0 ''

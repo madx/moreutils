@@ -1,9 +1,9 @@
-moreutils (0.26) UNRELEASED; urgency=low
+moreutils (0.26) unstable; urgency=low
 
   * isutf8: Correct inverted exit code when passed a file to check.
     Closes: #453306
 
- -- Joey Hess <joeyh@debian.org>  Wed, 28 Nov 2007 14:16:44 -0500
+ -- Joey Hess <joeyh@debian.org>  Wed, 28 Nov 2007 14:19:32 -0500
 
 moreutils (0.25) unstable; urgency=low
 

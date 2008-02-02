@@ -1,3 +1,9 @@
+moreutils (0.28) UNRELEASED; urgency=low
+
+  * Moved to a git repository.
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 02 Feb 2008 17:02:35 -0500
+
 moreutils (0.27) unstable; urgency=low
 
   * vidir: Check exit codes of close. Closes: #463739

@@ -1,4 +1,4 @@
-moreutils (0.28) UNRELEASED; urgency=low
+moreutils (0.28) unstable; urgency=low
 
   * Moved to a git repository.
   * vidir: Applied patch from Stefan Fritsch (one part of #412176):
@@ -16,7 +16,7 @@ moreutils (0.28) UNRELEASED; urgency=low
   * Add example to man page about recursive modification of directories.
     Closes: #390099
 
- -- Joey Hess <joeyh@debian.org>  Sat, 02 Feb 2008 17:02:35 -0500
+ -- Joey Hess <joeyh@debian.org>  Sat, 02 Feb 2008 17:26:23 -0500
 
 moreutils (0.27) unstable; urgency=low
 

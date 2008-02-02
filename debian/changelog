@@ -1,6 +1,18 @@
 moreutils (0.28) UNRELEASED; urgency=low
 
   * Moved to a git repository.
+  * vidir: Applied patch from Stefan Fritsch (one part of #412176):
+    - Check for control characters (especially newlines) in filenames
+      and error out, since this can greatly confuse the editor or vidir.
+    - If the source of a rename does not exist (and thus the rename will fail
+      anyway), vidir should not move an existing target file to a tmpfile.
+    - If a directory is renamed, vidir should take that into account when
+      renaming files in this directory.
+    - If a directory name is passed as name/ to vidir, vidir should not
+      add second slash after the name.
+  * vidir: Add support for unlinking directories. To recursivly delete
+    a directory and its contents, pipe find to vidir, and delete the directory
+    and its contents in the editor. Closes: #412176
 
  -- Joey Hess <joeyh@debian.org>  Sat, 02 Feb 2008 17:02:35 -0500
 

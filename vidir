@@ -82,15 +82,20 @@ foreach my $item (@ARGV) {
 		open(STDIN, "/dev/tty") || die "reopen: $!\n";
 	}
 	elsif (-d $item) {
+		$item =~ s{/?$}{/};
 		opendir(DIR, $item) || die "$0: cannot read $item: $!\n";
-		push @dir, map { "$item/$_" } sort readdir(DIR);
+		push @dir, map { "$item$_" } sort readdir(DIR);
 		closedir DIR;
 	}
 	else {
 		push @dir, $item;
 	}
 }
-	
+
+if (grep(/[[:cntrl:]]/, @dir)) {
+	die "$0: control characters in filenames are not supported\n";
+}
+
 my $tmp=File::Temp->new(TEMPLATE => "dirXXXXX", DIR => File::Spec->tmpdir);
 open (OUT, ">".$tmp->filename) || die "$0: cannot create ".$tmp->filename.": $!\n";
 
@@ -132,6 +137,12 @@ while (<IN>) {
 			next unless length $name;
 			my $src=$item{$num};
 			
+			if (! (-e $src || -l $src) ) {
+				print STDERR "$0: $src does not exist\n";
+				delete $item{$num};
+				next;
+			}
+
 			# deal with swaps
 			if (-e $name || -l $name) {
 				my $tmp=$name."~";
@@ -158,8 +169,15 @@ while (<IN>) {
 				print STDERR "$0: failed to rename $src to $name: $!\n";
 				$error=1;
 			}
-			elsif ($verbose) {
-				print "'$src' -> '$name'\n";
+			else {
+				if (-d $name) {
+					foreach (values %item) {
+						s/^\Q$src\E/$name/;
+					}
+				}
+				if ($verbose) {
+					print "'$src' => '$name'\n";
+				}
 			}
 		}
 		delete $item{$num};
@@ -174,8 +192,19 @@ while (<IN>) {
 close IN || die "$0: cannot read ".$tmp->filename.": $!\n";
 unlink($tmp.'~') if -e $tmp.'~';
 
-foreach my $item (sort values %item) {
-	if (! unlink($item)) {
+sub rm {
+	my $file = shift;
+
+	if (-d $file && ! -l $file) {
+		return rmdir $file;
+	}
+	else {
+		return unlink $file;
+	}
+}
+
+foreach my $item (reverse sort values %item) {
+	if (! rm($item)) {
 		print STDERR "$0: failed to remove $item: $!\n";
 		$error=1;
 	}

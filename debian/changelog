@@ -1,3 +1,9 @@
+moreutils (0.27) UNRELEASED; urgency=low
+
+  * vidir: Check exit codes of close. Closes: #463739
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 02 Feb 2008 16:41:52 -0500
+
 moreutils (0.26) unstable; urgency=low
 
   * isutf8: Correct inverted exit code when passed a file to check.

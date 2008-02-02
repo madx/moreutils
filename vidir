@@ -92,7 +92,7 @@ foreach my $item (@ARGV) {
 }
 	
 my $tmp=File::Temp->new(TEMPLATE => "dirXXXXX", DIR => File::Spec->tmpdir);
-open (OUT, ">".$tmp->filename) || die "$0: cannot write ".$tmp->filename.": $!\n";
+open (OUT, ">".$tmp->filename) || die "$0: cannot create ".$tmp->filename.": $!\n";
 
 my %item;
 my $c=0;
@@ -102,7 +102,7 @@ foreach (@dir) {
 	print OUT "$c\t$_\n";
 }
 @dir=();
-close OUT;
+close OUT || die "$0: cannot write ".$tmp->filename.": $!\n";
 
 my @editor="vi";
 if (-x "/usr/bin/editor") {
@@ -171,7 +171,7 @@ while (<IN>) {
 		die "$0: unable to parse line \"$_\", aborting\n";
 	}
 }
-close IN;
+close IN || die "$0: cannot read ".$tmp->filename.": $!\n";
 unlink($tmp.'~') if -e $tmp.'~';
 
 foreach my $item (sort values %item) {

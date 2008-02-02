@@ -33,6 +33,25 @@ Verbosely display the actions taken by the program.
 
 =back
 
+=head1 EXAMPLES
+
+=over 4
+
+=item vidir
+
+=item vidir *.jpeg
+
+Typical uses.
+
+=item find | vidir -
+
+Edit subdirectory contents too. To delete subdirectories,
+delete all their contents and the subdirectory itself in the editor.
+
+=item find -type f | vidir -
+
+Edit all files under the current directory and subdirectories.
+
 =head1 ENVIRONMENT VARIABLES
 
 =over 4
@@ -46,11 +65,6 @@ Editor to use.
 Also supported to determine what editor to use.
 
 =back
-
-=head1 BUGS
-
-Does not support deletion of directories. Does not support recursive
-editing of contents of a directory.
 
 =head1 AUTHOR
 

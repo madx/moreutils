@@ -13,6 +13,8 @@ moreutils (0.28) UNRELEASED; urgency=low
   * vidir: Add support for unlinking directories. To recursivly delete
     a directory and its contents, pipe find to vidir, and delete the directory
     and its contents in the editor. Closes: #412176
+  * Add example to man page about recursive modification of directories.
+    Closes: #390099
 
  -- Joey Hess <joeyh@debian.org>  Sat, 02 Feb 2008 17:02:35 -0500
 

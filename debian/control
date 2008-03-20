@@ -20,6 +20,7 @@ Description: additional unix utilities
  So far, it includes the following utilities:
   - sponge: soak up standard input and write to a file
   - ifdata: get network interface info without parsing ifconfig output
+  - ifne: run a program if the standard input is not empty
   - vidir: edit a directory in your text editor
   - vipe: insert a text editor into a pipe
   - ts: timestamp standard input

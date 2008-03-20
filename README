@@ -7,6 +7,8 @@ ifdata
 	get network interface info without parsing ifconfig output
 isutf8
 	check if a file or standard input is utf-8
+ifne
+        run a command if the standard input is not empty
 lckdo
 	execute a program with a lock held
 mispipe

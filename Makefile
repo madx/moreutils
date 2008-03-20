@@ -1,6 +1,6 @@
-BINS=isutf8 ifdata pee sponge mispipe lckdo
+BINS=isutf8 ifdata ifne pee sponge mispipe lckdo
 PERLSCRIPTS=vidir vipe ts combine zrun
-MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 pee.1 zrun.1 mispipe.1 lckdo.1
+MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 ifne.1 pee.1 zrun.1 mispipe.1 lckdo.1
 CFLAGS=-O2 -g -Wall
 INSTALL_BIN=install -s
 
@@ -24,6 +24,9 @@ isutf8.1: isutf8.docbook
 	docbook2x-man $<
 
 ifdata.1: ifdata.docbook
+	docbook2x-man $<
+
+ifne.1: ifne.docbook
 	docbook2x-man $<
 
 pee.1: pee.docbook

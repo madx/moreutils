@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+Copyright 2008 Javier Merino <cibervicho@gmail.com>
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+-->
+
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.4//EN"
+"file:///usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd"
+[]>
+
+<refentry>
+	<refentryinfo>
+		<address>
+			<email>cibervicho@gmail.com</email>
+		</address>
+		<author>
+			<firstname>Javier</firstname>
+			<surname>Merino</surname>
+		</author>
+		<date>2008-03-19</date>
+	</refentryinfo>
+
+	<refmeta>
+		<refentrytitle>ifne</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+
+	<refnamediv>
+		<refname>ifne</refname> 
+		<refpurpose>Run command if the standard input is not empty</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>ifne command</command>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>DESCRIPTION</title>
+		
+                <para><command>ifne</command> runs the following command if and only if
+                the standard input is not empty.</para>
+	</refsect1>
+	
+	<refsect1>
+		<title>EXAMPLE</title>
+		<cmdsynopsis>
+			<command>find . -name core | ifne mail -s "Core files found" root</command>
+		</cmdsynopsis>
+	</refsect1>
+</refentry>

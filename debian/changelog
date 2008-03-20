@@ -1,3 +1,9 @@
+moreutils (0.29) UNRELEASED; urgency=low
+
+  * Add ifne, contributed by Javier Merino.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 20 Mar 2008 12:56:42 -0400
+
 moreutils (0.28) unstable; urgency=low
 
   * Moved to a git repository.

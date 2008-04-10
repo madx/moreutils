@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 	size_t bufsize = 8192;
 	size_t bufused = 0;
 	ssize_t i = 0;
-	int outfd;
+	FILE *outf;
 	
 	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
 		usage();
@@ -69,25 +69,23 @@ int main(int argc, char **argv) {
 	}
   
 	if (argc == 2) {
-		outfd = open(argv[1], O_CREAT | O_TRUNC | O_WRONLY, 0666);
-		if (outfd == -1) {
+		outf = fopen(argv[1], "w");
+		if (! outf) {
 			fprintf(stderr, "Can't open %s: %s\n", argv[1], strerror(errno));
 			exit(1);
 		}
 	}
 	else {
-		outfd = 1;
+		outf = stdout;
 	}
 
-	i = write(outfd, bufstart, bufused);
-	if (i == -1) {
-		perror("write");
+	if (fwrite(bufstart, bufused, 1, outf) < 1) {
+		perror("fwrite");
 		exit(1);
 	}
 
-	i = close(outfd);
-	if (i == -1) {
-		perror("close");
+	if (fclose(outf) != 0) {
+		perror("fclose");
 		exit(1);
 	}
 

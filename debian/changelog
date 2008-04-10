@@ -1,6 +1,8 @@
 moreutils (0.29) UNRELEASED; urgency=low
 
   * Add ifne, contributed by Javier Merino.
+  * sponge: Ensure that suspending/resuming doesn't result in partial writes
+    of the data, by using fwrite() rather than write().
 
  -- Joey Hess <joeyh@debian.org>  Thu, 20 Mar 2008 12:56:42 -0400
 

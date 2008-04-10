@@ -1,4 +1,3 @@
-
 /* 
  *
  * Copyright 2008 Javier Merino <cibervicho@gmail.com>
@@ -30,6 +29,7 @@ int main(int argc, char **argv) {
 	int child_status;
 	pid_t child_pid;
 	char buf[BUFSIZ];
+	FILE *outf;
 
 	if (argc < 2) {
 		/* Noop */
@@ -68,11 +68,15 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	/* Parent: write in fds[1] our stdin */
+	/* Parent: write stdin to fds[1] */
 	close(fds[0]);
-
+	outf = fdopen(fds[1], "w");
+	if (! outf) {
+		perror("fdopen");
+		exit(1);
+	}
 	do {
-		if (write(fds[1], buf, r*sizeof(char)) == -1) {
+		if (fwrite(buf, r*sizeof(char), 1, outf) < 1) {
 			fprintf(stderr, "Write error to %s\n", argv[1]);
 			exit(EXIT_FAILURE);
 		}
@@ -82,8 +86,8 @@ int main(int argc, char **argv) {
 		perror("read");
 		exit(EXIT_FAILURE);
 	}
-	
-	close(fds[1]);
+	fclose(outf);
+
 	if (waitpid(child_pid, &child_status, 0) != child_pid) {
 		perror("waitpid");
 		return EXIT_FAILURE;

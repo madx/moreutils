@@ -219,14 +219,16 @@ static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
 }
 
 FILE *open_tmpfile(void) {
-	/* umask(077); FIXME: Should we be setting umask, or using default?  */
 	struct cs_status cs;
 	int tmpfd;
 	FILE *tmpfile;
+	mode_t mask;
 
 	trapsignals();
 	cs = cs_enter();
+	mask=umask(077);
 	tmpfd = mkstemp(tmpname);
+	umask(mask);
 	atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
 	cs_leave(cs);
 	if (tmpfd < 0) {

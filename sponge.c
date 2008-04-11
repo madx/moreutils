@@ -199,7 +199,7 @@ static void write_buff_out(char* buff, size_t length, FILE *fd) {
 	}
 }
 
-static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
+static void copy_tmpfile(FILE *tmpfile, FILE *outfile) {
 	char buf[BUFF_SIZE];
 	if (fseek(tmpfile, 0, SEEK_SET)) {
 		perror("could to seek to start of temporary file");
@@ -207,7 +207,7 @@ static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
 		exit(1);
 	}
 	while (fread(buf, BUFF_SIZE, 1, tmpfile) > 0) {
-		write_buff_out(buf, BUFF_SIZE, outfd);
+		write_buff_out(buf, BUFF_SIZE, outfile);
 	}
 	if (ferror(tmpfile)) {
 		perror("read temporary file");
@@ -215,7 +215,7 @@ static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
 		exit(1);
 	}
 	fclose(tmpfile);
-	fclose(outfd);
+	fclose(outfile);
 }
 
 FILE *open_tmpfile(void) {
@@ -247,7 +247,7 @@ int main (int argc, char **argv) {
 	char *buf, *bufstart, *outname = NULL;
 	size_t bufsize = BUFF_SIZE;
 	size_t bufused = 0;
-	FILE *tmpfile = 0;
+	FILE *outfile, *tmpfile = 0;
 	ssize_t i = 0;
 	size_t mem_available = default_sponge_size();
 
@@ -293,41 +293,53 @@ int main (int argc, char **argv) {
 		/* write whatever we have in memory to tmpfile */
 		if (bufused) 
 			write_buff_tmp(bufstart, bufused, tmpfile);
-		fclose(tmpfile);
+		free(bufstart);
+		if (fflush(tmpfile) != 0) {
+			perror("fflush");
+			exit(1);
+		}
 
 		if (outname) {
 			/* If it's a regular file, or does not yet exist,
 			 * attempt a fast rename of the temp file. */
-			if ((stat(outname, &statbuf) == 0 &&
-			     S_ISREG(statbuf.st_mode)) ||
-			    errno == ENOENT) {
-				if (rename(tmpname, outname) != 0) {
-					/* Slow copy. */
-					FILE *outfd = fopen(outname, "w");
-						if (outfd < 0) {
-						perror("error opening output file");
-						exit(1);
-					}
-					copy_tmpfile(tmpfile, outfd);
+			if (((lstat(outname, &statbuf) == 0 &&
+			      S_ISREG(statbuf.st_mode) &&
+			      ! S_ISLNK(statbuf.st_mode)
+			     ) || errno == ENOENT) &&
+			    rename(tmpname, outname) == 0) {
+				/* Fix renamed file mode. */
+				if (errno != ENOENT &&
+				    chmod(outname, statbuf.st_mode) != 0) {
+					perror("chmod");
+					exit(1);
 				}
+				return(0);
 			}
+			
+			/* Fall back to slow copy. */
+			outfile = fopen(outname, "w");
+			if (!outfile) {
+				perror("error opening output file");
+				exit(1);
+			}
+			copy_tmpfile(tmpfile, outfile);
 		}
 		else {
 			copy_tmpfile(tmpfile, stdout);
 		}
 	}
 	else {
-		FILE *outfd = stdout;
+		outfile = stdout;
 		if (outname) {
-			outfd = fopen(outname, "w");
-			if (outfd < 0) {
+			outfile = fopen(outname, "w");
+			if (!outfile) {
 				perror("error opening output file");
 				exit(1);
 			}
 		}
 		if (bufused)
-			write_buff_out(bufstart, bufused, outfd);
-		fclose(outfd);
+			write_buff_out(bufstart, bufused, outfile);
+		fclose(outfile);
 	}
 
 	return 0;

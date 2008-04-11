@@ -4,6 +4,8 @@ moreutils (0.29) UNRELEASED; urgency=low
   * sponge, ifne: Ensure that suspending/resuming doesn't
     result in partial writes of the data, by using fwrite()
     rather than write().
+  * sponge: Handle large data sizes by using a temp file rather than by
+    consuming arbitrary amounts of memory. Patch by Brock Noland.
 
  -- Joey Hess <joeyh@debian.org>  Thu, 20 Mar 2008 12:56:42 -0400
 

@@ -86,7 +86,6 @@ static void onexit_cleanup (void) {
 }
 
 static void sighandler (int sig) {
-    printf("caught sig %d\n", sig);
 	if (! SA_NOCLDSTOP)
 		signal(sig, SIG_IGN);
 

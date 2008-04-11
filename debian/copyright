@@ -41,7 +41,7 @@ License: GPL-2+
 
 Files: physmem.c
 Copyright: 2000, 2001, 2003, 2005, 2006 Free Software Foundation, Inc.
-License: GPL-3+
+License: GPL-2+
 
 Files: *
 Copyright: 2006-2008 Joey Hess <joeyh@debian.org>

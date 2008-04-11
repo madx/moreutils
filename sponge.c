@@ -199,15 +199,14 @@ static void write_buff_out(char* buff, size_t length, FILE *fd) {
 	}
 }
 
-static void copy_tmpfile(FILE *tmpfile, FILE *outfile) {
-	char buf[BUFF_SIZE];
+static void copy_tmpfile(FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
 	if (fseek(tmpfile, 0, SEEK_SET)) {
 		perror("could to seek to start of temporary file");
 		fclose(tmpfile);
 		exit(1);
 	}
-	while (fread(buf, BUFF_SIZE, 1, tmpfile) > 0) {
-		write_buff_out(buf, BUFF_SIZE, outfile);
+	while (fread(buf, size, 1, tmpfile) > 0) {
+		write_buff_out(buf, size, outfile);
 	}
 	if (ferror(tmpfile)) {
 		perror("read temporary file");
@@ -293,7 +292,6 @@ int main (int argc, char **argv) {
 		/* write whatever we have in memory to tmpfile */
 		if (bufused) 
 			write_buff_tmp(bufstart, bufused, tmpfile);
-		free(bufstart);
 		if (fflush(tmpfile) != 0) {
 			perror("fflush");
 			exit(1);
@@ -322,10 +320,10 @@ int main (int argc, char **argv) {
 				perror("error opening output file");
 				exit(1);
 			}
-			copy_tmpfile(tmpfile, outfile);
+			copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
 		}
 		else {
-			copy_tmpfile(tmpfile, stdout);
+			copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
 		}
 	}
 	else {

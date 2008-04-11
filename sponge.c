@@ -43,7 +43,7 @@
 char tmpname[] = DEFAULT_TMP_NAME;
 
 void usage() {
-	printf("sponge <file>: suck in all input from stdin and write it to <file>\n");
+	printf("sponge <file>: soak up all input from stdin and write it to <file>\n");
 	exit(0);
 }
 

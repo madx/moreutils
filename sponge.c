@@ -318,9 +318,19 @@ int main (int argc, char **argv) {
 			      ! S_ISLNK(statbuf.st_mode)
 			     ) || errno == ENOENT) &&
 			    rename(tmpname, outname) == 0) {
-				/* Fix renamed file mode. */
-				if (errno != ENOENT &&
-				    chmod(outname, statbuf.st_mode) != 0) {
+				/* Fix renamed file mode to match either
+				 * the old file mode, or the default file
+				 * mode for a newly created file. */
+				mode_t mode;
+				if (errno != ENOENT) {
+					mode = statbuf.st_mode;
+				}
+				else {
+					mode_t mask = umask(0);
+					umask(mask);
+					mode = 0666 & ~mask;
+				}
+				if (chmod(outname, mode) != 0) {
 					perror("chmod");
 					exit(1);
 				}

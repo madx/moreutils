@@ -218,6 +218,29 @@ static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
 	fclose(outfd);
 }
 
+FILE *open_tmpfile(void) {
+	/* umask(077); FIXME: Should we be setting umask, or using default?  */
+	struct cs_status cs;
+	int tmpfd;
+	FILE *tmpfile;
+
+	trapsignals();
+	cs = cs_enter();
+	tmpfd = mkstemp(tmpname);
+	atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
+	cs_leave(cs);
+	if (tmpfd < 0) {
+		perror("mkstemp failed");
+		exit(1);
+	}
+	tmpfile = fdopen(tmpfd, "w+");
+	if (! tmpfile) {
+		perror("fdopen");
+		exit(1);
+	}
+	return tmpfile;
+}
+
 int main (int argc, char **argv) {
 	char *buf, *bufstart, *outname = NULL;
 	size_t bufsize = BUFF_SIZE;
@@ -239,20 +262,7 @@ int main (int argc, char **argv) {
 		if (bufused == bufsize) {
 			if ((bufsize*2) >= mem_available) {
 				if (!tmpfile) {
-					/* umask(077); FIXME: Should we be setting umask, or using default?  */
-					struct cs_status cs;
-					int tmpfd;
-
-					trapsignals();
-					cs = cs_enter();
-					tmpfd = mkstemp(tmpname);
-					atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
-					cs_leave(cs);
-					if (tmpfd < 0) {
-						perror("mkstemp failed");
-						exit(1);
-					}
-					tmpfile = fdopen(tmpfd, "w+");
+					tmpfile=open_tmpfile();
 				}
 				write_buff_tmp(bufstart, bufused, tmpfile);
 				bufused = 0;

@@ -223,7 +223,9 @@ FILE *open_tmpfile(void) {
 	mode_t mask;
 	char *tmpdir;
 	char const * const template="%s/sponge.XXXXXX";
-	
+
+	trapsignals();
+	cs = cs_enter();
 	tmpdir = getenv("TMPDIR");
 	if (tmpdir == NULL)
 		tmpdir = "/tmp";
@@ -234,14 +236,12 @@ FILE *open_tmpfile(void) {
 		exit(1);
 	}
 	sprintf(tmpname, template, tmpdir);
-
-	trapsignals();
-	cs = cs_enter();
 	mask=umask(077);
 	tmpfd = mkstemp(tmpname);
 	umask(mask);
 	atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
 	cs_leave(cs);
+
 	if (tmpfd < 0) {
 		perror("mkstemp failed");
 		exit(1);
@@ -340,13 +340,15 @@ int main (int argc, char **argv) {
 		}
 	}
 	else {
-		outfile = stdout;
 		if (outname) {
 			outfile = fopen(outname, "w");
 			if (!outfile) {
 				perror("error opening output file");
 				exit(1);
 			}
+		}
+		else {
+			outfile = stdout;
 		}
 		if (bufused)
 			write_buff_out(bufstart, bufused, outfile);

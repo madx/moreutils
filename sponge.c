@@ -39,8 +39,7 @@
 
 #define BUFF_SIZE           8192
 #define MIN_SPONGE_SIZE     BUFF_SIZE
-#define DEFAULT_TMP_NAME    "/tmp/sponge.XXXXXX"
-char tmpname[] = DEFAULT_TMP_NAME;
+char *tmpname = NULL;
 
 void usage() {
 	printf("sponge <file>: soak up all input from stdin and write it to <file>\n");
@@ -74,7 +73,7 @@ static void cs_leave (struct cs_status status) {
 }
 
 static void cleanup() {
-	if (strcmp(tmpname, DEFAULT_TMP_NAME)) {
+	if (tmpname) {
 		unlink(tmpname);
 	}
 }
@@ -222,6 +221,19 @@ FILE *open_tmpfile(void) {
 	int tmpfd;
 	FILE *tmpfile;
 	mode_t mask;
+	char *tmpdir;
+	char const * const template="%s/sponge.XXXXXX";
+	
+	tmpdir = getenv("TMPDIR");
+	if (tmpdir == NULL)
+		tmpdir = "/tmp";
+	/* Subtract 2 for `%s' and add 1 for the trailing NULL. */
+	tmpname=malloc(strlen(tmpdir) + strlen(template) - 2 + 1);
+	if (! tmpname) {
+		perror("failed to allocate memory");
+		exit(1);
+	}
+	sprintf(tmpname, template, tmpdir);
 
 	trapsignals();
 	cs = cs_enter();
@@ -253,6 +265,10 @@ int main (int argc, char **argv) {
 	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
 		usage();
 	}
+	if (argc == 2) {
+		outname = argv[1];
+	}
+
 	bufstart = buf = malloc(bufsize);
 	if (!buf) {
 		perror("failed to allocate memory");
@@ -282,9 +298,6 @@ int main (int argc, char **argv) {
 	if (i < 0) {
 		perror("failed to read from stdin");
 		exit(1);
-	}
-	if (argc == 2) {
-		outname = argv[1];
 	}
 	if (tmpfile) {
 		struct stat statbuf;

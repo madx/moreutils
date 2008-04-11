@@ -74,9 +74,9 @@ static void cs_leave (struct cs_status status) {
 }
 
 static void cleanup() {
-    if(strcmp(tmpname, DEFAULT_TMP_NAME)) {
-    	unlink(tmpname);
-    }
+	if (strcmp(tmpname, DEFAULT_TMP_NAME)) {
+		unlink(tmpname);
+	}
 }
 
 static void onexit_cleanup (void) {
@@ -133,7 +133,7 @@ static size_t default_sponge_size (void) {
 	/* Use no less than the minimum. */
 	return MAX (size, MIN_SPONGE_SIZE);
 }
-  
+
 void trapsignals (void) {
 	ssize_t i = 0;
 	static int const sig[] = {
@@ -184,33 +184,35 @@ void trapsignals (void) {
 }
 
 static void write_buff_tmp(char* buff, size_t length, FILE *fd) {
-    if (fwrite(buff, length, 1, fd) < 1) {
-        perror("error writing buffer to temporary file");
-        fclose(fd);
-        exit(1);
-    }
+	if (fwrite(buff, length, 1, fd) < 1) {
+		perror("error writing buffer to temporary file");
+		fclose(fd);
+		exit(1);
+	}
 }
+
 static void write_buff_out(char* buff, size_t length, FILE *fd) {
-    if (fwrite(buff, length, 1, fd) < 1) {
-        perror("error writing buffer to output file");
-        fclose(fd);
-        exit(1);
-    }
+	if (fwrite(buff, length, 1, fd) < 1) {
+		perror("error writing buffer to output file");
+		fclose(fd);
+		exit(1);
+	}
 }
+
 static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
-    char buf[BUFF_SIZE];
-    if (fseek(tmpfile, 0, SEEK_SET)) {
-        perror("could to seek to start of temporary file");
-        fclose(tmpfile);
-        exit(1);
-    }
-    // XXX I'd catch signals or writes errors here, but I
-    // I don't think it matters as the file is overwritten
-    while(fread(buf, BUFF_SIZE, 1, tmpfile) == 1) {
-        write_buff_out(buf, BUFF_SIZE, outfd);
-    }
-    fclose(tmpfile);
-    fclose(outfd);
+	char buf[BUFF_SIZE];
+	if (fseek(tmpfile, 0, SEEK_SET)) {
+		perror("could to seek to start of temporary file");
+		fclose(tmpfile);
+		exit(1);
+	}
+	// XXX I'd catch signals or writes errors here, but I
+	// I don't think it matters as the file is overwritten
+	while(fread(buf, BUFF_SIZE, 1, tmpfile) == 1) {
+		write_buff_out(buf, BUFF_SIZE, outfd);
+	}
+	fclose(tmpfile);
+	fclose(outfd);
 }
 
 int main (int argc, char **argv) {
@@ -234,13 +236,11 @@ int main (int argc, char **argv) {
 		if (bufused == bufsize) {
 			if ((bufsize*2) >= mem_available) {
 				if (!tmpfile) {
-                    /* 
-                    umask(077); FIXME: Should we be setting umask, or using default?
-                    */
+					/* umask(077); FIXME: Should we be setting umask, or using default?  */
 					struct cs_status cs = cs_enter();
 					int tmpfd = mkstemp(tmpname);
 					atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
-                    trapsignals();
+					trapsignals();
 					cs_leave(cs);
 					if (tmpfd < 0) {
 						perror("mkstemp failed");
@@ -248,7 +248,7 @@ int main (int argc, char **argv) {
 					}
 					tmpfile = fdopen(tmpfd, "w+");
 				}
-                write_buff_tmp(bufstart, bufused, tmpfile);
+				write_buff_tmp(bufstart, bufused, tmpfile);
 				bufused = 0;
 			}
 			else {
@@ -270,32 +270,32 @@ int main (int argc, char **argv) {
 		outname = argv[1];
 	}
 	if (tmpfile) {
-        /* write whatever we have in memory to tmpfile */
-        write_buff_tmp(bufstart, bufused, tmpfile);
-        struct stat statbuf;
+		/* write whatever we have in memory to tmpfile */
+		write_buff_tmp(bufstart, bufused, tmpfile);
+		struct stat statbuf;
 		if (outname && !stat(outname, &statbuf)) {
-             /* regular file */
-             if(S_ISREG(statbuf.st_mode) && !fclose(tmpfile)) {
-                if(rename(tmpname, outname)) {
-                    perror("error renaming temporary file to output file");
-                    exit(1);
-                }
-             }
-             else {
-                FILE *outfd = fopen(outname, "w");
-                if (outfd < 0) {
-                    perror("error opening output file");
-                    exit(1);
-                }
-                copy_tmpfile(tmpfile, outfd);
-            }
+			/* regular file */
+			if (S_ISREG(statbuf.st_mode) && !fclose(tmpfile)) {
+				if (rename(tmpname, outname)) {
+					perror("error renaming temporary file to output file");
+					exit(1);
+				}
+			}
+			else {
+				FILE *outfd = fopen(outname, "w");
+				if (outfd < 0) {
+					perror("error opening output file");
+					exit(1);
+				}
+				copy_tmpfile(tmpfile, outfd);
+			}
 		}
 		else {
-            copy_tmpfile(tmpfile, stdout);
+			copy_tmpfile(tmpfile, stdout);
 		}
 	}
 	else {
-        FILE *outfd = stdout;
+		FILE *outfd = stdout;
 		if (outname) {
 			outfd = fopen(outname, "w");
 			if (outfd < 0) {
@@ -303,8 +303,9 @@ int main (int argc, char **argv) {
 				exit(1);
 			}
 		}
-        write_buff_out(bufstart, bufused, outfd);
-        fclose(outfd);
+		write_buff_out(bufstart, bufused, outfd);
+		fclose(outfd);
 	}
+
 	return 0;
 }

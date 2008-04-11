@@ -206,10 +206,13 @@ static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
 		fclose(tmpfile);
 		exit(1);
 	}
-	// XXX I'd catch signals or writes errors here, but I
-	// I don't think it matters as the file is overwritten
-	while(fread(buf, BUFF_SIZE, 1, tmpfile) == 1) {
+	while (fread(buf, BUFF_SIZE, 1, tmpfile) > 0) {
 		write_buff_out(buf, BUFF_SIZE, outfd);
+	}
+	if (ferror(tmpfile)) {
+		perror("read temporary file");
+		fclose(tmpfile);
+		exit(1);
 	}
 	fclose(tmpfile);
 	fclose(outfd);
@@ -274,7 +277,8 @@ int main (int argc, char **argv) {
 	}
 	if (tmpfile) {
 		/* write whatever we have in memory to tmpfile */
-		write_buff_tmp(bufstart, bufused, tmpfile);
+		if (bufused) 
+			write_buff_tmp(bufstart, bufused, tmpfile);
 		struct stat statbuf;
 		if (outname && !stat(outname, &statbuf)) {
 			/* regular file */
@@ -306,7 +310,8 @@ int main (int argc, char **argv) {
 				exit(1);
 			}
 		}
-		write_buff_out(bufstart, bufused, outfd);
+		if (bufused)
+			write_buff_out(bufstart, bufused, outfd);
 		fclose(outfd);
 	}
 

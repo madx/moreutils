@@ -37,7 +37,7 @@
 
 #include "physmem.c"
 
-#define MIN_SPONGE_SIZE     sizeof(8192)
+#define MIN_SPONGE_SIZE     BUFF_SIZE
 #define BUFF_SIZE           8192
 #define DEFAULT_TMP_NAME    "/tmp/sponge.XXXXXX"
 char tmpname[] = DEFAULT_TMP_NAME;
@@ -74,7 +74,9 @@ static void cs_leave (struct cs_status status) {
 }
 
 static void cleanup() {
-	unlink(tmpname);
+    if(strcmp(tmpname, DEFAULT_TMP_NAME)) {
+    	unlink(tmpname);
+    }
 }
 
 static void onexit_cleanup (void) {
@@ -84,6 +86,7 @@ static void onexit_cleanup (void) {
 }
 
 static void sighandler (int sig) {
+    printf("caught sig %d\n", sig);
 	if (! SA_NOCLDSTOP)
 		signal(sig, SIG_IGN);
 
@@ -181,6 +184,36 @@ void trapsignals (void) {
 #endif
 }
 
+static void write_buff_tmp(char* buff, size_t length, FILE *fd) {
+    if (fwrite(buff, length, 1, fd) < 1) {
+        perror("error writing buffer to temporary file");
+        fclose(fd);
+        exit(1);
+    }
+}
+static void write_buff_out(char* buff, size_t length, FILE *fd) {
+    if (fwrite(buff, length, 1, fd) < 1) {
+        perror("error writing buffer to output file");
+        fclose(fd);
+        exit(1);
+    }
+}
+static void copy_tmpfile(FILE *tmpfile, FILE *outfd) {
+    char buf[BUFF_SIZE];
+    if (fseek(tmpfile, 0, SEEK_SET)) {
+        perror("could to seek to start of temporary file");
+        fclose(tmpfile);
+        exit(1);
+    }
+    // XXX I'd catch signals or writes errors here, but I
+    // I don't think it matters as the file is overwritten
+    while(fread(buf, BUFF_SIZE, 1, tmpfile) == 1) {
+        write_buff_out(buf, BUFF_SIZE, outfd);
+    }
+    fclose(tmpfile);
+    fclose(outfd);
+}
+
 int main (int argc, char **argv) {
 	char *buf, *bufstart, *outname = NULL;
 	size_t bufsize = BUFF_SIZE;
@@ -197,30 +230,26 @@ int main (int argc, char **argv) {
 		perror("failed to allocate memory");
 		exit(1);
 	}
-
-	trapsignals();
-
 	while ((i = read(0, buf, bufsize - bufused)) > 0) {
 		bufused = bufused+i;
 		if (bufused == bufsize) {
-			if (bufsize >= mem_available) {
+			if ((bufsize*2) >= mem_available) {
 				if (!tmpfile) {
-					umask(077);
+                    /* 
+                    umask(077); FIXME: Should we be setting umask, or using default?
+                    */
 					struct cs_status cs = cs_enter();
 					int tmpfd = mkstemp(tmpname);
-					atexit(onexit_cleanup); // if solaris on_exit(onexit_cleanup, 0);
+					atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
+                    trapsignals();
 					cs_leave(cs);
 					if (tmpfd < 0) {
-						perror("mkstemp");
+						perror("mkstemp failed");
 						exit(1);
 					}
 					tmpfile = fdopen(tmpfd, "w+");
 				}
-				if (fwrite(bufstart, bufsize, 1, tmpfile) < 1) {
-					perror("writing to tempory file failed"); 
-					fclose(tmpfile);
-					exit(1);
-				}
+                write_buff_tmp(bufstart, bufused, tmpfile);
 				bufused = 0;
 			}
 			else {
@@ -242,50 +271,41 @@ int main (int argc, char **argv) {
 		outname = argv[1];
 	}
 	if (tmpfile) {
-		if (fwrite(bufstart, bufused, 1, tmpfile) < 1) {
-			perror("write tmpfile");
-			fclose(tmpfile);
-			exit(1);
-		}
-		if (outname) {
-			fclose(tmpfile);
-			if (rename(tmpname, outname)) {
-				perror("error renaming temporary file to output file");
-				exit(1);
-			}
+        /* write whatever we have in memory to tmpfile */
+        write_buff_tmp(bufstart, bufused, tmpfile);
+        struct stat statbuf;
+		if (outname && !stat(outname, &statbuf)) {
+             /* regular file */
+             if(S_ISREG(statbuf.st_mode) && !fclose(tmpfile)) {
+                if(rename(tmpname, outname)) {
+                    perror("error renaming temporary file to output file");
+                    exit(1);
+                }
+             }
+             else {
+                FILE *outfd = fopen(outname, "w");
+                if (outfd < 0) {
+                    perror("error opening output file");
+                    exit(1);
+                }
+                copy_tmpfile(tmpfile, outfd);
+            }
 		}
 		else {
-			if (fseek(tmpfile, 0, SEEK_SET)) {
-				perror("could to seek to start of temporary file");
-				fclose(tmpfile);
-				exit(1);
-			}
-			while (fread( buf, BUFF_SIZE, 1, tmpfile) < 1) {
-				if (fwrite(buf, BUFF_SIZE, 1, stdout) < 1) { 
-					perror("error writing out merged file");
-					exit(1);
-				}
-			}
-			fclose(tmpfile);
-			unlink(tmpname);
+            copy_tmpfile(tmpfile, stdout);
 		}
 	}
 	else {
+        FILE *outfd = stdout;
 		if (outname) {
-			FILE *outfd = fopen(outname, "w");
+			outfd = fopen(outname, "w");
 			if (outfd < 0) {
 				perror("error opening output file");
 				exit(1);
 			}
-			if (fwrite(bufstart, bufused, 1, outfd) < 1) {
-				perror("error writing out merged file");
-				exit(1);
-			}
 		}
-		else if (fwrite(bufstart, bufused, 1, stdout) < 1) {
-			perror("error writing out merged file");
-			exit(1);
-		}
+        write_buff_out(bufstart, bufused, outfd);
+        fclose(outfd);
 	}
 	return 0;
 }

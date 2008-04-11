@@ -1,29 +1,48 @@
 This package was put together and debianized by Joey Hess
 <joeyh@debian.org>, using sources from all over.
 
-isutf8 is Copyright (C) 2005 by Lars Wirzenius, under the terms of
-the GPL.
+Files: isutf8.*
+Copyright: 2005 Lars Wirzenius
+License: GPL-2+
+ The full text of the GPL is distributed as COPYING in moreutils's source,
+ and is distributed in /usr/share/common-licenses/GPL-2 on Debian systems.
 
-sponge is Copyright (C) 2006 by Tollef Fog Heen, under the terms of
-the GPL version 2. Name and concept by Colin Watson.
+Files: sponge.*
+Copyright: 2006 Tollef Fog Heen
+License: GPL-2
+Note: Name and concept by Colin Watson.
 
-ifdata is Copyright (C) 2002 by Benjamin BAYART, under the terms of
-the GPL. It was originally called ifcfg and has a web page here:
-http://edgard.dyn.fdn.fr/developpements/ifcfg.shtml
+Files: ifdata.c
+Copyright: 2002 Benjamin BAYART
+License: GPL-2+
+Note: It was originally called ifcfg and has a web page at 
+      http://edgard.dyn.fdn.fr/developpements/ifcfg.shtml
 
-pee is Copyright (c) Miek Gieben, 2006, under the terms of the GPL.
+Files: pee.c
+Copyright: 2006 Miek Gieben
+License: GPL-2+
 
-zrun is Copyright (c) Chung-chieh Shan, under the terms of the GPL, version
-2 or later.
+Files: zrun
+Copyright: 2006 Chung-chieh Shan
+License: GPL-2+
 
-mispipe is Copyright (c) Nathanael Nerode, under the terms of the GPL,
-version 2 or later. (It's also dual-licensed under the MIT/Expat licence.)
+Files: mispipe.c
+Copyright: 2004 Nathanael Nerode
+License: GPL-2+ | MIT
 
-lckdo is public domain code released by Michael Tokarev.
+Files: lckdo.c, lckdo.docbook
+Copyright: Michael Tokarev
+License: other
+ Public domain
 
-ifne is Copyright (c) 2008 Javier Merino <cibervicho@gmail.com>, under the
-terms of the GPL, version 2 or later. 
+Files: ifne.c, ifne.docbook
+Copyright: 2008 Javier Merino
+License: GPL-2+
 
-Everything else is copyright 2006 by Joey Hess, under the terms of GPL.
-The full text of the GNU GPL can be found in /usr/share/common-licenses/GPL
-on Debian systems.
+Files: physmem.c
+Copyright: 2000, 2001, 2003, 2005, 2006 Free Software Foundation, Inc.
+License: GPL-3+
+
+Files: *
+Copyright: 2006-2008 Joey Hess <joeyh@debian.org>
+License: GPL-2+

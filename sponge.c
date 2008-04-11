@@ -286,25 +286,28 @@ int main (int argc, char **argv) {
 		outname = argv[1];
 	}
 	if (tmpfile) {
+		struct stat statbuf;
+
 		/* write whatever we have in memory to tmpfile */
 		if (bufused) 
 			write_buff_tmp(bufstart, bufused, tmpfile);
-		struct stat statbuf;
-		if (outname && !stat(outname, &statbuf)) {
-			/* regular file */
-			if (S_ISREG(statbuf.st_mode) && !fclose(tmpfile)) {
-				if (rename(tmpname, outname)) {
-					perror("error renaming temporary file to output file");
-					exit(1);
+		fclose(tmpfile);
+
+		if (outname) {
+			/* If it's a regular file, or does not yet exist,
+			 * attempt a fast rename of the temp file. */
+			if ((stat(outname, &statbuf) == 0 &&
+			     S_ISREG(statbuf.st_mode)) ||
+			    errno == ENOENT) {
+				if (rename(tmpname, outname) != 0) {
+					/* Slow copy. */
+					FILE *outfd = fopen(outname, "w");
+						if (outfd < 0) {
+						perror("error opening output file");
+						exit(1);
+					}
+					copy_tmpfile(tmpfile, outfd);
 				}
-			}
-			else {
-				FILE *outfd = fopen(outname, "w");
-				if (outfd < 0) {
-					perror("error opening output file");
-					exit(1);
-				}
-				copy_tmpfile(tmpfile, outfd);
 			}
 		}
 		else {

@@ -37,8 +37,8 @@
 
 #include "physmem.c"
 
-#define MIN_SPONGE_SIZE     BUFF_SIZE
 #define BUFF_SIZE           8192
+#define MIN_SPONGE_SIZE     BUFF_SIZE
 #define DEFAULT_TMP_NAME    "/tmp/sponge.XXXXXX"
 char tmpname[] = DEFAULT_TMP_NAME;
 

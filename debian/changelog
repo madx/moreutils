@@ -6,6 +6,9 @@ moreutils (0.29) UNRELEASED; urgency=low
     rather than write().
   * sponge: Handle large data sizes by using a temp file rather than by
     consuming arbitrary amounts of memory. Patch by Brock Noland.
+  * ts: Allow both -r and a format to be specified, to parse dates and output
+    in a specified format.
+  * ts: Fix bug in timezone regexp.
 
  -- Joey Hess <joeyh@debian.org>  Thu, 20 Mar 2008 12:56:42 -0400
 

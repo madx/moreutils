@@ -20,6 +20,9 @@ the input to relative times, such as "15m5s ago". Many common timestamp
 formats are supported. Note that the Time::Duration and Date::Parse perl
 modules are required for this mode to work.
 
+If both -r and a format is passed, the format existing timestamps are
+converted to the specified format.
+
 =head1 ENVIRONMENT
 
 The standard TZ environment variable controls what time zone dates
@@ -51,6 +54,7 @@ if ($rel) {
 	die $@ if $@;
 }
 
+my $use_format=@ARGV;
 my $format="%b %d %H:%M:%S";
 $format=shift if @ARGV;
 
@@ -73,14 +77,16 @@ while (<>) {
 			(?:\w\w\w,?\s+)?	#       (optional Day)
 			\d+\s+\w\w\w\s+\d\d+\s+\d\d:\d\d:\d\d
 						# 16 Jun 94 07:29:35
-				(?:\s+\w\w\w|\s+-\d\d\d\d)?
+				(?:\s+\w\w\w|\s[+-]\d\d\d\d)?
 						#	(optional timezone)
 			|
 			\w\w\w\s+\w\w\w\s+\d\d\s+\d\d:\d\d
 						# lastlog format
 		  )\b
 		}{
-			concise(ago(time - str2time($1), 2))
+			$use_format
+				? strftime($format, localtime(str2time($1)))
+				: concise(ago(time - str2time($1), 2))
 		}exg;
 
 		print $_;

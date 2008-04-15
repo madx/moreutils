@@ -1,4 +1,4 @@
-moreutils (0.29) UNRELEASED; urgency=low
+moreutils (0.29) unstable; urgency=low
 
   * Add ifne, contributed by Javier Merino.
   * sponge, ifne: Ensure that suspending/resuming doesn't
@@ -10,7 +10,7 @@ moreutils (0.29) UNRELEASED; urgency=low
     in a specified format.
   * ts: Fix bug in timezone regexp.
 
- -- Joey Hess <joeyh@debian.org>  Thu, 20 Mar 2008 12:56:42 -0400
+ -- Joey Hess <joeyh@debian.org>  Tue, 15 Apr 2008 15:30:52 -0400
 
 moreutils (0.28) unstable; urgency=low
 

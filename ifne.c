@@ -22,23 +22,49 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <string.h>
+#define streq(a, b) (!strcmp((a), (b)))
+
+static void stdin_to_stream(char *buf, ssize_t r, FILE *outf) {
+	while (r > 0) {
+		if (fwrite(buf, r*sizeof(char), 1, outf) < 1) {
+			fprintf(stderr, "Write error\n");
+			exit(EXIT_FAILURE);
+		}
+		r = read(0, buf, BUFSIZ*sizeof(char));
+	}
+	if (r == -1) {
+		perror("read");
+		exit(EXIT_FAILURE);
+	}
+}
 
 int main(int argc, char **argv) {
 	ssize_t r;
+	int run_if_empty;
+	char **argv_exec;
 	int fds[2];
 	int child_status;
 	pid_t child_pid;
 	char buf[BUFSIZ];
 	FILE *outf;
 
-	if (argc < 2) {
+	if ((argc < 2) || ((argc == 2) && streq(argv[1], "-n"))) {
 		/* Noop */
 		return EXIT_SUCCESS;
 	}
 
+	if (streq(argv[1], "-n")) {
+		run_if_empty = 1;
+		argv_exec = &argv[2];
+	} else {
+		run_if_empty = 0;
+		argv_exec = &argv[1];
+	}
+
 	r = read(0, buf, BUFSIZ*sizeof(char));
 
-	if (r == 0)
+	if ((r == 0) && !run_if_empty)
 		return EXIT_SUCCESS;
 	else if (r == -1) {
 		perror("read");
@@ -50,6 +76,13 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
+	if (r && run_if_empty) {
+		/* don't run the subcommand if we read something from stdin and -n was set */
+		/* But write stdin to stdout so ifne -n can be piped without sucking the stream */
+		stdin_to_stream(buf, r, stdout);
+		return EXIT_SUCCESS;
+	}
+
 	child_pid = fork();
 	if (!child_pid) {
 		/* child process: rebind stdin and exec the subcommand */
@@ -57,10 +90,10 @@ int main(int argc, char **argv) {
 		if (dup2(fds[0], 0)) {
 			perror("dup2");
 			return EXIT_FAILURE;
-                }
+		}
 
-		execvp(argv[1], &argv[1]);
-		perror(argv[1]);
+		execvp(*argv_exec, argv_exec);
+		perror(*argv_exec);
 		close(fds[0]);
 		return EXIT_FAILURE;
 	} else if (child_pid == -1) {
@@ -75,17 +108,8 @@ int main(int argc, char **argv) {
 		perror("fdopen");
 		exit(1);
 	}
-	do {
-		if (fwrite(buf, r*sizeof(char), 1, outf) < 1) {
-			fprintf(stderr, "Write error to %s\n", argv[1]);
-			exit(EXIT_FAILURE);
-		}
-		r = read(0, buf, BUFSIZ*sizeof(char));
-	} while (r > 0);
-	if (r == -1) {
-		perror("read");
-		exit(EXIT_FAILURE);
-	}
+
+	stdin_to_stream(buf, r, outf);
 	fclose(outf);
 
 	if (waitpid(child_pid, &child_status, 0) != child_pid) {

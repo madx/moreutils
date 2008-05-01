@@ -33,7 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 			<firstname>Javier</firstname>
 			<surname>Merino</surname>
 		</author>
-		<date>2008-03-19</date>
+		<date>2008-05-01</date>
 	</refentryinfo>
 
 	<refmeta>
@@ -48,21 +48,42 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 	<refsynopsisdiv>
 		<cmdsynopsis>
-			<command>ifne command</command>
+			<command>ifne [-n] command</command>
 		</cmdsynopsis>
 	</refsynopsisdiv>
 	
 	<refsect1>
 		<title>DESCRIPTION</title>
 		
-                <para><command>ifne</command> runs the following command if and only if
-                the standard input is not empty.</para>
+		<para><command>ifne</command> runs the following command if and only if
+			the standard input is not empty.</para>
 	</refsect1>
 	
+	<refsect1>
+		<title>OPTIONS</title>
+
+		<variablelist>
+			<varlistentry>
+				<term><option>-n</option></term>
+				<listitem>
+					<para>Reverse operation. Run the command if the standard input is empty.</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</refsect1>
+
 	<refsect1>
 		<title>EXAMPLE</title>
 		<cmdsynopsis>
 			<command>find . -name core | ifne mail -s "Core files found" root</command>
 		</cmdsynopsis>
 	</refsect1>
+
+	<refsect1>
+		<title>AUTHOR</title>
+
+		<para>Copyright 2008 by Javier Merino &lt;cibervicho@gmail.com&gt;</para>
+		<para>Licensed under the GNU GPL</para>
+	</refsect1>
+
 </refentry>

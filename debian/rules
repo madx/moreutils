@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-# Prevent the makefile from stripping, in case it's being build in
+# Prevent the makefile from stripping, in case it's being built in
 # unstripped mode.
 export INSTALL_BIN=install
 

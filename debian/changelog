@@ -1,3 +1,10 @@
+moreutils (0.30) UNRELEASED; urgency=low
+
+  * debhelper v7; rules file minimisation
+  * Use DESTDIR instead of PREFIX.
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 26 Apr 2008 19:23:10 -0400
+
 moreutils (0.29) unstable; urgency=low
 
   * Add ifne, contributed by Javier Merino.

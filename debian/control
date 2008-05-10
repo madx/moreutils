@@ -1,7 +1,7 @@
 Source: moreutils
 Section: utils
 Priority: optional
-Build-Depends: debhelper (>= 5), dpkg-dev (>= 1.9.0), docbook2x, docbook-xml
+Build-Depends: debhelper (>= 7), dpkg-dev (>= 1.9.0), docbook2x, docbook-xml
 Maintainer: Joey Hess <joeyh@debian.org>
 Standards-Version: 3.7.3
 Vcs-Git: git://git.kitenet.net/moreutils

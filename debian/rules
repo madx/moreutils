@@ -1,12 +1,42 @@
 #!/usr/bin/make -f
 
-# Prevent the makefile from stripping, in case it's being build in
-# unstripped mode.
-export INSTALL_BIN=install
+build: build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE)
+	$(MAKE) check
+	touch build-stamp
 
-%:
-	dh $@
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	$(MAKE) clean
+	dh_clean
+
+binary-indep: build
+
+binary-arch: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) PREFIX=debian/moreutils INSTALL_BIN=install install
+	dh_installdocs README
+	dh_installchangelogs
+	dh_perl
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
 # Not intended for use by anyone except the author.
 announcedir:
 	@echo ${HOME}/src/joeywiki/code/moreutils/news
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

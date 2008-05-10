@@ -4,6 +4,8 @@ MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 ifne.1 pee.1 zrun.
 CFLAGS=-O2 -g -Wall
 INSTALL_BIN?=install -s
 
+DOCBOOK2XMAN="docbook2x-man"
+
 all: $(BINS) $(MANS)
 
 clean:
@@ -21,25 +23,25 @@ check: isutf8
 	./check-isutf8
 
 isutf8.1: isutf8.docbook
-	docbook2x-man $<
+	$(DOCBOOK2XMAN) $<
 
 ifdata.1: ifdata.docbook
-	docbook2x-man $<
+	$(DOCBOOK2XMAN) $<
 
 ifne.1: ifne.docbook
-	docbook2x-man $<
+	$(DOCBOOK2XMAN) $<
 
 pee.1: pee.docbook
-	docbook2x-man $<
+	$(DOCBOOK2XMAN) $<
 
 sponge.1: sponge.docbook
-	docbook2x-man $<
+	$(DOCBOOK2XMAN) $<
 
 mispipe.1: mispipe.docbook
-	docbook2x-man $<
+	$(DOCBOOK2XMAN) $<
 
 lckdo.1: lckdo.docbook
-	docbook2x-man $<
+	$(DOCBOOK2XMAN) $<
 
 %.1: %
 	pod2man --center=" " --release="moreutils" $< > $@;

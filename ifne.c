@@ -50,8 +50,8 @@ int main(int argc, char **argv) {
 	FILE *outf;
 
 	if ((argc < 2) || ((argc == 2) && streq(argv[1], "-n"))) {
-		/* Noop */
-		return EXIT_SUCCESS;
+		fprintf(stderr, "Usage: ifne [-n] command [args]\n");
+		return EXIT_FAILURE;
 	}
 
 	if (streq(argv[1], "-n")) {

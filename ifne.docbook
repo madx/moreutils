@@ -67,6 +67,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 				<term><option>-n</option></term>
 				<listitem>
 					<para>Reverse operation. Run the command if the standard input is empty.</para>
+					<para>Note that if the standard input is not empty, it is passed through ifne
+					in this case.</para>
 				</listitem>
 			</varlistentry>
 		</variablelist>

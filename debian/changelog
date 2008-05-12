@@ -3,6 +3,8 @@ moreutils (0.30) UNRELEASED; urgency=low
   * debhelper v7; rules file minimisation
   * Use DESTDIR instead of PREFIX.
   * Add a DOCBOOK2XMAN setting. (Greg KH)
+  * ifne: Add -n which makes it run the command if stdin is empty.
+  * ifne: If no command is specified, print usage information.
 
  -- Joey Hess <joeyh@debian.org>  Sat, 26 Apr 2008 19:23:10 -0400
 

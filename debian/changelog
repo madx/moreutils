@@ -1,4 +1,4 @@
-moreutils (0.30) UNRELEASED; urgency=low
+moreutils (0.30) unstable; urgency=low
 
   * debhelper v7; rules file minimisation
   * Use DESTDIR instead of PREFIX.
@@ -6,7 +6,7 @@ moreutils (0.30) UNRELEASED; urgency=low
   * ifne: Add -n which makes it run the command if stdin is empty.
   * ifne: If no command is specified, print usage information.
 
- -- Joey Hess <joeyh@debian.org>  Sat, 26 Apr 2008 19:23:10 -0400
+ -- Joey Hess <joeyh@debian.org>  Wed, 14 May 2008 19:37:42 -0400
 
 moreutils (0.29) unstable; urgency=low
 

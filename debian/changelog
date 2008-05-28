@@ -1,3 +1,9 @@
+moreutils (0.31) UNRELEASED; urgency=low
+
+  * pee.1: Document difference with tee in stdout.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 28 May 2008 13:42:01 -0400
+
 moreutils (0.30) unstable; urgency=low
 
   * debhelper v7; rules file minimisation

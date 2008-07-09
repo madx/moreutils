@@ -64,7 +64,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		stdout.</para>
 
 		<para>Note that while this is similar to
-		<command>tee</command>, a copy of the input it not output
+		<command>tee</command>, a copy of the input is not sent
 		to stdout, like tee does.</para>
 	</refsect1>
 	

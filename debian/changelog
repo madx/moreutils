@@ -1,3 +1,11 @@
+moreutils (0.32) UNRELEASED; urgency=low
+
+  * zrun: Can be linked to zsomeprog to run the equivilant of zrun someprog.
+    Closes: #411623 (Stefan Fritsch)
+  * zrun: Add support for lzma and lzo. (Stefan Fritsch)
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 27 Sep 2008 18:03:48 -0400
+
 moreutils (0.31) unstable; urgency=low
 
   * pee.1: Document difference with tee in stdout.

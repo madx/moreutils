@@ -52,6 +52,8 @@ delete all their contents and the subdirectory itself in the editor.
 
 Edit all files under the current directory and subdirectories.
 
+=back
+
 =head1 ENVIRONMENT VARIABLES
 
 =over 4

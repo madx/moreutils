@@ -1,10 +1,11 @@
-moreutils (0.32) UNRELEASED; urgency=low
+moreutils (0.32) unstable; urgency=low
 
   * zrun: Can be linked to zsomeprog to run the equivilant of zrun someprog.
     Closes: #411623 (Stefan Fritsch)
   * zrun: Add support for lzma and lzo. (Stefan Fritsch)
+  * Fix pod error in vidir(1).
 
- -- Joey Hess <joeyh@debian.org>  Sat, 27 Sep 2008 18:03:48 -0400
+ -- Joey Hess <joeyh@debian.org>  Sun, 26 Oct 2008 23:43:30 -0400
 
 moreutils (0.31) unstable; urgency=low
 

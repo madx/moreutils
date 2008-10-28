@@ -1,3 +1,9 @@
+moreutils (0.33) UNRELEASED; urgency=low
+
+  * Support installing moreutils into prefixes other than /usr (Evan Broder)
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 27 Oct 2008 22:41:08 -0400
+
 moreutils (0.32) unstable; urgency=low
 
   * zrun: Can be linked to zsomeprog to run the equivilant of zrun someprog.

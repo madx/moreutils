@@ -42,7 +42,7 @@ use File::Temp qw{tempfile};
 
 my $program;
 
-if ($0 =~ m{(?:^|/)z([^/]+)$}) {
+if ($0 =~ m{(?:^|/)z([^/]+)$} && $1 ne 'run') {
 	$program = $1;
 	if (! @ARGV) {
 		die "Usage: z$1 <args>\nEquivalent to: zrun $1 <args>\n";

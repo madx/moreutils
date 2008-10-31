@@ -1,9 +1,9 @@
-moreutils (0.33) UNRELEASED; urgency=low
+moreutils (0.33) unstable; urgency=low
 
   * Support installing moreutils into prefixes other than /usr (Evan Broder)
   * Fix zrun breakage introduced last version. Closes: #504129
 
- -- Joey Hess <joeyh@debian.org>  Mon, 27 Oct 2008 22:41:08 -0400
+ -- Joey Hess <joeyh@debian.org>  Fri, 31 Oct 2008 17:01:03 -0400
 
 moreutils (0.32) unstable; urgency=low
 

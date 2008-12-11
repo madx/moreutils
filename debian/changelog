@@ -1,9 +1,9 @@
-moreutils (0.34) UNRELEASED; urgency=low
+moreutils (0.34) unstable; urgency=low
 
   * vipe: Avoid dying on empty input. Thanks, Anders Kaseorg
     Closes: #508491
 
- -- Joey Hess <joeyh@debian.org>  Thu, 11 Dec 2008 15:10:56 -0500
+ -- Joey Hess <joeyh@debian.org>  Thu, 11 Dec 2008 15:11:23 -0500
 
 moreutils (0.33) unstable; urgency=low
 

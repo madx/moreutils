@@ -246,7 +246,7 @@ struct if_stat *get_stats(const char *iface) {
 
 	do {
 		int items = fscanf(fd,
-			" %6[^:]:%llu %llu %llu %llu %llu %llu %llu %llu "
+			" %20[^:]:%llu %llu %llu %llu %llu %llu %llu %llu "
 			"%llu %llu %llu %llu %llu %llu %llu %llu",
 			name,
 			&ifstat->in_bytes,    &ifstat->in_packets,

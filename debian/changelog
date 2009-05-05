@@ -1,4 +1,4 @@
-moreutils (0.35) UNRELEASED; urgency=low
+moreutils (0.35) unstable; urgency=low
 
   * ifdata: Don't assume that all interface names are 6 characters or less,
     for instance "wmaster0" is longer. Increase the limit to 20 characters.
@@ -6,7 +6,7 @@ moreutils (0.35) UNRELEASED; urgency=low
   * isutf8: Reject UTF-8-encoded UTF-16 surrogates. Closes: #525301
     (Thanks, Jakub Wilk and liw)
 
- -- Joey Hess <joeyh@debian.org>  Sat, 02 May 2009 20:40:23 -0400
+ -- Joey Hess <joeyh@debian.org>  Tue, 05 May 2009 15:06:41 -0400
 
 moreutils (0.34) unstable; urgency=low
 

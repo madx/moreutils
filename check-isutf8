@@ -39,5 +39,8 @@ check 1 '\xc2'
 check 1 '\xc2\x20'
 check 1 '\x20\xc2'
 check 1 '\300\200'
+check 1 '\xed\xa0\x88\xed\xbd\x85' # UTF-16 surrogates
+check 1 '\xef\xbf\xbe' # 0xFFFE
+check 1 '\xef\xbf\xbf' # 0xFFFF
 
 exit $failed

@@ -127,6 +127,14 @@ static unsigned long decodeutf8(unsigned char *buf, int nbytes)
                             return INVALID_CHAR;
                 u = (u << 6) | (buf[j] & 0x3f);
         }
+
+        /* Conforming UTF-8 cannot contain codes 0xd800–0xdfff (UTF-16 
+           surrogates) as well as 0xfffe and 0xffff. */
+        if (u >= 0xD800 && u <= 0xDFFF)
+            return INVALID_CHAR;
+        if (u == 0xFFFE || u == 0xFFFF)
+            return INVALID_CHAR;
+
         return u;
 }
 
@@ -145,7 +153,7 @@ static int is_utf8_byte_stream(FILE *file, char *filename, int quiet) {
         int nbytes, nbytes2;
         int c;
         unsigned long code;
-	unsigned long line, col, byteoff;
+        unsigned long line, col, byteoff;
 
         nbytes = 0;
         line = 1;

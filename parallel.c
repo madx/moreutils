@@ -61,6 +61,16 @@ void exec_child(char **command, char *argument)
 	return;
 }
 
+int wait_for_child(void)
+{
+	id_t id_ignored = 0;
+	siginfo_t infop;
+	waitid(P_ALL, id_ignored, &infop, WEXITED);
+	if (infop.si_code == CLD_EXITED)
+		return infop.si_status;
+	return 1;
+}
+
 int main(int argc, char **argv)
 {
 	int maxjobs = -1;
@@ -71,6 +81,7 @@ int main(int argc, char **argv)
 	char **arguments;
 	int argidx = 0;
 	int cidx = 0;
+	int returncode = 0;
 
 	while ((opt = getopt(argc, argv, "+hj:l:")) != -1) {
 		switch (opt) {
@@ -126,19 +137,15 @@ int main(int argc, char **argv)
 		}
 
 		if (maxjobs > 0 && curjobs == maxjobs) {
-			id_t id_ignored;
-			siginfo_t infop_ignored;
-			waitid(P_ALL, id_ignored, &infop_ignored, WEXITED);
+			returncode |= wait_for_child();
 			curjobs--;
 		}
 	}
 	while (curjobs > 0) {
-		id_t id_ignored;
-		siginfo_t infop_ignored;
-		waitid(P_ALL, id_ignored, &infop_ignored, WEXITED);
+		returncode |= wait_for_child();
 		curjobs--;
 	}
 
-	return 0;
+	return returncode;
 }
 

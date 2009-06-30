@@ -33,7 +33,7 @@
 
 void usage()
 {
-	printf("parallel [OPTIONS] command -- arguments: for each argument,"
+	printf("parallel [OPTIONS] command -- arguments: for each argument, "
 	       "run command with argument\n");
 	exit(1);
 }

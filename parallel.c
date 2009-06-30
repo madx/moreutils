@@ -38,7 +38,7 @@ void usage()
 	exit(1);
 }
 
-void exec_child(char **command, char *argument)
+void exec_child(char **command, char *argument, int replace_cb)
 {
 	char **argv;
 	int argc = 0;
@@ -47,12 +47,16 @@ void exec_child(char **command, char *argument)
 	while (command[argc] != 0) {
 		argc++;
 	}
-	argc++;
+	if (replace_cb == 0)
+		argc++;
 	argv = calloc(sizeof(char*), argc+1);
 	for (i = 0; i < argc; i++) {
 		argv[i] = command[i];
+		if (replace_cb && (strcmp(argv[i], "{}") == 0))
+			argv[i] = argument;
 	}
-	argv[i-1] = argument;
+	if (replace_cb == 0)
+		argv[i-1] = argument;
 	if (fork() == 0) {
 		/* Child */
 		execvp(argv[0], argv);
@@ -61,11 +65,15 @@ void exec_child(char **command, char *argument)
 	return;
 }
 
-int wait_for_child(void)
+int wait_for_child(int options)
 {
 	id_t id_ignored = 0;
 	siginfo_t infop;
-	waitid(P_ALL, id_ignored, &infop, WEXITED);
+
+	infop.si_pid = 0;
+	waitid(P_ALL, id_ignored, &infop, WEXITED | options);
+	if (infop.si_pid == 0)
+		return -1; /* Nothing to wait for */
 	if (infop.si_code == CLD_EXITED)
 		return infop.si_status;
 	return 1;
@@ -82,11 +90,15 @@ int main(int argc, char **argv)
 	int argidx = 0;
 	int cidx = 0;
 	int returncode = 0;
+	int replace_cb = 0;
 
-	while ((opt = getopt(argc, argv, "+hj:l:")) != -1) {
+	while ((opt = getopt(argc, argv, "+hij:l:")) != -1) {
 		switch (opt) {
 		case 'h':
 			usage();
+			break;
+		case 'i':
+			replace_cb = 1;
 			break;
 		case 'j':
 			maxjobs = atoi(optarg);
@@ -100,7 +112,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (maxjobs < 0) {
+	if (maxjobs < 0 && maxload < 0) {
 		usage();
 	}
 
@@ -130,19 +142,35 @@ int main(int argc, char **argv)
 	}
 
 	while (arguments[argidx] != 0) {
-		if (maxjobs > 0 && curjobs < maxjobs) {
-			exec_child(command, arguments[argidx]);
+		double load;
+
+		getloadavg(&load, 1);
+
+		if ((maxjobs > 0 && curjobs < maxjobs) ||
+		    (maxload > 0 && load < maxload)) {
+			exec_child(command, arguments[argidx], replace_cb);
 			argidx++;
 			curjobs++;
 		}
 
 		if (maxjobs > 0 && curjobs == maxjobs) {
-			returncode |= wait_for_child();
+			returncode |= wait_for_child(0);
 			curjobs--;
+		}
+
+		if (maxload > 0 && load > maxload) {
+			int r;
+			sleep(1); /* XXX We should have a better
+				   * heurestic than this */
+			r = wait_for_child(WNOHANG);
+			if (r > 0) {
+				returncode |= r;
+				curjobs--;
+			}
 		}
 	}
 	while (curjobs > 0) {
-		returncode |= wait_for_child();
+		returncode |= wait_for_child(0);
 		curjobs--;
 	}
 

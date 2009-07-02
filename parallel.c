@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
 	int maxload = -1;
 	int opt;
 	char **command = calloc(sizeof(char*), argc);
-	char **arguments;
+	char **arguments = NULL;
 	int argidx = 0;
 	int cidx = 0;
 	int returncode = 0;

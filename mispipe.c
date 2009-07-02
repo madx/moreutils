@@ -107,15 +107,15 @@ static void subprocess2(const char* cmd) {
 	/* Make the reading end of the pipe the new standard input. */
 	if (dup2(filedes[0], 0) == -1)
 		error_with_errno("Failed (in child) redefining standard input");
+	/* Close the original file descriptor for it */
+	if (close(filedes[0]))
+		error_with_errno("Failed (in child) closing filedes[0]");
 	/* Close the other end of the pipe. */
 	if (close(filedes[1]))
 		error_with_errno("Failed (in child) closing filedes[1]");
 	/* Do the second command, and throw away the exit status. */
 	system(cmd);
-	/* Close all the file descriptors. */
-	if (close(filedes[0]))
-		error_with_errno("Failed (in child) closing filedes[0]"
-			" (while cleaning up)");
+	/* Close the standard input. */
 	if (close(0))
 		error_with_errno("Failed (in child) closing standard output "
 			" (while cleaning up)");
@@ -151,15 +151,15 @@ int main (int argc, const char ** argv) {
 	/* Make the writing end of the pipe the new standard output. */
 	if (dup2(filedes[1], 1) == -1)
 		error_with_errno("Failed redefining standard output");
+	/* Close the original file descriptor for it. */
+	if (close(filedes[1]))
+		error_with_errno("Failed closing filedes[1]");
 	/* Close the other end of the pipe. */
 	if (close(filedes[0]))
 		error_with_errno("Failed closing filedes[0]");
 	/* Do the first command, and (crucially) get the status. */
 	status_big = system(argv[1]);
 
-	/* Close the pipe "standard output". */
-	if (close(filedes[1]))
-		error_with_errno("Failed closing filedes[1] (while cleaning up)");
 	/* Close standard output. */
 	if (close(1))
 		error_with_errno("Failed closing standard output (while cleaning up)");

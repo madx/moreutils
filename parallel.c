@@ -1,4 +1,3 @@
-
 /*
  *  parallel.c - run commands in parallel until you run out of commands
  *
@@ -31,15 +30,13 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-void usage()
-{
+void usage() {
 	printf("parallel [OPTIONS] command -- arguments: for each argument, "
 	       "run command with argument\n");
 	exit(1);
 }
 
-void exec_child(char **command, char *argument, int replace_cb)
-{
+void exec_child(char **command, char *argument, int replace_cb) {
 	char **argv;
 	int argc = 0;
 	int i;
@@ -65,8 +62,7 @@ void exec_child(char **command, char *argument, int replace_cb)
 	return;
 }
 
-int wait_for_child(int options)
-{
+int wait_for_child(int options) {
 	id_t id_ignored = 0;
 	siginfo_t infop;
 
@@ -79,8 +75,7 @@ int wait_for_child(int options)
 	return 1;
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 	int maxjobs = -1;
 	int curjobs = 0;
 	int maxload = -1;
@@ -134,7 +129,8 @@ int main(int argc, char **argv)
 				arguments[i] = strdup(argv[optind + i]);
 			}
 			optind += i;
-		} else {
+		}
+		else {
 			command[cidx] = strdup(argv[optind]);
 			cidx++;
 		}

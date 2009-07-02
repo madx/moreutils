@@ -30,3 +30,4 @@ Description: additional unix utilities
   - mispipe: pipe two commands, returning the exit status of the first
   - isutf8: check if a file or standard input is utf-8
   - lckdo: execute a program with a lock held
+  - parallel: run multiple jobs at once

@@ -1,6 +1,6 @@
 BINS=isutf8 ifdata ifne pee sponge mispipe lckdo parallel
 PERLSCRIPTS=vidir vipe ts combine zrun
-MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 ifne.1 pee.1 zrun.1 mispipe.1 lckdo.1
+MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 ifne.1 pee.1 zrun.1 mispipe.1 lckdo.1 parallel.1
 CFLAGS=-O2 -g -Wall
 INSTALL_BIN?=install -s
 PREFIX=/usr
@@ -42,6 +42,9 @@ mispipe.1: mispipe.docbook
 	$(DOCBOOK2XMAN) $<
 
 lckdo.1: lckdo.docbook
+	$(DOCBOOK2XMAN) $<
+
+parallel.1: parallel.docbook
 	$(DOCBOOK2XMAN) $<
 
 %.1: %

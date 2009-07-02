@@ -1,3 +1,11 @@
+moreutils (0.36) UNRELEASED; urgency=low
+
+  * parallel: New program, contributed by Tollef Fog Heen,
+    that can run multiple jobs in parallel, optionally checking
+    load average.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 02 Jul 2009 14:57:12 -0400
+
 moreutils (0.35) unstable; urgency=low
 
   * ifdata: Don't assume that all interface names are 6 characters or less,

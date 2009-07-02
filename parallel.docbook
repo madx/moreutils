@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+Written by Joey Hess
+
+-->
+
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.4//EN"
+"file:///usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd"
+[]>
+
+<refentry>
+	<refentryinfo>
+		<address>
+			<email>joey@kitenet.net</email>
+		</address>
+		<author>
+			<firstname>Joey</firstname>
+			<surname>Hess</surname>
+		</author>
+		<date>2009-07-02</date>
+	</refentryinfo>
+
+	<refmeta>
+		<refentrytitle>parallel</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+
+	<refnamediv>
+		<refname>parallel</refname> 
+		<refpurpose>run programs in parallel</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>parallel</command>
+			<arg>options</arg>
+			<arg>command</arg>
+			<arg>--</arg>
+			<arg>arguments</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>DESCRIPTION</title>
+		
+		<para><command>parallel</command> runs the specified command,
+		passing it a single one of the specified arguments. This is
+		repeated for each argument. The default is to run all
+		the commands at the same time.</para>
+
+	</refsect1>
+	
+	<refsect1>
+		<title>OPTIONS</title>
+		
+		<variablelist>
+		
+		<varlistentry>
+			<term><option>-j maxjobs</option></term>
+			<listitem>
+				<para>Use to limit the number of jobs
+				that are run at the same time.</para>
+			</listitem>
+		</varlistentry>
+		
+		<varlistentry>
+			<term><option>-l maxload</option></term>
+			<listitem>
+				<para>Avoid starting new jobs when
+				the system's load average is higher
+				than the specified limit.</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term><option>-i</option></term>
+			<listitem>
+				<para>Normally the command is passed the
+				argument at the end of its command line. With
+				this option, the first instance of "{}" in
+				the command is replaced with the argument.</para>
+			</listitem>
+		</varlistentry>
+		
+		</variablelist>
+		
+	</refsect1>
+
+	<refsect1>
+		<title>EXAMPLE</title>
+		
+	<para>
+	<cmdsynopsis>
+		<command>parallel -j 3 ufraw -o processed -- *.NEF</command>
+	</cmdsynopsis>
+	</para>
+
+	<para>This runs three ufraw processes at the same time until
+	all of the NEF files have been processed.
+	</para>
+
+	</refsect1>
+
+	<refsect1>
+		<title>EXIT STATUS</title>
+
+
+	<para>Its exit status is the combination of the exit statuses of each
+	command ran, ORed together. (Thus, if any one command
+	exists nonzero, <command>parallel</command> as a whole will exit nonzero.)</para>
+		
+	</refsect1>
+
+</refentry>

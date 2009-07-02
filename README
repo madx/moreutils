@@ -13,6 +13,8 @@ lckdo
 	execute a program with a lock held
 mispipe
 	pipe two commands, returning the exit status of the first
+parallel
+	run multiple jobs at once
 pee
 	tee standard input to pipes
 sponge

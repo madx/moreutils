@@ -47,8 +47,8 @@ Written by Joey Hess
 		
 		<para><command>parallel</command> runs the specified command,
 		passing it a single one of the specified arguments. This is
-		repeated for each argument. The default is to run all
-		the commands at the same time.</para>
+		repeated for each argument. Jobs may be run in
+		parallel. The default is to run one job per CPU core.</para>
 
 	</refsect1>
 	
@@ -73,7 +73,7 @@ Written by Joey Hess
 				than the specified limit.</para>
 			</listitem>
 		</varlistentry>
-
+		
 		<varlistentry>
 			<term><option>-i</option></term>
 			<listitem>
@@ -90,6 +90,16 @@ Written by Joey Hess
 
 	<refsect1>
 		<title>EXAMPLE</title>
+		
+	<para>
+	<cmdsynopsis>
+		<command>parallel ufraw -o processed -- *.NEF</command>
+	</cmdsynopsis>
+	</para>
+
+	<para>This runs one ufraw process per available CPU, until
+	all of the NEF files have been processed.
+	</para>
 		
 	<para>
 	<cmdsynopsis>

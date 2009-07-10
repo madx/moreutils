@@ -30,6 +30,7 @@
 #include <sys/select.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 void usage() {
 	printf("parallel [OPTIONS] command -- arguments: for each argument, "
@@ -121,9 +122,13 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	if (maxjobs < 0 && maxload < 0) {
-		maxjobs = 1; /* XXX: Maybe we should try to autodetect
-				number of CPUs? */
+	if (maxjobs < 0) {
+#ifdef _SC_NPROCESSORS_ONLN
+		maxjobs = sysconf(_SC_NPROCESSORS_ONLN);
+#else
+#warning Cannot autodetect number of CPUS on this system: _SC_NPROCESSORS_ONLN not defined.
+		maxjobs = 1;
+#endif
 	}
 
 	while (optind < argc) {

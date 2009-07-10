@@ -93,12 +93,15 @@ Written by Joey Hess
 		
 	<para>
 	<cmdsynopsis>
-		<command>parallel ufraw -o processed -- *.NEF</command>
+		<command>parallel sh -c "echo hi; sleep 2; echo bye" -- 1 2 3</command>
 	</cmdsynopsis>
 	</para>
 
-	<para>This runs one ufraw process per available CPU, until
-	all of the NEF files have been processed.
+	<para>This runs three subshells that each print a message, delay,
+		and print another message. If yours system has multiple
+		CPUs, parallel will run some of the jobs in parallel,
+		which should be clear from the order the messages are
+		output.
 	</para>
 		
 	<para>

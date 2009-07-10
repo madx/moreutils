@@ -27,6 +27,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <sys/select.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -91,6 +92,7 @@ int main(int argc, char **argv)
 	int cidx = 0;
 	int returncode = 0;
 	int replace_cb = 0;
+	char *t;
 
 	while ((opt = getopt(argc, argv, "+hij:l:")) != -1) {
 		switch (opt) {
@@ -101,10 +103,22 @@ int main(int argc, char **argv)
 			replace_cb = 1;
 			break;
 		case 'j':
-			maxjobs = atoi(optarg);
+			errno = 0;
+			maxjobs = strtoul(optarg, &t, 0);
+			if (errno != 0 || (t-optarg) != strlen(optarg)) {
+				fprintf(stderr, "option '%s' is not a number\n",
+					optarg);
+				exit(2);
+			}
 			break;
 		case 'l':
-			maxload = atoi(optarg);
+			errno = 0;
+			maxload = strtoul(optarg, &t, 0);
+			if (errno != 0 || (t-optarg) != strlen(optarg)) {
+				fprintf(stderr, "option '%s' is not a number\n",
+					optarg);
+				exit(2);
+			}
 			break;
 		default: /* ’?’ */
 			usage();

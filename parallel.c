@@ -127,8 +127,8 @@ int main(int argc, char **argv)
 	}
 
 	if (maxjobs < 0 && maxload < 0) {
-	  maxjobs = 1; /* XXX: Maybe we should try to autodetect
-			  number of CPUs? */
+		maxjobs = 1; /* XXX: Maybe we should try to autodetect
+				number of CPUs? */
 	}
 
 	while (optind < argc) {

@@ -1,4 +1,4 @@
-moreutils (0.36) UNRELEASED; urgency=low
+moreutils (0.36) unstable; urgency=low
 
   * parallel: New program, contributed by Tollef Fog Heen,
     that can run multiple jobs in parallel, optionally checking
@@ -7,7 +7,7 @@ moreutils (0.36) UNRELEASED; urgency=low
     so it is not inherited by daemons. Closes: #533448
     (Thanks, Jeremie Koenig)
 
- -- Joey Hess <joeyh@debian.org>  Thu, 02 Jul 2009 14:57:12 -0400
+ -- Joey Hess <joeyh@debian.org>  Fri, 10 Jul 2009 11:01:41 -0400
 
 moreutils (0.35) unstable; urgency=low
 

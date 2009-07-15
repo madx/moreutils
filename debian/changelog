@@ -1,3 +1,9 @@
+moreutils (0.37) UNRELEASED; urgency=low
+
+  * parallel: Clarify man page regarding CPUs. Closes: #536597
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 15 Jul 2009 10:13:28 -0400
+
 moreutils (0.36) unstable; urgency=low
 
   * parallel: New program, contributed by Tollef Fog Heen,

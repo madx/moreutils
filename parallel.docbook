@@ -48,7 +48,7 @@ Written by Joey Hess
 		<para><command>parallel</command> runs the specified command,
 		passing it a single one of the specified arguments. This is
 		repeated for each argument. Jobs may be run in
-		parallel. The default is to run one job per CPU core.</para>
+		parallel. The default is to run one job per CPU.</para>
 
 	</refsect1>
 	

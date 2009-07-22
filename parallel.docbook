@@ -84,6 +84,14 @@ Written by Joey Hess
 			</listitem>
 		</varlistentry>
 		
+		<varlistentry>
+			<term><option>-n</option></term>
+			<listitem>
+				<para>Number of arguments to pass to one command at
+                                  once. Incompatible with -i</para>
+			</listitem>
+		</varlistentry>
+		
 		</variablelist>
 		
 	</refsect1>

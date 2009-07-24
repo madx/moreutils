@@ -6,12 +6,14 @@ vipe - edit pipe
 
 =head1 SYNOPSIS
 
-command | vipe | command
+command | B<vipe> [...] | command
 
 =head1 DESCRIPTION
 
 vipe allows you to run your editor in the middle of a unix pipeline and
 edit the data that is being piped between programs.
+
+Any extra arguments are passed as arguments to the editor.
 
 =head1 ENVIRONMENT VARIABLES
 
@@ -61,7 +63,7 @@ if (exists $ENV{EDITOR}) {
 if (exists $ENV{VISUAL}) {
 	@editor=split(' ', $ENV{VISUAL});
 }
-my $ret=system(@editor, $tmp);
+my $ret=system(@editor, @ARGV, $tmp);
 if ($ret != 0) {
 	die "@editor exited nonzero, aborting\n";
 }

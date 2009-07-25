@@ -1,11 +1,11 @@
-moreutils (0.37) UNRELEASED; urgency=low
+moreutils (0.37) unstable; urgency=low
 
   * parallel: Clarify man page regarding CPUs. Closes: #536597
   * parallel: Add -n option. Thanks, Pierre Habouzit. Closes: #537992
     (As a side effect, fixes a segfault if -- was omitted.)
   * parallel.1: Typo fixes. Closes: #538147
 
- -- Joey Hess <joeyh@debian.org>  Wed, 15 Jul 2009 10:13:28 -0400
+ -- Joey Hess <joeyh@debian.org>  Sat, 25 Jul 2009 10:18:40 +0200
 
 moreutils (0.36) unstable; urgency=low
 

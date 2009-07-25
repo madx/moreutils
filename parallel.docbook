@@ -131,7 +131,7 @@ Written by Joey Hess
 
 	<para>Its exit status is the combination of the exit statuses of each
 	command ran, ORed together. (Thus, if any one command
-	exists nonzero, <command>parallel</command> as a whole will exit nonzero.)</para>
+	exits nonzero, <command>parallel</command> as a whole will exit nonzero.)</para>
 		
 	</refsect1>
 

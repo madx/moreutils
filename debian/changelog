@@ -1,6 +1,8 @@
 moreutils (0.37) UNRELEASED; urgency=low
 
   * parallel: Clarify man page regarding CPUs. Closes: #536597
+  * parallel: Add -n option. Thanks, Pierre Habouzit. Closes: #537992
+    (As a side effect, fixes a segfault if -- was omitted.)
 
  -- Joey Hess <joeyh@debian.org>  Wed, 15 Jul 2009 10:13:28 -0400
 

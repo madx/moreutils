@@ -87,8 +87,9 @@ Written by Joey Hess
 		<varlistentry>
 			<term><option>-n</option></term>
 			<listitem>
-				<para>Number of arguments to pass to one command at
-                                  once. Incompatible with -i</para>
+				<para>Number of arguments to pass to a
+				command at a time. Default is 1.
+				Incompatible with -i</para>
 			</listitem>
 		</varlistentry>
 		
@@ -106,7 +107,7 @@ Written by Joey Hess
 	</para>
 
 	<para>This runs three subshells that each print a message, delay,
-		and print another message. If yours system has multiple
+		and print another message. If your system has multiple
 		CPUs, parallel will run some of the jobs in parallel,
 		which should be clear from the order the messages are
 		output.

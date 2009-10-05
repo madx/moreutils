@@ -1,3 +1,10 @@
+moreutils (0.38) UNRELEASED; urgency=low
+
+  * Description improvements. Closes: #549450
+    (Thanks, Justin B Rye)
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 05 Oct 2009 13:33:07 -0400
+
 moreutils (0.37) unstable; urgency=low
 
   * parallel: Clarify man page regarding CPUs. Closes: #536597

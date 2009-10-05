@@ -1,5 +1,5 @@
 This is a collection of the unix tools that nobody thought to write
-thirty years ago. Currently it consists of these tools:
+long ago, when unix was young. Currently it consists of these tools:
 
 combine
 	combine the lines in two files using boolean operations

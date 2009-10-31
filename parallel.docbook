@@ -37,8 +37,14 @@ Written by Joey Hess
 			<command>parallel</command>
 			<arg>options</arg>
 			<arg>command</arg>
-			<arg>--</arg>
-			<arg>arguments</arg>
+			<command>--</command>
+			<arg>argument ...</arg>
+		</cmdsynopsis>
+		<cmdsynopsis>
+			<command>parallel</command>
+			<arg>options</arg>
+			<command>--</command>
+			<arg>command ...</arg>
 		</cmdsynopsis>
 	</refsynopsisdiv>
 	
@@ -49,6 +55,9 @@ Written by Joey Hess
 		passing it a single one of the specified arguments. This is
 		repeated for each argument. Jobs may be run in
 		parallel. The default is to run one job per CPU.</para>
+
+		<para>If no command is specified before the --,
+		the commands after it are instead run in parallel.</para>
 
 	</refsect1>
 	
@@ -122,6 +131,14 @@ Written by Joey Hess
 	<para>This runs three ufraw processes at the same time until
 	all of the NEF files have been processed.
 	</para>
+	
+	<para>
+	<cmdsynopsis>
+		<command>parallel -j 3 -- ls df "echo hi"</command>
+	</cmdsynopsis>
+	</para>
+
+	<para>This runs three independent commands in parallel.</para>
 
 	</refsect1>
 

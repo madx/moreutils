@@ -33,8 +33,9 @@
 #include <unistd.h>
 
 void usage() {
-	printf("parallel [OPTIONS] command -- arguments: for each argument, "
-	       "run command with argument\n");
+	printf("parallel [OPTIONS] command -- arguments\n\tfor each argument, "
+	       "run command with argument, in parallel\n");
+	printf("parallel [OPTIONS] -- commands\n\trun specified commands in parallel\n");
 	exit(1);
 }
 
@@ -49,17 +50,24 @@ void exec_child(char **command, char **arguments, int replace_cb, int nargs) {
 	if (replace_cb == 0)
 		argc++;
 	argv = calloc(sizeof(char*), argc + nargs);
-	for (i = 0; i < argc; i++) {
-		argv[i] = command[i];
-		if (replace_cb && (strcmp(argv[i], "{}") == 0))
-			argv[i] = arguments[0];
+	if (command[0]) {
+		for (i = 0; i < argc; i++) {
+			argv[i] = command[i];
+			if (replace_cb && (strcmp(argv[i], "{}") == 0))
+				argv[i] = arguments[0];
+		}
+		if (replace_cb == 0)
+			memcpy(argv + i - 1, arguments, nargs * sizeof(char *));
+		if (fork() == 0) {
+			/* Child */
+			execvp(argv[0], argv);
+			exit(1);
+		}
 	}
-	if (replace_cb == 0)
-		memcpy(argv + i - 1, arguments, nargs * sizeof(char *));
-	if (fork() == 0) {
-		/* Child */
-		execvp(argv[0], argv);
-		exit(1);
+	else {
+		if (fork() == 0) {
+			exit(system(arguments[0]));
+		}
 	}
 	return;
 }
@@ -92,7 +100,8 @@ int main(int argc, char **argv) {
 	int replace_cb = 0;
 	char *t;
 
-	while ((opt = getopt(argc, argv, "+hij:l:n:")) != -1) {
+	while ((argv[optind] && strcmp(argv[optind], "--") != 0) &&
+	       (opt = getopt(argc, argv, "+hij:l:n:")) != -1) {
 		switch (opt) {
 		case 'h':
 			usage();
@@ -132,7 +141,7 @@ int main(int argc, char **argv) {
 			break;
 		}
 	}
-
+	
 	if (replace_cb && argsatonce > 1) {
 		fprintf(stderr, "options -i and -n are incomaptible\n");
 		exit(2);
@@ -146,7 +155,7 @@ int main(int argc, char **argv) {
 		maxjobs = 1;
 #endif
 	}
-
+	
 	while (optind < argc) {
 		if (strcmp(argv[optind], "--") == 0) {
 			int i;
@@ -168,6 +177,11 @@ int main(int argc, char **argv) {
 			cidx++;
 		}
 		optind++;
+	}
+
+	if (argsatonce > 1 && ! command[0]) {
+		fprintf(stderr, "option -n cannot be used without a command\n");
+		exit(2);
 	}
 
 	while (argidx < arglen) {

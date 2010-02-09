@@ -4,8 +4,16 @@
 #include <stdio.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
-#include <linux/sockios.h>
-#include <linux/if.h>
+
+#if defined(__linux__)
+	#include <linux/sockios.h>
+	#include <linux/if.h>
+#endif
+
+#if defined(__FreeBSD_kernel__)
+	#include <net/if.h>
+#endif
+
 #include <netinet/in.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -91,7 +99,7 @@ enum print_error_enum {
  * return 0 success
  *        1 error
  */
-static int do_socket_ioctl(const char *ifname, const int request,
+static int do_socket_ioctl(const char *ifname, const unsigned long int request,
                            struct ifreq *req, int *ioctl_errno,
                            const enum print_error_enum print_error) {
 	int sock, res;
@@ -119,6 +127,8 @@ int if_exists(const char *iface) {
 	struct ifreq r;
 	return !do_socket_ioctl(iface, SIOCGIFFLAGS, &r, NULL, PRINT_NO_ERROR);
 }
+
+#if defined(__linux__)
 
 void if_flags(const char *iface) {
 	struct ifreq r;
@@ -167,8 +177,10 @@ void if_hwaddr(const char *iface) {
 	       hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]);
 }
 
+#endif
+
 static struct sockaddr *if_addr_value(const char *iface, struct ifreq *r, 
-                                      int request) {
+                                      unsigned long int request) {
 	int e;
 
 	if (do_socket_ioctl(iface, request, r, &e, PRINT_NO_ERROR)) {
@@ -216,6 +228,8 @@ int if_mtu(const char *iface) {
 
 	return req.ifr_mtu;
 }
+
+#if defined(__linux__)
 
 static void skipline(FILE *fd) {
 	int ch;
@@ -277,6 +291,8 @@ struct if_stat *get_stats(const char *iface) {
 	return NULL;
 }
 
+#endif
+
 const struct {
 	char *option;
 	unsigned int flag;
@@ -286,14 +302,14 @@ const struct {
 	{ "-e",   DO_EXISTS,        0, "Reports interface existence via return code" },
 	{ "-p",   DO_PALL,          0, "Print out the whole config of iface" },
 	{ "-pe",  DO_PEXISTS,       0, "Print out yes or no according to existence" },
-	{ "-ph",  DO_PHWADDRESS,    0, "Print out the hardware address" },
 	{ "-pa",  DO_PADDRESS,      0, "Print out the address" },
 	{ "-pn",  DO_PMASK,         0, "Print netmask" },
 	{ "-pN",  DO_PNETWORK,      0, "Print network address" },
 	{ "-pb",  DO_PCAST,         0, "Print broadcast" },
 	{ "-pm",  DO_PMTU,          0, "Print mtu" },
+#if defined(__linux__)
+	{ "-ph",  DO_PHWADDRESS,    0, "Print out the hardware address" },
 	{ "-pf",  DO_PFLAGS,        0, "Print flags" },
-
 	{ "-si",  DO_SINALL,        1, "Print all statistics on input" },
 	{ "-sip", DO_SINPACKETS,    1, "Print # of in packets" },
 	{ "-sib", DO_SINBYTES,      1, "Print # of in bytes" },
@@ -313,6 +329,7 @@ const struct {
 	{ "-som", DO_SOUTMULTICAST, 1, "Print # of out multicast" },
 	{ "-bips",DO_BIPS,          1, "Print # of incoming bytes per second" },
 	{ "-bops",DO_BOPS,          1, "Print # of outgoing bytes per second" },
+#endif
 };
 
 void usage(const char *name) {
@@ -353,15 +370,17 @@ void please_do(int ndo, int *todo, const char *ifname) {
 			case DO_PEXISTS:
 				printf("%s", if_exists(ifname) ? "yes" : "no");
 				break;
-			case DO_PHWADDRESS:
-				if_hwaddr(ifname);
-				break;
 			case DO_PADDRESS:
 				print_addr(if_addr(ifname, &req));
+				break;
+#if defined(__linux__)
+			case DO_PHWADDRESS:
+				if_hwaddr(ifname);
 				break;
 			case DO_PFLAGS:
 				if_flags(ifname);
 				break;
+#endif
 			case DO_PMASK:
 				print_addr(if_mask(ifname, &req));
 				break;
@@ -383,7 +402,7 @@ void please_do(int ndo, int *todo, const char *ifname) {
 				printf(" ");
 				printf("%d", if_mtu(ifname));
 				break;
-
+#if defined(__linux__)
 			case DO_SINPACKETS:
 				printf("%llu",ifstats->in_packets);
 				break;
@@ -460,6 +479,7 @@ void please_do(int ndo, int *todo, const char *ifname) {
 					ifstats->out_fifo, ifstats->out_colls,
 					ifstats->out_carrier, ifstats->out_multicast);
 				break;
+#endif
 			default:
 				printf("Unknown command: %d", todo[i]);
 				break;
@@ -513,10 +533,12 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
+#if defined(__linux__)
 	if (do_stats && (ifstats = get_stats(ifname)) == NULL) {
 		fprintf(stderr, "Error getting statistics for %s\n", ifname);
 		return 1;
 	}
+#endif
 
 	please_do(ndo, todo, ifname);
 

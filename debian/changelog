@@ -4,6 +4,8 @@ moreutils (0.38) UNRELEASED; urgency=low
     (Thanks, Justin B Rye)
   * parallel: Allow running independent commands,
     like `parallel -j3 -- ls df "echo hi"`
+  * ifdata: Add FreeBSD kernel support, although some of the more esoteric
+    interface options are not currently supported in FreeBSD.
 
  -- Joey Hess <joeyh@debian.org>  Mon, 05 Oct 2009 13:33:07 -0400
 

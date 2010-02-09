@@ -32,6 +32,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#if defined(__FreeBSD_kernel__)
+#define WEXITED 0
+#endif
+
 void usage() {
 	printf("parallel [OPTIONS] command -- arguments\n\tfor each argument, "
 	       "run command with argument, in parallel\n");

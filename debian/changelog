@@ -6,6 +6,8 @@ moreutils (0.38) UNRELEASED; urgency=low
     like `parallel -j3 -- ls df "echo hi"`
   * ifdata: Add FreeBSD kernel support, although some of the more esoteric
     interface options are not currently supported in FreeBSD.
+  * parallel: Define WEXITED to allow building on FreeBSD kernel.
+    (This is somewhat experimental.)
 
  -- Joey Hess <joeyh@debian.org>  Mon, 05 Oct 2009 13:33:07 -0400
 

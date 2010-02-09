@@ -1,4 +1,4 @@
-moreutils (0.38) UNRELEASED; urgency=low
+moreutils (0.38) unstable; urgency=low
 
   * Description improvements. Closes: #549450
     (Thanks, Justin B Rye)
@@ -7,11 +7,10 @@ moreutils (0.38) UNRELEASED; urgency=low
   * ifdata: Add FreeBSD kernel support, although some of the more esoteric
     interface options are not currently supported in FreeBSD.
   * parallel: Define WEXITED to allow building on FreeBSD kernel.
-    (This is somewhat experimental.)
   * Thanks Enrico Tassi for the FreeBSD kernel support, which should
     be enough to get moreutils built on Debian kFreeBSD. Closes: #562609
 
- -- Joey Hess <joeyh@debian.org>  Mon, 05 Oct 2009 13:33:07 -0400
+ -- Joey Hess <joeyh@debian.org>  Tue, 09 Feb 2010 15:50:42 -0500
 
 moreutils (0.37) unstable; urgency=low
 

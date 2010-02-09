@@ -8,6 +8,8 @@ moreutils (0.38) UNRELEASED; urgency=low
     interface options are not currently supported in FreeBSD.
   * parallel: Define WEXITED to allow building on FreeBSD kernel.
     (This is somewhat experimental.)
+  * Thanks Enrico Tassi for the FreeBSD kernel support, which should
+    be enough to get moreutils built on Debian kFreeBSD. Closes: #562609
 
  -- Joey Hess <joeyh@debian.org>  Mon, 05 Oct 2009 13:33:07 -0400
 

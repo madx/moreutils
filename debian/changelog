@@ -1,3 +1,9 @@
+moreutils (0.39) UNRELEASED; urgency=low
+
+  * Cap sillyness. Closes: #570815
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 21 Feb 2010 13:16:10 -0500
+
 moreutils (0.38) unstable; urgency=low
 
   * Description improvements. Closes: #549450

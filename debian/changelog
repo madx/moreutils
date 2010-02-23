@@ -1,6 +1,7 @@
 moreutils (0.39) UNRELEASED; urgency=low
 
   * Cap sillyness. Closes: #570815
+  * parallel: Fix exit code handling when commands are specified after --
 
  -- Joey Hess <joeyh@debian.org>  Sun, 21 Feb 2010 13:16:10 -0500
 

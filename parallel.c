@@ -70,7 +70,13 @@ void exec_child(char **command, char **arguments, int replace_cb, int nargs) {
 	}
 	else {
 		if (fork() == 0) {
-			exit(system(arguments[0]));
+			int ret=system(arguments[0]);
+			if (WIFEXITED(ret)) {
+				exit(WEXITSTATUS(ret));
+			}
+			else {
+				exit(1);
+			}
 		}
 	}
 	return;
@@ -82,10 +88,12 @@ int wait_for_child(int options) {
 
 	infop.si_pid = 0;
 	waitid(P_ALL, id_ignored, &infop, WEXITED | options);
-	if (infop.si_pid == 0)
+	if (infop.si_pid == 0) {
 		return -1; /* Nothing to wait for */
-	if (infop.si_code == CLD_EXITED)
+	}
+	if (infop.si_code == CLD_EXITED) {
 		return infop.si_status;
+	}
 	return 1;
 }
 

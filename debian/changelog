@@ -4,6 +4,8 @@ moreutils (0.39) UNRELEASED; urgency=low
   * parallel: Fix exit code handling when commands are specified after --
   * parallel: Make -j 0 do something reasonable (start all jobs at once).
   * parallel: Fix to really avoid running new jobs when load is too high.
+  * parallel: Fix logic error in code handling -l that could make parallel
+    return a bogus 255 exit code when all jobs succeeded. Closes: #569617
 
  -- Joey Hess <joeyh@debian.org>  Sun, 21 Feb 2010 13:16:10 -0500
 

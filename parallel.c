@@ -211,7 +211,7 @@ int main(int argc, char **argv) {
 			argidx += argsatonce;
 			curjobs++;
 		}
-
+		
 		if (maxjobs == 0 || curjobs == maxjobs) {
 			returncode |= wait_for_child(0);
 			curjobs--;
@@ -222,10 +222,10 @@ int main(int argc, char **argv) {
 			sleep(1); /* XXX We should have a better
 				   * heurestic than this */
 			r = wait_for_child(WNOHANG);
-			if (r > 0) {
+			if (r > 0)
 				returncode |= r;
+			if (r != -1)
 				curjobs--;
-			}
 		}
 	}
 	while (curjobs > 0) {

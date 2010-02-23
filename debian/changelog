@@ -1,14 +1,15 @@
-moreutils (0.39) UNRELEASED; urgency=low
+moreutils (0.39) unstable; urgency=low
 
-  * Cap sillyness. Closes: #570815
   * parallel: Fix exit code handling when commands are specified after --
   * parallel: Make -j 0 do something reasonable (start all jobs at once).
   * parallel: Fix to really avoid running new jobs when load is too high.
   * parallel: Fix logic error in code handling -l that could make parallel
     return a bogus 255 exit code when all jobs succeeded. Closes: #569617
   * parallel: Allow a decimal load value to be specified with -l
+  * Caps sillyness. Closes: #570815
+  * zrun: Add support for .xz files.
 
- -- Joey Hess <joeyh@debian.org>  Sun, 21 Feb 2010 13:16:10 -0500
+ -- Joey Hess <joeyh@debian.org>  Tue, 23 Feb 2010 15:51:26 -0500
 
 moreutils (0.38) unstable; urgency=low
 

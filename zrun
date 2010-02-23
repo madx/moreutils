@@ -17,7 +17,7 @@ arguments of the command to be transparently uncompressed to temp files
 This is a quick way to run a command that does not itself support
 compressed files, without manually uncompressing the files.
 
-The following compression types are supported: gz bz2 Z lzma lzo
+The following compression types are supported: gz bz2 Z xz lzma lzo
 
 If zrun is linked to some name beginning with z, like zprog, and the link is
 executed, this is equivalent to executing "zrun prog".
@@ -58,9 +58,10 @@ else {
 my @argument;
 my %child;
 foreach my $argument (@ARGV) {
-	if ($argument =~ m{^(.*/)?([^/]*)\.(gz|Z|bz2|lzo|lzma)$}s) {
+	if ($argument =~ m{^(.*/)?([^/]*)\.(gz|Z|bz2|xz|lzo|lzma)$}s) {
 		my $suffix = "-$2";
 		my @preprocess = $3 eq "bz2"  ? qw(bzip2 -d -c) : 
+				 $3 eq "xz"   ? qw(xz -d -c)    : 
 				 $3 eq "lzo"  ? qw(lzop -d -c)  : 
 				 $3 eq "lzma" ? qw(lzma -d -c)  : qw(gzip -d -c);
 

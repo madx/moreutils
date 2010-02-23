@@ -201,7 +201,7 @@ int main(int argc, char **argv) {
 
 		getloadavg(&load, 1);
 
-		if ((maxjobs > 0 && curjobs < maxjobs) ||
+		if ((maxjobs == 0 || curjobs < maxjobs) ||
 		    (maxload > 0 && load < maxload)) {
 			if (argsatonce > arglen - argidx)
 				argsatonce = arglen - argidx;
@@ -211,7 +211,7 @@ int main(int argc, char **argv) {
 			curjobs++;
 		}
 
-		if (maxjobs > 0 && curjobs == maxjobs) {
+		if (maxjobs == 0 || curjobs == maxjobs) {
 			returncode |= wait_for_child(0);
 			curjobs--;
 		}

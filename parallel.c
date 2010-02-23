@@ -217,7 +217,7 @@ int main(int argc, char **argv) {
 			curjobs--;
 		}
 
-		if (maxload > 0 && load > maxload) {
+		if (maxload > 0 && load >= maxload) {
 			int r;
 			sleep(1); /* XXX We should have a better
 				   * heurestic than this */

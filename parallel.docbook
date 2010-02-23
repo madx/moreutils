@@ -78,8 +78,8 @@ Written by Joey Hess
 			<term><option>-l maxload</option></term>
 			<listitem>
 				<para>Avoid starting new jobs when
-				the system's load average is higher
-				than the specified limit.</para>
+				the system's load average is not below
+				the specified limit.</para>
 			</listitem>
 		</varlistentry>
 		

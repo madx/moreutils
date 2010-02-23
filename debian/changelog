@@ -6,6 +6,7 @@ moreutils (0.39) UNRELEASED; urgency=low
   * parallel: Fix to really avoid running new jobs when load is too high.
   * parallel: Fix logic error in code handling -l that could make parallel
     return a bogus 255 exit code when all jobs succeeded. Closes: #569617
+  * parallel: Allow a decimal load value to be specified with -l
 
  -- Joey Hess <joeyh@debian.org>  Sun, 21 Feb 2010 13:16:10 -0500
 

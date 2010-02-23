@@ -100,7 +100,7 @@ int wait_for_child(int options) {
 int main(int argc, char **argv) {
 	int maxjobs = -1;
 	int curjobs = 0;
-	int maxload = -1;
+	double maxload = -1;
 	int argsatonce = 1;
 	int opt;
 	char **command = calloc(sizeof(char*), argc);
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
 			break;
 		case 'l':
 			errno = 0;
-			maxload = strtoul(optarg, &t, 0);
+			maxload = strtod(optarg, &t);
 			if (errno != 0 || (t-optarg) != strlen(optarg)) {
 				fprintf(stderr, "option '%s' is not a number\n",
 					optarg);

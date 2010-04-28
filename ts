@@ -20,7 +20,8 @@ expanded to fractional seconds (ie, "30.00001").
 If the -r switch is passed, it instead converts existing timestamps in
 the input to relative times, such as "15m5s ago". Many common timestamp
 formats are supported. Note that the Time::Duration and Date::Parse perl
-modules are required for this mode to work.
+modules are required for this mode to work. Currently, converting localized
+dates is not supported.
 
 If both -r and a format is passed, the existing timestamps are
 converted to the specified format.

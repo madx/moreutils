@@ -10,7 +10,7 @@ isutf8
 ifne
         run a command if the standard input is not empty
 lckdo
-	execute a program with a lock held
+	execute a program with a lock held (deprecated)
 mispipe
 	pipe two commands, returning the exit status of the first
 parallel

@@ -2,6 +2,8 @@ moreutils (0.40) UNRELEASED; urgency=low
 
   * lckdo: Now deprecated, since util-linux's flock(1) can do the same
     thing.
+  * parallel: -i will now replace {} inside parameters, before the {} had
+    to be a separate parameter.
 
  -- Joey Hess <joeyh@debian.org>  Fri, 18 Jun 2010 13:06:47 -0400
 

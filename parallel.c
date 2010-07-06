@@ -52,20 +52,25 @@ void exec_child(char **command, char **arguments, int replace_cb, int nargs) {
 		char **argv;
 		int argc = 0;
 		int i;
+		char *s;
 
 		while (command[argc] != 0) {
 			argc++;
 		}
-		if (replace_cb == 0)
+		if (! replace_cb)
 			argc++;
 		argv = calloc(sizeof(char*), argc + nargs);
 
 		for (i = 0; i < argc; i++) {
+			while (replace_cb && (s=strstr(command[i], "{}"))) {
+				char *buf=malloc(strlen(command[i]) + strlen(arguments[0]));
+				s[0]='\0';
+				sprintf(buf, "%s%s%s", command[i], arguments[0], s+2);
+				command[i]=buf;
+			}
 			argv[i] = command[i];
-			if (replace_cb && (strcmp(argv[i], "{}") == 0))
-				argv[i] = arguments[0];
 		}
-		if (replace_cb == 0)
+		if (! replace_cb)
 			memcpy(argv + i - 1, arguments, nargs * sizeof(char *));
 		execvp(argv[0], argv);
 		exit(1);

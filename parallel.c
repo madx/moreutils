@@ -44,17 +44,22 @@ void usage() {
 }
 
 void exec_child(char **command, char **arguments, int replace_cb, int nargs) {
-	char **argv;
-	int argc = 0;
-	int i;
-
-	while (command[argc] != 0) {
-		argc++;
+	if (fork() != 0) {
+		return;
 	}
-	if (replace_cb == 0)
-		argc++;
-	argv = calloc(sizeof(char*), argc + nargs);
+
 	if (command[0]) {
+		char **argv;
+		int argc = 0;
+		int i;
+
+		while (command[argc] != 0) {
+			argc++;
+		}
+		if (replace_cb == 0)
+			argc++;
+		argv = calloc(sizeof(char*), argc + nargs);
+
 		for (i = 0; i < argc; i++) {
 			argv[i] = command[i];
 			if (replace_cb && (strcmp(argv[i], "{}") == 0))
@@ -62,21 +67,16 @@ void exec_child(char **command, char **arguments, int replace_cb, int nargs) {
 		}
 		if (replace_cb == 0)
 			memcpy(argv + i - 1, arguments, nargs * sizeof(char *));
-		if (fork() == 0) {
-			/* Child */
-			execvp(argv[0], argv);
-			exit(1);
-		}
+		execvp(argv[0], argv);
+		exit(1);
 	}
 	else {
-		if (fork() == 0) {
-			int ret=system(arguments[0]);
-			if (WIFEXITED(ret)) {
-				exit(WEXITSTATUS(ret));
-			}
-			else {
-				exit(1);
-			}
+		int ret=system(arguments[0]);
+		if (WIFEXITED(ret)) {
+			exit(WEXITSTATUS(ret));
+		}
+		else {
+			exit(1);
 		}
 	}
 	return;

@@ -77,9 +77,9 @@ Written by Joey Hess
 		<varlistentry>
 			<term><option>-l maxload</option></term>
 			<listitem>
-				<para>Avoid starting new jobs when
-				the system's load average is not below
-				the specified limit.</para>
+				<para>Wait as needed to avoid starting
+				new jobs when the system's load average
+				is not below the specified limit.</para>
 			</listitem>
 		</varlistentry>
 		
@@ -88,8 +88,8 @@ Written by Joey Hess
 			<listitem>
 				<para>Normally the command is passed the
 				argument at the end of its command line. With
-				this option, the first instance of "{}" in
-				the command is replaced with the argument.</para>
+				this option, any instances of "{}" in
+				the command are replaced with the argument.</para>
 			</listitem>
 		</varlistentry>
 		

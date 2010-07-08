@@ -1,3 +1,9 @@
+moreutils (0.41) UNRELEASED; urgency=low
+
+  * ifdata.docbook: Mark interface as required in synopsis. Closes: #588397
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 08 Jul 2010 14:40:07 -0400
+
 moreutils (0.40) unstable; urgency=low
 
   * lckdo: Now deprecated, since util-linux's flock(1) can do the same

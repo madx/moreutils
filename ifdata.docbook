@@ -310,4 +310,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 	</variablelist>
 	</refsect1>
+	
+	<refsect1>
+		<title>AUTHOR</title>
+	
+		<para>
+			Benjamin BAYART
+		</para>
+	</refsect1>
 </refentry>

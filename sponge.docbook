@@ -63,4 +63,11 @@ USA
 			stdout.</para>
 
 	</refsect1>
+	
+	<refsect1>
+		<title>AUTHOR</title>
+		<para>
+			Colin Watson and Tollef Fog Heen
+		</para>
+	</refsect1>
 </refentry>

@@ -151,5 +151,12 @@ Written by Joey Hess
 	exits nonzero, <command>parallel</command> as a whole will exit nonzero.)</para>
 		
 	</refsect1>
+	
+	<refsect1>
+		<title>AUTHOR</title>
+		<para>
+			Tollef Fog Heen
+		</para>
+	</refsect1>
 
 </refentry>

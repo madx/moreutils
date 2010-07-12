@@ -146,5 +146,12 @@ Public domain.
         will be returned.</para>
 		
 	</refsect1>
+	
+	<refsect1>
+		<title>AUTHOR</title>
+		<para>
+			Michael Tokarev
+		</para>
+	</refsect1>
 
 </refentry>

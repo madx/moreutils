@@ -199,15 +199,16 @@ static void write_buff_out(char* buff, size_t length, FILE *fd) {
 }
 
 static void copy_tmpfile(FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
-	if (fseek(tmpfile, 0, SEEK_SET)) {
+	ssize_t i;
+	if (lseek(fileno(tmpfile), 0, SEEK_SET)) {
 		perror("could to seek to start of temporary file");
 		fclose(tmpfile);
 		exit(1);
 	}
-	while (fread(buf, size, 1, tmpfile) > 0) {
-		write_buff_out(buf, size, outfile);
+	while ((i = read(fileno(tmpfile), buf, size)) > 0) {
+		write_buff_out(buf, i, outfile);
 	}
-	if (ferror(tmpfile)) {
+	if (i == -1) {
 		perror("read temporary file");
 		fclose(tmpfile);
 		exit(1);

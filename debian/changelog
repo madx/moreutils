@@ -2,6 +2,9 @@ moreutils (0.41) UNRELEASED; urgency=low
 
   * ifdata.docbook: Mark interface as required in synopsis. Closes: #588397
   * Add missing AUTHOR section to docbook man pages.
+  * sponge: Correct bad use of fread that caused a trailing quantity of
+    soaked data to be silently discarded when a temp file was used
+    and sponge output to stdout. Closes: #595220
 
  -- Joey Hess <joeyh@debian.org>  Thu, 08 Jul 2010 14:40:07 -0400
 

@@ -1,3 +1,9 @@
+moreutils (0.42) UNRELEASED; urgency=low
+
+  * Typo. Closes: #596032
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 08 Sep 2010 02:09:29 -0400
+
 moreutils (0.41) unstable; urgency=low
 
   * ifdata.docbook: Mark interface as required in synopsis. Closes: #588397

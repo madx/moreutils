@@ -61,7 +61,9 @@ USA
 			the same file.</para>
 		<para>
 			It also creates the output file
-			atomically by renaming a temp file into place.
+			atomically by renaming a temp file into place,
+			and preserves the permissions of the output file
+			if it already exists.
 			If the output file is a special file or symlink,
 			the data will be written to it.</para>
 		<para>If no output file is specified, sponge outputs to

@@ -189,6 +189,15 @@ static void write_buff_tmp(char* buff, size_t length, FILE *fd) {
 		exit(1);
 	}
 }
+		
+static void write_buff_tmp_finish(char* buff, size_t length, FILE *fd) {
+	if (length) 
+		write_buff_tmp(buff, length, fd);
+	if (fflush(fd) != 0) {
+		perror("fflush");
+		exit(1);
+	}
+}
 
 static void write_buff_out(char* buff, size_t length, FILE *fd) {
 	if (fwrite(buff, length, 1, fd) < 1) {
@@ -262,6 +271,7 @@ int main (int argc, char **argv) {
 	FILE *outfile, *tmpfile = 0;
 	ssize_t i = 0;
 	size_t mem_available = default_sponge_size();
+	int tmpfile_used=0;
 
 	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
 		usage();
@@ -282,6 +292,7 @@ int main (int argc, char **argv) {
 			if ((bufsize*2) >= mem_available) {
 				write_buff_tmp(bufstart, bufused, tmpfile);
 				bufused = 0;
+				tmpfile_used = 1;
 			}
 			else {
 				bufsize *= 2;
@@ -299,15 +310,9 @@ int main (int argc, char **argv) {
 		exit(1);
 	}
 
-	/* write whatever we have in memory to tmpfile */
-	if (bufused) 
-		write_buff_tmp(bufstart, bufused, tmpfile);
-	if (fflush(tmpfile) != 0) {
-		perror("fflush");
-		exit(1);
-	}
-
 	if (outname) {
+		write_buff_tmp_finish(bufstart, bufused, tmpfile);
+
 		mode_t mode;
 		struct stat statbuf;
 		int exists = (lstat(outname, &statbuf) == 0);
@@ -348,7 +353,14 @@ int main (int argc, char **argv) {
 		}
 	}
 	else {
-		copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
+		if (tmpfile_used) {
+			write_buff_tmp_finish(bufstart, bufused, tmpfile);
+			copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
+		}
+		else if (bufused) {
+			/* buffer direct to stdout, no tmpfile */
+			write_buff_out(bufstart, bufused, stdout);
+		}
 	}
 
 	return 0;

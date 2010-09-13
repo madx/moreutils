@@ -300,54 +300,54 @@ int main (int argc, char **argv) {
 		exit(1);
 	}
 
-		/* write whatever we have in memory to tmpfile */
-		if (bufused) 
-			write_buff_tmp(bufstart, bufused, tmpfile);
-		if (fflush(tmpfile) != 0) {
-			perror("fflush");
-			exit(1);
-		}
+	/* write whatever we have in memory to tmpfile */
+	if (bufused) 
+		write_buff_tmp(bufstart, bufused, tmpfile);
+	if (fflush(tmpfile) != 0) {
+		perror("fflush");
+		exit(1);
+	}
 
-		if (outname) {
-			/* If it's a regular file, or does not yet exist,
-			 * attempt a fast rename of the temp file. */
-			if (((lstat(outname, &statbuf) == 0 &&
-			      S_ISREG(statbuf.st_mode) &&
-			      ! S_ISLNK(statbuf.st_mode)
-			     ) || errno == ENOENT) &&
-			    rename(tmpname, outname) == 0) {
-				tmpname=NULL;
-				/* Fix renamed file mode to match either
-				 * the old file mode, or the default file
-				 * mode for a newly created file. */
-				mode_t mode;
-				if (errno != ENOENT) {
-					mode = statbuf.st_mode;
-				}
-				else {
-					mode_t mask = umask(0);
-					umask(mask);
-					mode = 0666 & ~mask;
-				}
-				if (chmod(outname, mode) != 0) {
-					perror("chmod");
-					exit(1);
-				}
-				return(0);
+	if (outname) {
+		/* If it's a regular file, or does not yet exist,
+		 * attempt a fast rename of the temp file. */
+		if (((lstat(outname, &statbuf) == 0 &&
+		      S_ISREG(statbuf.st_mode) &&
+		      ! S_ISLNK(statbuf.st_mode)
+		     ) || errno == ENOENT) &&
+		    rename(tmpname, outname) == 0) {
+			tmpname=NULL;
+			/* Fix renamed file mode to match either
+			 * the old file mode, or the default file
+			 * mode for a newly created file. */
+			mode_t mode;
+			if (errno != ENOENT) {
+				mode = statbuf.st_mode;
 			}
-			
-			/* Fall back to slow copy. */
-			outfile = fopen(outname, "w");
-			if (!outfile) {
-				perror("error opening output file");
+			else {
+				mode_t mask = umask(0);
+				umask(mask);
+				mode = 0666 & ~mask;
+			}
+			if (chmod(outname, mode) != 0) {
+				perror("chmod");
 				exit(1);
 			}
-			copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
-			fclose(outfile);
+			return(0);
 		}
-		else {
-			copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
+			
+		/* Fall back to slow copy. */
+		outfile = fopen(outname, "w");
+		if (!outfile) {
+			perror("error opening output file");
+			exit(1);
 		}
+		copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
+		fclose(outfile);
+	}
+	else {
+		copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
+	}
 
 	return 0;
 }

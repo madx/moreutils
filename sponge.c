@@ -262,7 +262,6 @@ int main (int argc, char **argv) {
 	FILE *outfile, *tmpfile = 0;
 	ssize_t i = 0;
 	size_t mem_available = default_sponge_size();
-	struct stat statbuf;
 
 	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
 		usage();
@@ -309,41 +308,44 @@ int main (int argc, char **argv) {
 	}
 
 	if (outname) {
-		/* If it's a regular file, or does not yet exist,
-		 * attempt a fast rename of the temp file. */
-		if (((lstat(outname, &statbuf) == 0 &&
-		      S_ISREG(statbuf.st_mode) &&
-		      ! S_ISLNK(statbuf.st_mode)
-		     ) || errno == ENOENT) &&
-		    rename(tmpname, outname) == 0) {
-			tmpname=NULL;
-			/* Fix renamed file mode to match either
-			 * the old file mode, or the default file
-			 * mode for a newly created file. */
-			mode_t mode;
-			if (errno != ENOENT) {
-				mode = statbuf.st_mode;
-			}
-			else {
-				mode_t mask = umask(0);
-				umask(mask);
-				mode = 0666 & ~mask;
-			}
-			if (chmod(outname, mode) != 0) {
-				perror("chmod");
-				exit(1);
-			}
-			return(0);
+		mode_t mode;
+		struct stat statbuf;
+		int exists = (lstat(outname, &statbuf) == 0);
+
+		/* Set temp file mode to match either
+		 * the old file mode, or the default file
+		 * mode for a newly created file. */
+		if (exists) {
+			mode = statbuf.st_mode;
 		}
-			
-		/* Fall back to slow copy. */
-		outfile = fopen(outname, "w");
-		if (!outfile) {
-			perror("error opening output file");
+		else {
+			mode_t mask = umask(0);
+			umask(mask);
+			mode = 0666 & ~mask;
+		}
+		if (chmod(tmpname, mode) != 0) {
+			perror("chmod");
 			exit(1);
 		}
-		copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
-		fclose(outfile);
+
+		/* If it's a regular file, or does not yet exist,
+		 * attempt a fast rename of the temp file. */
+		if (((exists &&
+		      S_ISREG(statbuf.st_mode) &&
+		      ! S_ISLNK(statbuf.st_mode)
+		     ) || ! exists) &&
+		    rename(tmpname, outname) == 0) {
+			tmpname=NULL; /* don't try to cleanup tmpname */
+		}
+		else {	
+			/* Fall back to slow copy. */
+			outfile = fopen(outname, "w");
+			if (!outfile) {
+				perror("error opening output file");
+				exit(1);
+			}
+			copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
+		}
 	}
 	else {
 		copy_tmpfile(tmpfile, stdout, bufstart, bufsize);

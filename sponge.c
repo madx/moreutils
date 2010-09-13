@@ -262,6 +262,7 @@ int main (int argc, char **argv) {
 	FILE *outfile, *tmpfile = 0;
 	ssize_t i = 0;
 	size_t mem_available = default_sponge_size();
+	struct stat statbuf;
 
 	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
 		usage();
@@ -269,7 +270,8 @@ int main (int argc, char **argv) {
 	if (argc == 2) {
 		outname = argv[1];
 	}
-
+				
+	tmpfile = open_tmpfile();
 	bufstart = buf = malloc(bufsize);
 	if (!buf) {
 		perror("failed to allocate memory");
@@ -279,9 +281,6 @@ int main (int argc, char **argv) {
 		bufused = bufused+i;
 		if (bufused == bufsize) {
 			if ((bufsize*2) >= mem_available) {
-				if (!tmpfile) {
-					tmpfile=open_tmpfile();
-				}
 				write_buff_tmp(bufstart, bufused, tmpfile);
 				bufused = 0;
 			}
@@ -300,8 +299,6 @@ int main (int argc, char **argv) {
 		perror("failed to read from stdin");
 		exit(1);
 	}
-	if (tmpfile) {
-		struct stat statbuf;
 
 		/* write whatever we have in memory to tmpfile */
 		if (bufused) 
@@ -319,6 +316,7 @@ int main (int argc, char **argv) {
 			      ! S_ISLNK(statbuf.st_mode)
 			     ) || errno == ENOENT) &&
 			    rename(tmpname, outname) == 0) {
+				tmpname=NULL;
 				/* Fix renamed file mode to match either
 				 * the old file mode, or the default file
 				 * mode for a newly created file. */
@@ -345,26 +343,11 @@ int main (int argc, char **argv) {
 				exit(1);
 			}
 			copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
+			fclose(outfile);
 		}
 		else {
 			copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
 		}
-	}
-	else {
-		if (outname) {
-			outfile = fopen(outname, "w");
-			if (!outfile) {
-				perror("error opening output file");
-				exit(1);
-			}
-		}
-		else {
-			outfile = stdout;
-		}
-		if (bufused)
-			write_buff_out(bufstart, bufused, outfile);
-		fclose(outfile);
-	}
 
 	return 0;
 }

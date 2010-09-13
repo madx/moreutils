@@ -72,7 +72,7 @@ static void cs_leave (struct cs_status status) {
 	}
 }
 
-static void cleanup() {
+static void cleanup () {
 	if (tmpname) {
 		unlink(tmpname);
 	}
@@ -190,7 +190,7 @@ static void write_buff_tmp(char* buff, size_t length, FILE *fd) {
 	}
 }
 		
-static void write_buff_tmp_finish(char* buff, size_t length, FILE *fd) {
+static void write_buff_tmp_finish (char* buff, size_t length, FILE *fd) {
 	if (length) 
 		write_buff_tmp(buff, length, fd);
 	if (fflush(fd) != 0) {
@@ -199,7 +199,7 @@ static void write_buff_tmp_finish(char* buff, size_t length, FILE *fd) {
 	}
 }
 
-static void write_buff_out(char* buff, size_t length, FILE *fd) {
+static void write_buff_out (char* buff, size_t length, FILE *fd) {
 	if (fwrite(buff, length, 1, fd) < 1) {
 		perror("error writing buffer to output file");
 		fclose(fd);
@@ -207,7 +207,7 @@ static void write_buff_out(char* buff, size_t length, FILE *fd) {
 	}
 }
 
-static void copy_tmpfile(FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
+static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
 	ssize_t i;
 	if (lseek(fileno(tmpfile), 0, SEEK_SET)) {
 		perror("could to seek to start of temporary file");
@@ -226,7 +226,7 @@ static void copy_tmpfile(FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
 	fclose(outfile);
 }
 
-FILE *open_tmpfile(void) {
+FILE *open_tmpfile (void) {
 	struct cs_status cs;
 	int tmpfd;
 	FILE *tmpfile;
@@ -311,11 +311,11 @@ int main (int argc, char **argv) {
 	}
 
 	if (outname) {
-		write_buff_tmp_finish(bufstart, bufused, tmpfile);
-
 		mode_t mode;
 		struct stat statbuf;
 		int exists = (lstat(outname, &statbuf) == 0);
+		
+		write_buff_tmp_finish(bufstart, bufused, tmpfile);
 
 		/* Set temp file mode to match either
 		 * the old file mode, or the default file

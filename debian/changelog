@@ -1,12 +1,12 @@
-moreutils (0.42) UNRELEASED; urgency=low
+moreutils (0.42) unstable; urgency=low
 
-  * Typo. Closes: #596032
   * sponge: Guarantee that output file is always updated atomically,
     by renaming a temp file into place. Closes: #592144
   * sponge: Ensure that output file permissions are always preserved
     if it already exists.
+  * Typo. Closes: #596032
 
- -- Joey Hess <joeyh@debian.org>  Wed, 08 Sep 2010 02:09:29 -0400
+ -- Joey Hess <joeyh@debian.org>  Wed, 06 Oct 2010 20:03:25 -0400
 
 moreutils (0.41) unstable; urgency=low
 

@@ -1,3 +1,10 @@
+moreutils (0.43) UNRELEASED; urgency=low
+
+  * chronic: New command, runs a command quietly, unless it fails.
+  * Now depends on IPC::Run, used by chronic.
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 29 Oct 2010 15:23:17 -0400
+
 moreutils (0.42) unstable; urgency=low
 
   * sponge: Guarantee that output file is always updated atomically,

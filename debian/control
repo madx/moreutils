@@ -9,7 +9,7 @@ Homepage: http://kitenet.net/~joey/code/moreutils/
 
 Package: moreutils
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}, libipc-run-perl
 Suggests: libtime-duration-perl, libtimedate-perl
 Conflicts: lckdo
 Replaces: lckdo
@@ -18,6 +18,7 @@ Description: additional Unix utilities
  to write long ago, when Unix was young.
  .
  So far, it includes the following utilities:
+  - chronic: runs a command quietly unless it fails
   - combine: combine the lines in two files using boolean operations
   - ifdata: get network interface info without parsing ifconfig output
   - ifne: run a program if the standard input is not empty

@@ -20,7 +20,7 @@ accidental output when it succeeds, and not verbose enough output when it
 fails, you can just run it verbosely always, and use chronic to hide
 the successful output.
 
-	5 0 * * * chronic rsync -v foo bar
+	0 1 * * * chronic backup # instead of backup >/dev/null 2>&1
 
 =head1 AUTHOR
 

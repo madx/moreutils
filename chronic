@@ -10,7 +10,7 @@ chronic COMMAND...
 
 =head1 DESCRIPTION
 
-chronic runs a command, and agganges for its standard out and standard
+chronic runs a command, and arranges for its standard out and standard
 error to only be displayed if the command fails (exits nonzero or crashes).
 If the command succeeds, any extraneous output will be hidden.
 

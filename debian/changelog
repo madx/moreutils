@@ -1,8 +1,8 @@
-moreutils (0.44) UNRELEASED; urgency=low
+moreutils (0.44) unstable; urgency=low
 
   * pee: Propigate exit status of commands run.
 
- -- Joey Hess <joeyh@debian.org>  Sat, 19 Feb 2011 17:34:50 -0400
+ -- Joey Hess <joeyh@debian.org>  Thu, 10 Mar 2011 17:38:14 -0400
 
 moreutils (0.43) unstable; urgency=low
 

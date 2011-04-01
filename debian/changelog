@@ -1,3 +1,10 @@
+moreutils (0.45) UNRELEASED; urgency=low
+
+  * ts: Support %.s for seconds sinch epoch with subsecond resolution.
+    Closes: #619764
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 01 Apr 2011 14:34:15 -0400
+
 moreutils (0.44) unstable; urgency=low
 
   * pee: Propigate exit status of commands run.

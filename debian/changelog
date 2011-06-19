@@ -1,9 +1,9 @@
-moreutils (0.45) UNRELEASED; urgency=low
+moreutils (0.45) unstable; urgency=low
 
   * ts: Support %.s for seconds sinch epoch with subsecond resolution.
     Closes: #619764
 
- -- Joey Hess <joeyh@debian.org>  Fri, 01 Apr 2011 14:34:15 -0400
+ -- Joey Hess <joeyh@debian.org>  Sun, 19 Jun 2011 15:44:28 -0400
 
 moreutils (0.44) unstable; urgency=low
 

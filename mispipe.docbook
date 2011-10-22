@@ -60,7 +60,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		
 		<para><command>mispipe</command> pipes two commands
 		together like the shell does, but unlike piping in the
-		shell, the exit status of the first command is returned.
+		shell, which returns the exit status of the last command;
+	        when using mispipe, the exit status of the first command
+		is returned.
 		</para>
 
 		<para>
@@ -80,5 +82,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		terminated abnormally (due to a signal), 128 will be added
 		to its exit status.</para>
 		
+	</refsect1>
+	
+	<refsect1>
+		<title>AUTHOR</title>
+		<para>
+			Nathanael Nerode
+		</para>
 	</refsect1>
 </refentry>

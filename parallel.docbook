@@ -37,8 +37,14 @@ Written by Joey Hess
 			<command>parallel</command>
 			<arg>options</arg>
 			<arg>command</arg>
-			<arg>--</arg>
-			<arg>arguments</arg>
+			<command>--</command>
+			<arg>argument ...</arg>
+		</cmdsynopsis>
+		<cmdsynopsis>
+			<command>parallel</command>
+			<arg>options</arg>
+			<command>--</command>
+			<arg>command ...</arg>
 		</cmdsynopsis>
 	</refsynopsisdiv>
 	
@@ -49,6 +55,9 @@ Written by Joey Hess
 		passing it a single one of the specified arguments. This is
 		repeated for each argument. Jobs may be run in
 		parallel. The default is to run one job per CPU.</para>
+
+		<para>If no command is specified before the --,
+		the commands after it are instead run in parallel.</para>
 
 	</refsect1>
 	
@@ -68,9 +77,9 @@ Written by Joey Hess
 		<varlistentry>
 			<term><option>-l maxload</option></term>
 			<listitem>
-				<para>Avoid starting new jobs when
-				the system's load average is higher
-				than the specified limit.</para>
+				<para>Wait as needed to avoid starting
+				new jobs when the system's load average
+				is not below the specified limit.</para>
 			</listitem>
 		</varlistentry>
 		
@@ -79,8 +88,17 @@ Written by Joey Hess
 			<listitem>
 				<para>Normally the command is passed the
 				argument at the end of its command line. With
-				this option, the first instance of "{}" in
-				the command is replaced with the argument.</para>
+				this option, any instances of "{}" in
+				the command are replaced with the argument.</para>
+			</listitem>
+		</varlistentry>
+		
+		<varlistentry>
+			<term><option>-n</option></term>
+			<listitem>
+				<para>Number of arguments to pass to a
+				command at a time. Default is 1.
+				Incompatible with -i</para>
 			</listitem>
 		</varlistentry>
 		
@@ -98,7 +116,7 @@ Written by Joey Hess
 	</para>
 
 	<para>This runs three subshells that each print a message, delay,
-		and print another message. If yours system has multiple
+		and print another message. If your system has multiple
 		CPUs, parallel will run some of the jobs in parallel,
 		which should be clear from the order the messages are
 		output.
@@ -113,6 +131,14 @@ Written by Joey Hess
 	<para>This runs three ufraw processes at the same time until
 	all of the NEF files have been processed.
 	</para>
+	
+	<para>
+	<cmdsynopsis>
+		<command>parallel -j 3 -- ls df "echo hi"</command>
+	</cmdsynopsis>
+	</para>
+
+	<para>This runs three independent commands in parallel.</para>
 
 	</refsect1>
 
@@ -122,8 +148,15 @@ Written by Joey Hess
 
 	<para>Its exit status is the combination of the exit statuses of each
 	command ran, ORed together. (Thus, if any one command
-	exists nonzero, <command>parallel</command> as a whole will exit nonzero.)</para>
+	exits nonzero, <command>parallel</command> as a whole will exit nonzero.)</para>
 		
+	</refsect1>
+	
+	<refsect1>
+		<title>AUTHOR</title>
+		<para>
+			Tollef Fog Heen
+		</para>
 	</refsect1>
 
 </refentry>

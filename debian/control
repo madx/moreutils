@@ -3,31 +3,32 @@ Section: utils
 Priority: optional
 Build-Depends: debhelper (>= 7), dpkg-dev (>= 1.9.0), docbook2x, docbook-xml
 Maintainer: Joey Hess <joeyh@debian.org>
-Standards-Version: 3.8.1
+Standards-Version: 3.9.2
 Vcs-Git: git://git.kitenet.net/moreutils
 Homepage: http://kitenet.net/~joey/code/moreutils/
 
 Package: moreutils
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${perl:Depends}, libipc-run-perl
 Suggests: libtime-duration-perl, libtimedate-perl
 Conflicts: lckdo
 Replaces: lckdo
-Description: additional unix utilities
- This is a growing collection of the unix tools that nobody thought
- to write thirty years ago.
+Description: additional Unix utilities
+ This is a growing collection of the Unix tools that nobody thought
+ to write long ago, when Unix was young.
  .
  So far, it includes the following utilities:
-  - sponge: soak up standard input and write to a file
+  - chronic: runs a command quietly unless it fails
+  - combine: combine the lines in two files using boolean operations
   - ifdata: get network interface info without parsing ifconfig output
   - ifne: run a program if the standard input is not empty
-  - vidir: edit a directory in your text editor
-  - vipe: insert a text editor into a pipe
-  - ts: timestamp standard input
-  - combine: combine the lines in two files using boolean operations
-  - pee: tee standard input to pipes
-  - zrun: automatically uncompress arguments to command
-  - mispipe: pipe two commands, returning the exit status of the first
   - isutf8: check if a file or standard input is utf-8
   - lckdo: execute a program with a lock held
+  - mispipe: pipe two commands, returning the exit status of the first
   - parallel: run multiple jobs at once
+  - pee: tee standard input to pipes
+  - sponge: soak up standard input and write to a file
+  - ts: timestamp standard input
+  - vidir: edit a directory in your text editor
+  - vipe: insert a text editor into a pipe
+  - zrun: automatically uncompress arguments to command

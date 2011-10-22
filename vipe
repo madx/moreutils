@@ -6,12 +6,14 @@ vipe - edit pipe
 
 =head1 SYNOPSIS
 
-command | B<vipe> [...] | command
+command1 | B<vipe> [...] | command2
 
 =head1 DESCRIPTION
 
 vipe allows you to run your editor in the middle of a unix pipeline and
-edit the data that is being piped between programs.
+edit the data that is being piped between programs. Your editor will
+have the full data being piped from command1 loaded into it, and when you
+save, that data will be piped into command2.
 
 Any extra arguments are passed as arguments to the editor.
 

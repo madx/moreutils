@@ -72,7 +72,7 @@ static void cs_leave (struct cs_status status) {
 	}
 }
 
-static void cleanup() {
+static void cleanup () {
 	if (tmpname) {
 		unlink(tmpname);
 	}
@@ -189,8 +189,17 @@ static void write_buff_tmp(char* buff, size_t length, FILE *fd) {
 		exit(1);
 	}
 }
+		
+static void write_buff_tmp_finish (char* buff, size_t length, FILE *fd) {
+	if (length) 
+		write_buff_tmp(buff, length, fd);
+	if (fflush(fd) != 0) {
+		perror("fflush");
+		exit(1);
+	}
+}
 
-static void write_buff_out(char* buff, size_t length, FILE *fd) {
+static void write_buff_out (char* buff, size_t length, FILE *fd) {
 	if (fwrite(buff, length, 1, fd) < 1) {
 		perror("error writing buffer to output file");
 		fclose(fd);
@@ -198,16 +207,17 @@ static void write_buff_out(char* buff, size_t length, FILE *fd) {
 	}
 }
 
-static void copy_tmpfile(FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
-	if (fseek(tmpfile, 0, SEEK_SET)) {
+static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
+	ssize_t i;
+	if (lseek(fileno(tmpfile), 0, SEEK_SET)) {
 		perror("could to seek to start of temporary file");
 		fclose(tmpfile);
 		exit(1);
 	}
-	while (fread(buf, size, 1, tmpfile) > 0) {
-		write_buff_out(buf, size, outfile);
+	while ((i = read(fileno(tmpfile), buf, size)) > 0) {
+		write_buff_out(buf, i, outfile);
 	}
-	if (ferror(tmpfile)) {
+	if (i == -1) {
 		perror("read temporary file");
 		fclose(tmpfile);
 		exit(1);
@@ -216,7 +226,7 @@ static void copy_tmpfile(FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
 	fclose(outfile);
 }
 
-FILE *open_tmpfile(void) {
+FILE *open_tmpfile (void) {
 	struct cs_status cs;
 	int tmpfd;
 	FILE *tmpfile;
@@ -261,6 +271,7 @@ int main (int argc, char **argv) {
 	FILE *outfile, *tmpfile = 0;
 	ssize_t i = 0;
 	size_t mem_available = default_sponge_size();
+	int tmpfile_used=0;
 
 	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
 		usage();
@@ -268,7 +279,8 @@ int main (int argc, char **argv) {
 	if (argc == 2) {
 		outname = argv[1];
 	}
-
+				
+	tmpfile = open_tmpfile();
 	bufstart = buf = malloc(bufsize);
 	if (!buf) {
 		perror("failed to allocate memory");
@@ -278,11 +290,9 @@ int main (int argc, char **argv) {
 		bufused = bufused+i;
 		if (bufused == bufsize) {
 			if ((bufsize*2) >= mem_available) {
-				if (!tmpfile) {
-					tmpfile=open_tmpfile();
-				}
 				write_buff_tmp(bufstart, bufused, tmpfile);
 				bufused = 0;
+				tmpfile_used = 1;
 			}
 			else {
 				bufsize *= 2;
@@ -299,44 +309,40 @@ int main (int argc, char **argv) {
 		perror("failed to read from stdin");
 		exit(1);
 	}
-	if (tmpfile) {
-		struct stat statbuf;
 
-		/* write whatever we have in memory to tmpfile */
-		if (bufused) 
-			write_buff_tmp(bufstart, bufused, tmpfile);
-		if (fflush(tmpfile) != 0) {
-			perror("fflush");
+	if (outname) {
+		mode_t mode;
+		struct stat statbuf;
+		int exists = (lstat(outname, &statbuf) == 0);
+		
+		write_buff_tmp_finish(bufstart, bufused, tmpfile);
+
+		/* Set temp file mode to match either
+		 * the old file mode, or the default file
+		 * mode for a newly created file. */
+		if (exists) {
+			mode = statbuf.st_mode;
+		}
+		else {
+			mode_t mask = umask(0);
+			umask(mask);
+			mode = 0666 & ~mask;
+		}
+		if (chmod(tmpname, mode) != 0) {
+			perror("chmod");
 			exit(1);
 		}
 
-		if (outname) {
-			/* If it's a regular file, or does not yet exist,
-			 * attempt a fast rename of the temp file. */
-			if (((lstat(outname, &statbuf) == 0 &&
-			      S_ISREG(statbuf.st_mode) &&
-			      ! S_ISLNK(statbuf.st_mode)
-			     ) || errno == ENOENT) &&
-			    rename(tmpname, outname) == 0) {
-				/* Fix renamed file mode to match either
-				 * the old file mode, or the default file
-				 * mode for a newly created file. */
-				mode_t mode;
-				if (errno != ENOENT) {
-					mode = statbuf.st_mode;
-				}
-				else {
-					mode_t mask = umask(0);
-					umask(mask);
-					mode = 0666 & ~mask;
-				}
-				if (chmod(outname, mode) != 0) {
-					perror("chmod");
-					exit(1);
-				}
-				return(0);
-			}
-			
+		/* If it's a regular file, or does not yet exist,
+		 * attempt a fast rename of the temp file. */
+		if (((exists &&
+		      S_ISREG(statbuf.st_mode) &&
+		      ! S_ISLNK(statbuf.st_mode)
+		     ) || ! exists) &&
+		    rename(tmpname, outname) == 0) {
+			tmpname=NULL; /* don't try to cleanup tmpname */
+		}
+		else {	
 			/* Fall back to slow copy. */
 			outfile = fopen(outname, "w");
 			if (!outfile) {
@@ -345,24 +351,16 @@ int main (int argc, char **argv) {
 			}
 			copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
 		}
-		else {
-			copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
-		}
 	}
 	else {
-		if (outname) {
-			outfile = fopen(outname, "w");
-			if (!outfile) {
-				perror("error opening output file");
-				exit(1);
-			}
+		if (tmpfile_used) {
+			write_buff_tmp_finish(bufstart, bufused, tmpfile);
+			copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
 		}
-		else {
-			outfile = stdout;
+		else if (bufused) {
+			/* buffer direct to stdout, no tmpfile */
+			write_buff_out(bufstart, bufused, stdout);
 		}
-		if (bufused)
-			write_buff_out(bufstart, bufused, outfile);
-		fclose(outfile);
 	}
 
 	return 0;

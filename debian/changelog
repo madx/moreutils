@@ -1,8 +1,87 @@
-moreutils (0.37) UNRELEASED; urgency=low
+moreutils (0.45) unstable; urgency=low
+
+  * ts: Support %.s for seconds sinch epoch with subsecond resolution.
+    Closes: #619764
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 19 Jun 2011 15:44:28 -0400
+
+moreutils (0.44) unstable; urgency=low
+
+  * pee: Propigate exit status of commands run.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 10 Mar 2011 17:38:14 -0400
+
+moreutils (0.43) unstable; urgency=low
+
+  * chronic: New command, runs a command quietly, unless it fails.
+  * Now depends on IPC::Run, used by chronic.
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 29 Oct 2010 15:54:37 -0400
+
+moreutils (0.42) unstable; urgency=low
+
+  * sponge: Guarantee that output file is always updated atomically,
+    by renaming a temp file into place. Closes: #592144
+  * sponge: Ensure that output file permissions are always preserved
+    if it already exists.
+  * Typo. Closes: #596032
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 06 Oct 2010 20:03:25 -0400
+
+moreutils (0.41) unstable; urgency=low
+
+  * ifdata.docbook: Mark interface as required in synopsis. Closes: #588397
+  * Add missing AUTHOR section to docbook man pages.
+  * sponge: Correct bad use of fread that caused a trailing quantity of
+    soaked data to be silently discarded when a temp file was used
+    and sponge output to stdout. Closes: #595220
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 02 Sep 2010 16:47:10 -0400
+
+moreutils (0.40) unstable; urgency=low
+
+  * lckdo: Now deprecated, since util-linux's flock(1) can do the same
+    thing.
+  * parallel: -i will now replace {} inside parameters, before the {} had
+    to be a separate parameter.
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 06 Jul 2010 19:38:14 -0400
+
+moreutils (0.39) unstable; urgency=low
+
+  * parallel: Fix exit code handling when commands are specified after --
+  * parallel: Make -j 0 do something reasonable (start all jobs at once).
+  * parallel: Fix to really avoid running new jobs when load is too high.
+  * parallel: Fix logic error in code handling -l that could make parallel
+    return a bogus 255 exit code when all jobs succeeded. Closes: #569617
+  * parallel: Allow a decimal load value to be specified with -l
+  * Caps sillyness. Closes: #570815
+  * zrun: Add support for .xz files.
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 23 Feb 2010 15:51:26 -0500
+
+moreutils (0.38) unstable; urgency=low
+
+  * Description improvements. Closes: #549450
+    (Thanks, Justin B Rye)
+  * parallel: Allow running independent commands,
+    like `parallel -j3 -- ls df "echo hi"`
+  * ifdata: Add FreeBSD kernel support, although some of the more esoteric
+    interface options are not currently supported in FreeBSD.
+  * parallel: Define WEXITED to allow building on FreeBSD kernel.
+  * Thanks Enrico Tassi for the FreeBSD kernel support, which should
+    be enough to get moreutils built on Debian kFreeBSD. Closes: #562609
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 09 Feb 2010 15:50:42 -0500
+
+moreutils (0.37) unstable; urgency=low
 
   * parallel: Clarify man page regarding CPUs. Closes: #536597
+  * parallel: Add -n option. Thanks, Pierre Habouzit. Closes: #537992
+    (As a side effect, fixes a segfault if -- was omitted.)
+  * parallel.1: Typo fixes. Closes: #538147
 
- -- Joey Hess <joeyh@debian.org>  Wed, 15 Jul 2009 10:13:28 -0400
+ -- Joey Hess <joeyh@debian.org>  Sat, 25 Jul 2009 10:18:40 +0200
 
 moreutils (0.36) unstable; urgency=low
 

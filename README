@@ -1,34 +1,22 @@
 This is a collection of the unix tools that nobody thought to write
-thirty years ago. Currently it consists of these tools:
+long ago, when unix was young. Currently it consists of these tools:
 
-combine
-	combine the lines in two files using boolean operations
-ifdata
-	get network interface info without parsing ifconfig output
-isutf8
-	check if a file or standard input is utf-8
-ifne
-        run a command if the standard input is not empty
-lckdo
-	execute a program with a lock held
-mispipe
-	pipe two commands, returning the exit status of the first
-parallel
-	run multiple jobs at once
-pee
-	tee standard input to pipes
-sponge
-	soak up standard input and write to a file
-ts
-	timestamp standard input
-vidir
-	edit a directory in your text editor
-vipe
-	insert a text editor into a pipe
-zrun
-	automatically uncompress arguments to command
+chronic: runs a command quietly unless it fails
+combine: combine the lines in two files using boolean operations
+ifdata: get network interface info without parsing ifconfig output
+isutf8: check if a file or standard input is utf-8
+ifne: run a command if the standard input is not empty
+lckdo: execute a program with a lock held (deprecated)
+mispipe: pipe two commands, returning the exit status of the first
+parallel: run multiple jobs at once
+pee: tee standard input to pipes
+sponge: soak up standard input and write to a file
+ts: timestamp standard input
+vidir: edit a directory in your text editor
+vipe: insert a text editor into a pipe
+zrun: automatically uncompress arguments to command
 
-Its web page is here: http://kitenet.net/~joey/code/moreutils.html
+Its web page is here: http://kitenet.net/~joey/code/moreutils/
 
 Your suggestions of additional tools to add to this collection are
 appreciated. The web page lists some that are under consideration but

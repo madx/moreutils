@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 /* Licensed under the GPL
  * Copyright (c) Miek Gieben, 2006
@@ -9,12 +11,19 @@
  * pipes _and_ output to standard output
  */
 
-void
+int
 close_pipes(FILE **p, size_t i) 
 {
+	int ret=EXIT_SUCCESS;
 	size_t j;
-	for (j = 0; j < i; j++) 
-		pclose(p[j]);
+	for (j = 0; j < i; j++) {
+		int r = pclose(p[j]);
+		if (WIFEXITED(r))
+			ret |= WEXITSTATUS(r);
+		else
+			ret |= 1;
+	}
+	return ret;
 }
 
 int
@@ -48,7 +57,5 @@ main(int argc, char **argv) {
 			}
 		}
 	}
-	close_pipes(pipes, argc);
-
-	exit(EXIT_SUCCESS);
+	exit(close_pipes(pipes, argc));
 }

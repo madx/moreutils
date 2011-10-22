@@ -51,6 +51,11 @@ Public domain.
 		parallel. Use just like <command>nice</command> or
 		<command>nohup</command>.</para>
 
+		<para>Now that util-linux contains a similar command
+		named <command>flock</command>, lckdo is deprecated,
+		and will be removed from some future version of moreutils.
+		</para>
+
 	</refsect1>
 	
 	<refsect1>
@@ -140,6 +145,13 @@ Public domain.
         opening/creating or locking the lock file, EX_CANTCREAT or EX_OSERR
         will be returned.</para>
 		
+	</refsect1>
+	
+	<refsect1>
+		<title>AUTHOR</title>
+		<para>
+			Michael Tokarev
+		</para>
 	</refsect1>
 
 </refentry>

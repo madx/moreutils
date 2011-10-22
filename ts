@@ -14,13 +14,15 @@ ts adds a timestamp to the beginning of each line of input.
 
 The optional format parameter controls how the timestamp is formatted,
 as used by L<strftime(3)>. The default format is "%b %d %H:%M:%S". In
-addition to the regular strftime conversion specifications, "%.S" is
-expanded to fractional seconds (ie, "30.00001").
+addition to the regular strftime conversion specifications, "%.S" and "%.s"
+are like "%S" and "%s", but provide subsecond resolution
+(ie, "30.00001" and "1301682593.00001").
 
 If the -r switch is passed, it instead converts existing timestamps in
 the input to relative times, such as "15m5s ago". Many common timestamp
 formats are supported. Note that the Time::Duration and Date::Parse perl
-modules are required for this mode to work.
+modules are required for this mode to work. Currently, converting localized
+dates is not supported.
 
 If both -r and a format is passed, the existing timestamps are
 converted to the specified format.
@@ -60,9 +62,9 @@ my $use_format=@ARGV;
 my $format="%b %d %H:%M:%S";
 $format=shift if @ARGV;
 
-# For fractional seconds, Time::HiRes is needed.
+# For subsecond resolution, Time::HiRes is needed.
 my $hires=0;
-if ($format=~/\%\.S/) {
+if ($format=~/\%\.[Ss]/) {
 	require Time::HiRes;
 	$hires=1;
 }
@@ -73,7 +75,7 @@ while (<>) {
 			my $f=$format;
 			my ($seconds, $microseconds) = Time::HiRes::gettimeofday();
 			my $s=sprintf("%06i", $microseconds);
-			$f=~s/\%\.S/%S.$s/g;
+			$f=~s/\%\.([Ss])/%$1.$s/g;
 			print strftime($f, localtime($seconds));
 		}
 		else {
